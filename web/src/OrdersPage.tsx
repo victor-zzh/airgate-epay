@@ -104,7 +104,7 @@ const hintStyle: React.CSSProperties = {
 const panelStyle: React.CSSProperties = {
   border: `1px solid ${cssVar('glassBorder')}`,
   borderRadius: cssVar('radiusLg'),
-  background: cssVar('bgSurface'),
+  background: cssVar('bgElevated'),
   padding: '8px 0',
   overflow: 'hidden',
 };
@@ -129,7 +129,7 @@ const thStyle: React.CSSProperties = {
   textAlign: 'left',
   padding: '10px 16px',
   borderBottom: `1px solid ${cssVar('glassBorder')}`,
-  background: cssVar('bg'),
+  background: cssVar('bgSurface'),
   color: cssVar('textSecondary'),
   fontWeight: 600,
   fontSize: 12,

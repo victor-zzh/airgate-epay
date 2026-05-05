@@ -504,7 +504,7 @@ const kindCardStyle: React.CSSProperties = {
   border: `1px solid ${cssVar('glassBorder')}`,
   borderRadius: cssVar('radiusMd'),
   padding: 16,
-  background: cssVar('bg'),
+  background: cssVar('bgElevated'),
 };
 
 const instancesGridStyle: React.CSSProperties = {
@@ -517,7 +517,7 @@ const instanceCardStyle: React.CSSProperties = {
   border: `1px solid ${cssVar('glassBorder')}`,
   borderRadius: cssVar('radiusMd'),
   padding: 16,
-  background: cssVar('bg'),
+  background: cssVar('bgElevated'),
 };
 
 const emptyStyle: React.CSSProperties = {
@@ -558,7 +558,7 @@ const primaryBtnStyle: React.CSSProperties = {
   border: 'none',
   borderRadius: cssVar('radiusMd'),
   background: cssVar('primary'),
-  color: '#fff',
+  color: cssVar('textInverse'),
   cursor: 'pointer',
   fontSize: 13,
   fontWeight: 600,
@@ -569,7 +569,7 @@ const inputStyle: React.CSSProperties = {
   padding: '8px 12px',
   border: `1px solid ${cssVar('glassBorder')}`,
   borderRadius: cssVar('radiusMd'),
-  background: cssVar('bg'),
+  background: cssVar('bgElevated'),
   color: cssVar('text'),
   fontSize: 13,
   boxSizing: 'border-box',
