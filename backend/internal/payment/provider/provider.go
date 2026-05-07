@@ -66,13 +66,14 @@ type ProviderLimits struct {
 
 // CreateOrderInput service 层下单时传给 Provider 的入参。
 type CreateOrderInput struct {
-	OutTradeNo string  // 商户订单号（本插件生成）
-	Amount     float64 // 金额（元）
-	Subject    string  // 订单标题
-	Method     string  // 用户选的 PayMethod，必须在 Provider.SupportedMethods() 内
-	NotifyURL  string  // 异步通知地址（service 层已拼好，含 provider_id）
-	ReturnURL  string  // 同步跳回地址
-	ClientIP   string  // 用户 IP
+	OutTradeNo    string  // 商户订单号（本插件生成）
+	Amount        float64 // 金额（元）
+	Subject       string  // 订单标题
+	Method        string  // 用户选的 PayMethod，必须在 Provider.SupportedMethods() 内
+	NotifyURL     string  // 异步通知地址（service 层已拼好，含 provider_id）
+	ReturnURL     string  // 同步跳回地址
+	ClientIP      string  // 用户 IP
+	ExpireSeconds int     // 订单过期秒数，0 表示不传（由渠道决定默认值）
 }
 
 // CreateOrderResult Provider 下单后的返回结果。
@@ -118,6 +119,7 @@ type CallbackResult struct {
 const (
 	KindEpayXunhu      = "epay_xunhu"
 	KindEpayCaihong    = "epay_caihong"
+	KindEpayEasyPay    = "epay_easypay"
 	KindAlipayOfficial = "alipay_official"
 	KindWxpayOfficial  = "wxpay_official"
 )

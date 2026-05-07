@@ -150,13 +150,14 @@ func (s *Service) CreateOrder(ctx context.Context, in CreateOrderInput) (*Order,
 		"amount", in.Amount,
 	)
 	chRes, err := prov.CreateOrder(ctx, provider.CreateOrderInput{
-		OutTradeNo: outTradeNo,
-		Amount:     in.Amount,
-		Subject:    in.Subject,
-		Method:     in.Method,
-		NotifyURL:  s.callbackURL + "/api/v1/payment-callback/" + PluginID + "/notify/" + prov.ID(),
-		ReturnURL:  s.callbackURL + "/plugins/" + PluginID + "/orders",
-		ClientIP:   in.ClientIP,
+		OutTradeNo:    outTradeNo,
+		Amount:        in.Amount,
+		Subject:       in.Subject,
+		Method:        in.Method,
+		NotifyURL:     s.callbackURL + "/api/v1/payment-callback/" + PluginID + "/notify/" + prov.ID(),
+		ReturnURL:     s.callbackURL + "/plugins/" + PluginID + "/orders",
+		ClientIP:      in.ClientIP,
+		ExpireSeconds: int(s.expireAfter.Seconds()),
 	})
 	if err != nil {
 		s.logger.Error("upstream_request_failed",
