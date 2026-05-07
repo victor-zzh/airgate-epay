@@ -43,25 +43,18 @@ func init() {
 				Description: "支付宝平台公钥，用于回调验签"},
 			{Key: "is_sandbox", Label: "沙箱模式", Type: "bool",
 				Description: "勾选后调用沙箱网关，用于测试"},
-			{Key: "min_amount", Label: "单笔最小金额", Type: "number"},
-			{Key: "max_amount", Label: "单笔最大金额", Type: "number"},
 		},
 	})
 }
 
 func buildAlipayOfficial(id string, enabled bool, config map[string]string) (Provider, error) {
-	min, _ := strconv.ParseFloat(config["min_amount"], 64)
-	max, _ := strconv.ParseFloat(config["max_amount"], 64)
-
 	p := &alipayOfficialProvider{
-		id:           id,
-		enabled:      enabled,
-		appID:        strings.TrimSpace(config["app_id"]),
-		privateKey:   config["private_key"], // PEM 字段内部含换行，不能 trim
-		publicKey:    config["alipay_public_key"],
-		isSandbox:    parseBool(config["is_sandbox"]),
-		minAmount:    min,
-		maxAmount:    max,
+		id:         id,
+		enabled:    enabled,
+		appID:      strings.TrimSpace(config["app_id"]),
+		privateKey: config["private_key"], // PEM 字段内部含换行，不能 trim
+		publicKey:  config["alipay_public_key"],
+		isSandbox:  parseBool(config["is_sandbox"]),
 	}
 
 	// 配置完整时立即初始化 SDK client；否则保留 nil，Enabled() 会返回 false
@@ -87,8 +80,6 @@ type alipayOfficialProvider struct {
 	privateKey string
 	publicKey  string
 	isSandbox  bool
-	minAmount  float64
-	maxAmount  float64
 	client     *alipay.Client // nil 表示初始化失败或配置不完整
 }
 
@@ -96,9 +87,6 @@ func (p *alipayOfficialProvider) ID() string                 { return p.id }
 func (p *alipayOfficialProvider) Name() string               { return "支付宝官方 (" + p.id + ")" }
 func (p *alipayOfficialProvider) Kind() string               { return KindAlipayOfficial }
 func (p *alipayOfficialProvider) SupportedMethods() []string { return []string{MethodAlipay} }
-func (p *alipayOfficialProvider) Limits() ProviderLimits {
-	return ProviderLimits{Min: p.minAmount, Max: p.maxAmount}
-}
 func (p *alipayOfficialProvider) Enabled() bool {
 	return p.enabled && p.client != nil
 }
@@ -151,8 +139,9 @@ func (p *alipayOfficialProvider) CreateOrder(ctx context.Context, in CreateOrder
 // VerifyCallback 验证支付宝异步通知签名 + 解析订单状态
 //
 // 支付宝回调字段（form-urlencoded POST）：
-//   notify_id, notify_type, notify_time, app_id, sign, sign_type,
-//   trade_no, out_trade_no, trade_status, total_amount, ...
+//
+//	notify_id, notify_type, notify_time, app_id, sign, sign_type,
+//	trade_no, out_trade_no, trade_status, total_amount, ...
 //
 // trade_status 有几种值：WAIT_BUYER_PAY / TRADE_SUCCESS / TRADE_FINISHED / TRADE_CLOSED
 // 我们只把 TRADE_SUCCESS 和 TRADE_FINISHED 视为已支付。

@@ -55,7 +55,7 @@ type Order struct {
 //
 // 与旧版的差异：
 //   - 不再持有 channels map，改为持有 *provider.Registry
-//   - CreateOrder 通过 registry.Pick(method, amount) 选 Provider
+//   - CreateOrder 通过 registry.Pick(method) 选 Provider
 //   - HandleCallback 通过 registry.Find(providerID) 拿 Provider
 type Service struct {
 	logger      *slog.Logger
@@ -132,8 +132,8 @@ func (s *Service) CreateOrder(ctx context.Context, in CreateOrderInput) (*Order,
 		}
 	}
 
-	// 通过 Registry 选一个能服务此 method + amount 的 Provider
-	prov, err := s.registry.Pick(in.Method, in.Amount)
+	// 通过 Registry 选一个能服务此 method 的 Provider
+	prov, err := s.registry.Pick(in.Method)
 	if err != nil {
 		return nil, fmt.Errorf("没有可用的支付服务商: %w", err)
 	}
@@ -437,23 +437,23 @@ type AdminOrdersResult struct {
 // 注意：stats 是按 email filter 范围内统计（不受 status filter 影响），
 // 这样切换 status 筛选时统计数字保持稳定，便于运营理解全局态势。
 type OrderStats struct {
-	Total            int64   `json:"total"`
-	Paid             int64   `json:"paid"`
-	Pending          int64   `json:"pending"`
-	Expired          int64   `json:"expired"`
-	Failed           int64   `json:"failed"`
-	Cancelled        int64   `json:"cancelled"`
-	Refunded         int64   `json:"refunded"`
-	TotalAmountPaid  float64 `json:"total_amount_paid"`
-	TodayAmountPaid  float64 `json:"today_amount_paid"`
+	Total           int64   `json:"total"`
+	Paid            int64   `json:"paid"`
+	Pending         int64   `json:"pending"`
+	Expired         int64   `json:"expired"`
+	Failed          int64   `json:"failed"`
+	Cancelled       int64   `json:"cancelled"`
+	Refunded        int64   `json:"refunded"`
+	TotalAmountPaid float64 `json:"total_amount_paid"`
+	TodayAmountPaid float64 `json:"today_amount_paid"`
 }
 
 // ListAllOrders 管理员列出全量订单（带分页 + 过滤 + 统计）。
 //
 // 流程：
-//   1. 用 email filter 算 stats（一次扫描，不受 status filter 影响）
-//   2. 用 email + status filter 算 total（用于分页器）
-//   3. 用 email + status filter + LIMIT/OFFSET 拉本页 list
+//  1. 用 email filter 算 stats（一次扫描，不受 status filter 影响）
+//  2. 用 email + status filter 算 total（用于分页器）
+//  3. 用 email + status filter + LIMIT/OFFSET 拉本页 list
 //
 // 三个查询都以 LEFT JOIN users 为基础，让每条订单顺带带上 email。
 func (s *Service) ListAllOrders(ctx context.Context, params AdminListParams) (*AdminOrdersResult, error) {

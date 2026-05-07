@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"strconv"
 	"strings"
 	"sync"
 
@@ -53,16 +52,11 @@ func init() {
 			{Key: "apiv3_key", Label: "APIv3 密钥", Type: "password", Required: true},
 			{Key: "private_key", Label: "商户私钥（PEM）", Type: "textarea", Required: true,
 				Description: "PKCS#8 格式 RSA 私钥（apiclient_key.pem 文件内容）"},
-			{Key: "min_amount", Label: "单笔最小金额", Type: "number"},
-			{Key: "max_amount", Label: "单笔最大金额", Type: "number"},
 		},
 	})
 }
 
 func buildWxpayOfficial(id string, enabled bool, config map[string]string) (Provider, error) {
-	min, _ := strconv.ParseFloat(config["min_amount"], 64)
-	max, _ := strconv.ParseFloat(config["max_amount"], 64)
-
 	p := &wxpayOfficialProvider{
 		id:         id,
 		enabled:    enabled,
@@ -71,8 +65,6 @@ func buildWxpayOfficial(id string, enabled bool, config map[string]string) (Prov
 		serialNo:   strings.TrimSpace(config["serial_no"]),
 		apiV3Key:   strings.TrimSpace(config["apiv3_key"]),
 		privateKey: config["private_key"], // PEM 含换行不能 trim
-		minAmount:  min,
-		maxAmount:  max,
 	}
 
 	if p.fieldsComplete() {
@@ -92,8 +84,6 @@ type wxpayOfficialProvider struct {
 	serialNo   string
 	apiV3Key   string
 	privateKey string
-	minAmount  float64
-	maxAmount  float64
 
 	initOnce      sync.Once
 	initErr       error
@@ -106,9 +96,6 @@ func (p *wxpayOfficialProvider) ID() string                 { return p.id }
 func (p *wxpayOfficialProvider) Name() string               { return "微信支付官方 (" + p.id + ")" }
 func (p *wxpayOfficialProvider) Kind() string               { return KindWxpayOfficial }
 func (p *wxpayOfficialProvider) SupportedMethods() []string { return []string{MethodWxpay} }
-func (p *wxpayOfficialProvider) Limits() ProviderLimits {
-	return ProviderLimits{Min: p.minAmount, Max: p.maxAmount}
-}
 func (p *wxpayOfficialProvider) Enabled() bool {
 	if !p.enabled || !p.fieldsComplete() {
 		return false

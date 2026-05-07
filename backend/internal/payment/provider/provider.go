@@ -2,11 +2,11 @@
 //
 // 设计要点：
 //   - Provider 与 PayMethod 是两件事：
-//     - Provider 是"一套对接协议 + 一份凭证"（虎皮椒、彩虹、支付宝官方 ...）
-//     - PayMethod 是用户最终用什么方式付款（支付宝/微信/QQ/...）
-//     - 一个 Provider 可承载多个 PayMethod（虎皮椒同时支持 alipay/wxpay/qqpay）
-//     - 一个 PayMethod 可由多个 Provider 提供（用户选 alipay 时可走聚合或官方）
-//   - service 层不直接持有 Provider，而是通过 Router 按 (method, amount) 选 Provider。
+//   - Provider 是"一套对接协议 + 一份凭证"（虎皮椒、彩虹、支付宝官方 ...）
+//   - PayMethod 是用户最终用什么方式付款（支付宝/微信/QQ/...）
+//   - 一个 Provider 可承载多个 PayMethod（虎皮椒同时支持 alipay/wxpay/qqpay）
+//   - 一个 PayMethod 可由多个 Provider 提供（用户选 alipay 时可走聚合或官方）
+//   - service 层不直接持有 Provider，而是通过 Router 按 method 选 Provider。
 //
 // 这种分层让前端永远只看到"支付宝/微信/银行卡"等对用户友好的支付方式按钮，
 // 而后台决定每种方式背后实际走哪家服务商。新增/替换服务商不影响前端 UI。
@@ -44,10 +44,6 @@ type Provider interface {
 	// 配置不完整（例如缺 appid）也应当返回 false，避免在 Router 选中后才报错
 	Enabled() bool
 
-	// Limits 单笔金额限制（用于 Router 的金额过滤）
-	// 返回 ProviderLimits{} 零值表示无限制
-	Limits() ProviderLimits
-
 	// CreateOrder 调用渠道下单接口
 	// in.Method 是用户选的 PayMethod，必须在 SupportedMethods() 内
 	// Provider 内部根据 method 映射到自家协议的字段（例如虎皮椒映射到 type 字段）
@@ -56,12 +52,6 @@ type Provider interface {
 	// VerifyCallback 验证并解析支付平台异步通知
 	// req 同时包含 form / body / headers，因为不同协议从不同位置取签名
 	VerifyCallback(ctx context.Context, req CallbackRequest) (*CallbackResult, error)
-}
-
-// ProviderLimits 单 Provider 的金额限制。零值（0）表示无限制。
-type ProviderLimits struct {
-	Min float64 // 单笔最小金额
-	Max float64 // 单笔最大金额
 }
 
 // CreateOrderInput service 层下单时传给 Provider 的入参。
@@ -135,6 +125,6 @@ var (
 	// ErrUnsupportedMethod 用户传的 PayMethod 不在 SupportedMethods 内
 	ErrUnsupportedMethod = errors.New("unsupported pay method for this provider")
 
-	// ErrNoProviderAvailable Router 找不到任何可用 Provider 来处理这个 method/amount
+	// ErrNoProviderAvailable Router 找不到任何可用 Provider 来处理这个 method
 	ErrNoProviderAvailable = errors.New("no available payment provider")
 )

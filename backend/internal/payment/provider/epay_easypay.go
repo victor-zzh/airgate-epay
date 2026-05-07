@@ -42,15 +42,11 @@ func init() {
 				Description: "easy-pay 根 URL，不含路径"},
 			{Key: "enabled_methods", Label: "启用的支付方式", Type: "method-multi", Required: true,
 				Description: "勾选 easy-pay 已配置的支付通道；至少选一个"},
-			{Key: "min_amount", Label: "单笔最小金额", Type: "number", Placeholder: "0 表示不限制"},
-			{Key: "max_amount", Label: "单笔最大金额", Type: "number", Placeholder: "0 表示不限制"},
 		},
 	})
 }
 
 func buildEasyPay(id string, enabled bool, config map[string]string) (Provider, error) {
-	minA, _ := strconv.ParseFloat(config["min_amount"], 64)
-	maxA, _ := strconv.ParseFloat(config["max_amount"], 64)
 	return &easyPayProvider{
 		id:             id,
 		enabled:        enabled,
@@ -58,8 +54,6 @@ func buildEasyPay(id string, enabled bool, config map[string]string) (Provider, 
 		appSecret:      strings.TrimSpace(config["app_secret"]),
 		gateway:        strings.TrimRight(strings.TrimSpace(config["gateway"]), "/"),
 		enabledMethods: parseEnabledMethods(config["enabled_methods"], []string{MethodAlipay, MethodWxpay}),
-		minAmount:      minA,
-		maxAmount:      maxA,
 		client:         &http.Client{Timeout: 15 * time.Second},
 	}, nil
 }
@@ -71,8 +65,6 @@ type easyPayProvider struct {
 	appSecret      string
 	gateway        string
 	enabledMethods []string
-	minAmount      float64
-	maxAmount      float64
 	client         *http.Client
 }
 
@@ -84,9 +76,6 @@ func (p *easyPayProvider) SupportedMethods() []string {
 		return []string{MethodAlipay, MethodWxpay}
 	}
 	return p.enabledMethods
-}
-func (p *easyPayProvider) Limits() ProviderLimits {
-	return ProviderLimits{Min: p.minAmount, Max: p.maxAmount}
 }
 func (p *easyPayProvider) Enabled() bool {
 	return p.enabled && p.appID != "" && p.appSecret != "" && p.gateway != ""
@@ -117,6 +106,7 @@ func (p *easyPayProvider) CreateOrder(ctx context.Context, in CreateOrderInput) 
 		TradeType:       "native",
 		Subject:         in.Subject,
 		Amount:          amountCents,
+		NotifyURL:       in.NotifyURL,
 		ExpireSeconds:   in.ExpireSeconds,
 	}
 	bodyBytes, err := json.Marshal(reqBody)
@@ -254,6 +244,7 @@ type easyPayCreateReq struct {
 	TradeType       string `json:"trade_type"`
 	Subject         string `json:"subject"`
 	Amount          int64  `json:"amount"`
+	NotifyURL       string `json:"notify_url,omitempty"`
 	ExpireSeconds   int    `json:"expire_seconds,omitempty"`
 }
 

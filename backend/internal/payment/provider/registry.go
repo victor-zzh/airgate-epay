@@ -9,7 +9,7 @@ import (
 // 线程安全：所有方法都加读写锁，支持运行时通过 admin API reload Provider 列表。
 //
 // 路由策略（简化版）：
-//   - Pick(method, amount) 返回第一个 Enabled + 支持该 method + amount 在 limits 内的 Provider
+//   - Pick(method) 返回第一个 Enabled + 支持该 method 的 Provider
 //   - 不做多商户轮询、不做最小金额选择（用户决定不需要）
 //   - 后续要扩展也只需改这一处，不影响 service / Provider 实现
 type Registry struct {
@@ -38,15 +38,14 @@ func (r *Registry) Replace(providers []Provider) {
 	}
 }
 
-// Pick 根据用户选的 method 和金额选一个可用的 Provider。
+// Pick 根据用户选的 method 选一个可用的 Provider。
 //
 // 失败原因可能是：
 //   - 没有任何 Provider 启用 → 整个支付系统未配置
 //   - 该 method 没有 Provider 支持 → 用户传了一个不存在的 method
-//   - 金额超出所有匹配 Provider 的 limits → 调小或调大金额
 //
 // 这些情况都返回 ErrNoProviderAvailable，service 层包装成对用户友好的提示。
-func (r *Registry) Pick(method string, amount float64) (Provider, error) {
+func (r *Registry) Pick(method string) (Provider, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 
@@ -55,13 +54,6 @@ func (r *Registry) Pick(method string, amount float64) (Provider, error) {
 			continue
 		}
 		if !containsString(p.SupportedMethods(), method) {
-			continue
-		}
-		lim := p.Limits()
-		if lim.Min > 0 && amount < lim.Min {
-			continue
-		}
-		if lim.Max > 0 && amount > lim.Max {
 			continue
 		}
 		return p, nil

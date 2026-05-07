@@ -40,15 +40,11 @@ func init() {
 				Description: "完整下单接口 URL（含 do.html）"},
 			{Key: "enabled_methods", Label: "启用的支付方式", Type: "method-multi", Required: true,
 				Description: "勾选该商户号在虎皮椒平台上签约/启用的子通道；至少选一个"},
-			{Key: "min_amount", Label: "单笔最小金额", Type: "number", Placeholder: "0 表示不限制"},
-			{Key: "max_amount", Label: "单笔最大金额", Type: "number", Placeholder: "0 表示不限制"},
 		},
 	})
 }
 
 func buildXunhu(id string, enabled bool, config map[string]string) (Provider, error) {
-	minA, _ := strconv.ParseFloat(config["min_amount"], 64)
-	maxA, _ := strconv.ParseFloat(config["max_amount"], 64)
 	return &xunhuProvider{
 		id:             id,
 		enabled:        enabled,
@@ -56,8 +52,6 @@ func buildXunhu(id string, enabled bool, config map[string]string) (Provider, er
 		appSecret:      strings.TrimSpace(config["appsecret"]),
 		gateway:        strings.TrimSpace(config["gateway_url"]),
 		enabledMethods: parseEnabledMethods(config["enabled_methods"], []string{MethodAlipay, MethodWxpay}),
-		minAmount:      minA,
-		maxAmount:      maxA,
 		client:         &http.Client{Timeout: 15 * time.Second},
 	}, nil
 }
@@ -69,8 +63,6 @@ type xunhuProvider struct {
 	appSecret      string
 	gateway        string
 	enabledMethods []string
-	minAmount      float64
-	maxAmount      float64
 	client         *http.Client
 }
 
@@ -85,9 +77,6 @@ func (p *xunhuProvider) SupportedMethods() []string {
 	}
 	return p.enabledMethods
 }
-func (p *xunhuProvider) Limits() ProviderLimits {
-	return ProviderLimits{Min: p.minAmount, Max: p.maxAmount}
-}
 func (p *xunhuProvider) Enabled() bool {
 	return p.enabled && p.appID != "" && p.appSecret != "" && p.gateway != ""
 }
@@ -95,7 +84,8 @@ func (p *xunhuProvider) Enabled() bool {
 // CreateOrder 调用虎皮椒 do.html 下单接口。
 //
 // in.Method 决定虎皮椒 type 字段：
-//   alipay → "alipay" / wxpay → "wechat" / qqpay → "qqpay"
+//
+//	alipay → "alipay" / wxpay → "wechat" / qqpay → "qqpay"
 func (p *xunhuProvider) CreateOrder(ctx context.Context, in CreateOrderInput) (*CreateOrderResult, error) {
 	if !p.Enabled() {
 		return nil, ErrProviderDisabled

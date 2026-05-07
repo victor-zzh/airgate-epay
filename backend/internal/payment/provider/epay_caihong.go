@@ -38,15 +38,11 @@ func init() {
 				Description: "易支付平台根 URL，不含 /submit.php"},
 			{Key: "enabled_methods", Label: "启用的支付方式", Type: "method-multi", Required: true,
 				Description: "勾选该商户号在彩虹平台上签约/启用的子通道；至少选一个"},
-			{Key: "min_amount", Label: "单笔最小金额", Type: "number", Placeholder: "0 表示不限制"},
-			{Key: "max_amount", Label: "单笔最大金额", Type: "number", Placeholder: "0 表示不限制"},
 		},
 	})
 }
 
 func buildCaihong(id string, enabled bool, config map[string]string) (Provider, error) {
-	minA, _ := strconv.ParseFloat(config["min_amount"], 64)
-	maxA, _ := strconv.ParseFloat(config["max_amount"], 64)
 	return &caihongProvider{
 		id:             id,
 		enabled:        enabled,
@@ -54,8 +50,6 @@ func buildCaihong(id string, enabled bool, config map[string]string) (Provider, 
 		key:            strings.TrimSpace(config["key"]),
 		gateway:        strings.TrimRight(strings.TrimSpace(config["gateway"]), "/"),
 		enabledMethods: parseEnabledMethods(config["enabled_methods"], []string{MethodAlipay, MethodWxpay}),
-		minAmount:      minA,
-		maxAmount:      maxA,
 	}, nil
 }
 
@@ -66,8 +60,6 @@ type caihongProvider struct {
 	key            string
 	gateway        string
 	enabledMethods []string
-	minAmount      float64
-	maxAmount      float64
 }
 
 func (p *caihongProvider) ID() string   { return p.id }
@@ -78,9 +70,6 @@ func (p *caihongProvider) SupportedMethods() []string {
 		return []string{MethodAlipay, MethodWxpay}
 	}
 	return p.enabledMethods
-}
-func (p *caihongProvider) Limits() ProviderLimits {
-	return ProviderLimits{Min: p.minAmount, Max: p.maxAmount}
 }
 func (p *caihongProvider) Enabled() bool {
 	return p.enabled && p.pid != "" && p.key != "" && p.gateway != ""
