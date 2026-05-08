@@ -335,7 +335,13 @@ func (s *Service) markPaid(ctx context.Context, cb *provider.CallbackResult) err
 	}
 
 	// 4) 写 balance_logs
-	remark := fmt.Sprintf("recharge:%s:%s:%s", method, providerID, cb.OutTradeNo)
+	methodLabel := map[string]string{
+		"wxpay": "微信支付", "alipay": "支付宝", "qqpay": "QQ钱包", "bank": "银行卡",
+	}[method]
+	if methodLabel == "" {
+		methodLabel = method
+	}
+	remark := fmt.Sprintf("在线充值（%s）", methodLabel)
 	if _, err := tx.ExecContext(ctx, `
 		INSERT INTO balance_logs
 			(action, amount, before_balance, after_balance, remark, created_at, user_balance_logs)
