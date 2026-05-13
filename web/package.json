@@ -9,7 +9,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@airgate/theme": "file:../../airgate-sdk/frontend",
+    "@doudou-start/airgate-theme": "file:../../airgate-sdk/theme",
     "@types/qrcode": "^1.5.6",
     "qrcode": "^1.5.4",
     "react": "^19.0.0",

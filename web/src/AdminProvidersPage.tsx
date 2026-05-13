@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { cssVar } from '@airgate/theme';
+import { cssVar } from '@doudou-start/airgate-theme';
 import {
   api,
   type ProviderItem,

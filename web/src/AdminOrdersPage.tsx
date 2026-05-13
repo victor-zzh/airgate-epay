@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { cssVar } from '@airgate/theme';
+import { cssVar } from '@doudou-start/airgate-theme';
 import { api, type Order, type OrderStats } from './api';
 
 const EMPTY_STATS: OrderStats = {
@@ -28,7 +28,7 @@ type SelectOption = { value: string; label: string };
  *   - 顶部展示统计概览：总订单数 / 已支付 / 待支付 / 今日金额
  *   - 支持按状态筛选（客户端）+ 用户邮箱搜索（服务端 ILIKE，300ms 防抖）
  *
- * 样式说明：使用 @airgate/theme 的语义 token，确保跟随宿主明/暗主题。
+ * 样式说明：使用 @doudou-start/airgate-theme 的语义 token，确保跟随宿主明/暗主题。
  *   - 背景层次：bgSurface（卡片）/ bgHover（hover）
  *   - 边框：glassBorder（柔和边框，配合 bgSurface 制造层次）
  *   - 文字：text（主）/ textSecondary（次）/ textTertiary（提示）
