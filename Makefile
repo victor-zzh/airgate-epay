@@ -1,7 +1,7 @@
 # AirGate 支付插件 Makefile
 #
 # 典型工作流：
-#   make install          # 一次性安装前端 npm 依赖
+#   make install          # 一次性安装前端 pnpm 依赖
 #   make dev              # 由 core 以 dev 模式加载本插件（不打 web 也能跑后端）
 #   make build            # 完整构建：web/dist → backend/webdist → bin/payment-epay
 #   make manifest         # 重新生成 plugin.yaml
@@ -18,14 +18,14 @@ help: ## 显示帮助信息
 # ===================== 构建 =====================
 
 install: ## 安装 web 依赖
-	cd web && npm install
+	cd web && pnpm install
 	cd backend && $(GO) mod download
 	@echo "依赖安装完成"
 
 build: build-web build-backend ## 完整构建：前端 → 嵌入后端 → 编译
 
 build-web: ## 构建插件前端
-	cd web && npm run build
+	cd web && pnpm build
 
 build-backend: ensure-webdist ## 构建后端二进制
 	cd backend && $(GO) build -o ../bin/payment-epay .
@@ -68,7 +68,7 @@ manifest: ## 重新生成 plugin.yaml
 ci: ensure-webdist type-check vet test build-backend ## 本地运行与 CI 完全一致的检查
 
 type-check: ## 前端 TypeScript 类型检查
-	cd web && npm run type-check
+	cd web && pnpm type-check
 
 test: ensure-webdist ## 运行后端测试
 	cd backend && $(GO) test ./...
