@@ -160,11 +160,11 @@ func (p *alipayOfficialProvider) VerifyCallback(ctx context.Context, req Callbac
 	}
 
 	amount, _ := strconv.ParseFloat(form.Get("total_amount"), 64)
-	tradeStatus := form.Get("trade_status")
 	status := "pending"
-	if tradeStatus == "TRADE_SUCCESS" || tradeStatus == "TRADE_FINISHED" {
+	switch form.Get("trade_status") {
+	case "TRADE_SUCCESS", "TRADE_FINISHED":
 		status = "paid"
-	} else if tradeStatus == "TRADE_CLOSED" {
+	case "TRADE_CLOSED":
 		status = "failed"
 	}
 

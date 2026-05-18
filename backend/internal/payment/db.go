@@ -27,6 +27,8 @@ import (
 //
 // 升级时使用 ALTER TABLE IF NOT EXISTS 风格的 DO 块，第一次部署直接 CREATE，
 // 已有部署可以多次执行无害。
+//
+//nolint:unused // 保留作为 payment_orders 表结构文档，与外部 migrate 工具对照
 const schemaSQL = `
 CREATE TABLE IF NOT EXISTS payment_orders (
     id              BIGSERIAL PRIMARY KEY,
