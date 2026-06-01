@@ -1,20 +1,20 @@
-import { jsx as d, jsxs as b, Fragment as Qt } from "react/jsx-runtime";
-import { useState as L, useRef as _t, useEffect as H, useCallback as Z, useMemo as Xt } from "react";
-function Zt(e) {
+import { jsx as s, jsxs as b, Fragment as ae } from "react/jsx-runtime";
+import { useState as P, useRef as ce, useEffect as z, useCallback as ee, useMemo as an } from "react";
+function sn(e) {
   return e && e.__esModule && Object.prototype.hasOwnProperty.call(e, "default") ? e.default : e;
 }
-var Y = {}, fe, Ge;
-function en() {
-  return Ge || (Ge = 1, fe = function() {
+var X = {}, pe, Xe;
+function cn() {
+  return Xe || (Xe = 1, pe = function() {
     return typeof Promise == "function" && Promise.prototype && Promise.prototype.then;
-  }), fe;
+  }), pe;
 }
-var ge = {}, W = {}, Ye;
-function K() {
-  if (Ye) return W;
-  Ye = 1;
+var ye = {}, O = {}, Ze;
+function Y() {
+  if (Ze) return O;
+  Ze = 1;
   let e;
-  const o = [
+  const i = [
     0,
     // Not used
     26,
@@ -58,35 +58,35 @@ function K() {
     3532,
     3706
   ];
-  return W.getSymbolSize = function(r) {
+  return O.getSymbolSize = function(r) {
     if (!r) throw new Error('"version" cannot be null or undefined');
     if (r < 1 || r > 40) throw new Error('"version" should be in range from 1 to 40');
     return r * 4 + 17;
-  }, W.getSymbolTotalCodewords = function(r) {
-    return o[r];
-  }, W.getBCHDigit = function(a) {
+  }, O.getSymbolTotalCodewords = function(r) {
+    return i[r];
+  }, O.getBCHDigit = function(l) {
     let r = 0;
-    for (; a !== 0; )
-      r++, a >>>= 1;
+    for (; l !== 0; )
+      r++, l >>>= 1;
     return r;
-  }, W.setToSJISFunction = function(r) {
+  }, O.setToSJISFunction = function(r) {
     if (typeof r != "function")
       throw new Error('"toSJISFunc" is not a valid function.');
     e = r;
-  }, W.isKanjiModeEnabled = function() {
+  }, O.isKanjiModeEnabled = function() {
     return typeof e < "u";
-  }, W.toSJIS = function(r) {
+  }, O.toSJIS = function(r) {
     return e(r);
-  }, W;
+  }, O;
 }
-var he = {}, $e;
-function je() {
-  return $e || ($e = 1, (function(e) {
+var me = {}, et;
+function Ke() {
+  return et || (et = 1, (function(e) {
     e.L = { bit: 1 }, e.M = { bit: 0 }, e.Q = { bit: 3 }, e.H = { bit: 2 };
-    function o(a) {
-      if (typeof a != "string")
+    function i(l) {
+      if (typeof l != "string")
         throw new Error("Param is not a string");
-      switch (a.toLowerCase()) {
+      switch (l.toLowerCase()) {
         case "l":
         case "low":
           return e.L;
@@ -100,7 +100,7 @@ function je() {
         case "high":
           return e.H;
         default:
-          throw new Error("Unknown EC Level: " + a);
+          throw new Error("Unknown EC Level: " + l);
       }
     }
     e.isValid = function(r) {
@@ -109,99 +109,99 @@ function je() {
       if (e.isValid(r))
         return r;
       try {
-        return o(r);
+        return i(r);
       } catch {
         return n;
       }
     };
-  })(he)), he;
+  })(me)), me;
 }
-var pe, Qe;
-function tn() {
-  if (Qe) return pe;
-  Qe = 1;
+var be, tt;
+function dn() {
+  if (tt) return be;
+  tt = 1;
   function e() {
     this.buffer = [], this.length = 0;
   }
   return e.prototype = {
-    get: function(o) {
-      const a = Math.floor(o / 8);
-      return (this.buffer[a] >>> 7 - o % 8 & 1) === 1;
+    get: function(i) {
+      const l = Math.floor(i / 8);
+      return (this.buffer[l] >>> 7 - i % 8 & 1) === 1;
     },
-    put: function(o, a) {
-      for (let r = 0; r < a; r++)
-        this.putBit((o >>> a - r - 1 & 1) === 1);
+    put: function(i, l) {
+      for (let r = 0; r < l; r++)
+        this.putBit((i >>> l - r - 1 & 1) === 1);
     },
     getLengthInBits: function() {
       return this.length;
     },
-    putBit: function(o) {
-      const a = Math.floor(this.length / 8);
-      this.buffer.length <= a && this.buffer.push(0), o && (this.buffer[a] |= 128 >>> this.length % 8), this.length++;
+    putBit: function(i) {
+      const l = Math.floor(this.length / 8);
+      this.buffer.length <= l && this.buffer.push(0), i && (this.buffer[l] |= 128 >>> this.length % 8), this.length++;
     }
-  }, pe = e, pe;
+  }, be = e, be;
 }
-var ye, Xe;
-function nn() {
-  if (Xe) return ye;
-  Xe = 1;
-  function e(o) {
-    if (!o || o < 1)
+var Se, nt;
+function un() {
+  if (nt) return Se;
+  nt = 1;
+  function e(i) {
+    if (!i || i < 1)
       throw new Error("BitMatrix size must be defined and greater than 0");
-    this.size = o, this.data = new Uint8Array(o * o), this.reservedBit = new Uint8Array(o * o);
+    this.size = i, this.data = new Uint8Array(i * i), this.reservedBit = new Uint8Array(i * i);
   }
-  return e.prototype.set = function(o, a, r, n) {
-    const t = o * this.size + a;
+  return e.prototype.set = function(i, l, r, n) {
+    const t = i * this.size + l;
     this.data[t] = r, n && (this.reservedBit[t] = !0);
-  }, e.prototype.get = function(o, a) {
-    return this.data[o * this.size + a];
-  }, e.prototype.xor = function(o, a, r) {
-    this.data[o * this.size + a] ^= r;
-  }, e.prototype.isReserved = function(o, a) {
-    return this.reservedBit[o * this.size + a];
-  }, ye = e, ye;
+  }, e.prototype.get = function(i, l) {
+    return this.data[i * this.size + l];
+  }, e.prototype.xor = function(i, l, r) {
+    this.data[i * this.size + l] ^= r;
+  }, e.prototype.isReserved = function(i, l) {
+    return this.reservedBit[i * this.size + l];
+  }, Se = e, Se;
 }
-var me = {}, Ze;
-function rn() {
-  return Ze || (Ze = 1, (function(e) {
-    const o = K().getSymbolSize;
+var xe = {}, rt;
+function fn() {
+  return rt || (rt = 1, (function(e) {
+    const i = Y().getSymbolSize;
     e.getRowColCoords = function(r) {
       if (r === 1) return [];
-      const n = Math.floor(r / 7) + 2, t = o(r), l = t === 145 ? 26 : Math.ceil((t - 13) / (2 * n - 2)) * 2, s = [t - 7];
-      for (let c = 1; c < n - 1; c++)
-        s[c] = s[c - 1] - l;
-      return s.push(6), s.reverse();
+      const n = Math.floor(r / 7) + 2, t = i(r), a = t === 145 ? 26 : Math.ceil((t - 13) / (2 * n - 2)) * 2, c = [t - 7];
+      for (let d = 1; d < n - 1; d++)
+        c[d] = c[d - 1] - a;
+      return c.push(6), c.reverse();
     }, e.getPositions = function(r) {
-      const n = [], t = e.getRowColCoords(r), l = t.length;
-      for (let s = 0; s < l; s++)
-        for (let c = 0; c < l; c++)
-          s === 0 && c === 0 || // top-left
-          s === 0 && c === l - 1 || // bottom-left
-          s === l - 1 && c === 0 || n.push([t[s], t[c]]);
+      const n = [], t = e.getRowColCoords(r), a = t.length;
+      for (let c = 0; c < a; c++)
+        for (let d = 0; d < a; d++)
+          c === 0 && d === 0 || // top-left
+          c === 0 && d === a - 1 || // bottom-left
+          c === a - 1 && d === 0 || n.push([t[c], t[d]]);
       return n;
     };
-  })(me)), me;
+  })(xe)), xe;
 }
-var be = {}, et;
-function on() {
-  if (et) return be;
-  et = 1;
-  const e = K().getSymbolSize, o = 7;
-  return be.getPositions = function(r) {
+var we = {}, ot;
+function gn() {
+  if (ot) return we;
+  ot = 1;
+  const e = Y().getSymbolSize, i = 7;
+  return we.getPositions = function(r) {
     const n = e(r);
     return [
       // top-left
       [0, 0],
       // top-right
-      [n - o, 0],
+      [n - i, 0],
       // bottom-left
-      [0, n - o]
+      [0, n - i]
     ];
-  }, be;
+  }, we;
 }
-var Se = {}, tt;
-function an() {
-  return tt || (tt = 1, (function(e) {
+var ve = {}, it;
+function hn() {
+  return it || (it = 1, (function(e) {
     e.Patterns = {
       PATTERN000: 0,
       PATTERN001: 1,
@@ -212,7 +212,7 @@ function an() {
       PATTERN110: 6,
       PATTERN111: 7
     };
-    const o = {
+    const i = {
       N1: 3,
       N2: 3,
       N3: 40,
@@ -224,41 +224,41 @@ function an() {
       return e.isValid(n) ? parseInt(n, 10) : void 0;
     }, e.getPenaltyN1 = function(n) {
       const t = n.size;
-      let l = 0, s = 0, c = 0, f = null, h = null;
-      for (let g = 0; g < t; g++) {
-        s = c = 0, f = h = null;
-        for (let p = 0; p < t; p++) {
-          let S = n.get(g, p);
-          S === f ? s++ : (s >= 5 && (l += o.N1 + (s - 5)), f = S, s = 1), S = n.get(p, g), S === h ? c++ : (c >= 5 && (l += o.N1 + (c - 5)), h = S, c = 1);
+      let a = 0, c = 0, d = 0, f = null, p = null;
+      for (let h = 0; h < t; h++) {
+        c = d = 0, f = p = null;
+        for (let y = 0; y < t; y++) {
+          let S = n.get(h, y);
+          S === f ? c++ : (c >= 5 && (a += i.N1 + (c - 5)), f = S, c = 1), S = n.get(y, h), S === p ? d++ : (d >= 5 && (a += i.N1 + (d - 5)), p = S, d = 1);
         }
-        s >= 5 && (l += o.N1 + (s - 5)), c >= 5 && (l += o.N1 + (c - 5));
+        c >= 5 && (a += i.N1 + (c - 5)), d >= 5 && (a += i.N1 + (d - 5));
       }
-      return l;
+      return a;
     }, e.getPenaltyN2 = function(n) {
       const t = n.size;
-      let l = 0;
-      for (let s = 0; s < t - 1; s++)
-        for (let c = 0; c < t - 1; c++) {
-          const f = n.get(s, c) + n.get(s, c + 1) + n.get(s + 1, c) + n.get(s + 1, c + 1);
-          (f === 4 || f === 0) && l++;
+      let a = 0;
+      for (let c = 0; c < t - 1; c++)
+        for (let d = 0; d < t - 1; d++) {
+          const f = n.get(c, d) + n.get(c, d + 1) + n.get(c + 1, d) + n.get(c + 1, d + 1);
+          (f === 4 || f === 0) && a++;
         }
-      return l * o.N2;
+      return a * i.N2;
     }, e.getPenaltyN3 = function(n) {
       const t = n.size;
-      let l = 0, s = 0, c = 0;
+      let a = 0, c = 0, d = 0;
       for (let f = 0; f < t; f++) {
-        s = c = 0;
-        for (let h = 0; h < t; h++)
-          s = s << 1 & 2047 | n.get(f, h), h >= 10 && (s === 1488 || s === 93) && l++, c = c << 1 & 2047 | n.get(h, f), h >= 10 && (c === 1488 || c === 93) && l++;
+        c = d = 0;
+        for (let p = 0; p < t; p++)
+          c = c << 1 & 2047 | n.get(f, p), p >= 10 && (c === 1488 || c === 93) && a++, d = d << 1 & 2047 | n.get(p, f), p >= 10 && (d === 1488 || d === 93) && a++;
       }
-      return l * o.N3;
+      return a * i.N3;
     }, e.getPenaltyN4 = function(n) {
       let t = 0;
-      const l = n.data.length;
-      for (let c = 0; c < l; c++) t += n.data[c];
-      return Math.abs(Math.ceil(t * 100 / l / 5) - 10) * o.N4;
+      const a = n.data.length;
+      for (let d = 0; d < a; d++) t += n.data[d];
+      return Math.abs(Math.ceil(t * 100 / a / 5) - 10) * i.N4;
     };
-    function a(r, n, t) {
+    function l(r, n, t) {
       switch (r) {
         case e.Patterns.PATTERN000:
           return (n + t) % 2 === 0;
@@ -281,27 +281,27 @@ function an() {
       }
     }
     e.applyMask = function(n, t) {
-      const l = t.size;
-      for (let s = 0; s < l; s++)
-        for (let c = 0; c < l; c++)
-          t.isReserved(c, s) || t.xor(c, s, a(n, c, s));
+      const a = t.size;
+      for (let c = 0; c < a; c++)
+        for (let d = 0; d < a; d++)
+          t.isReserved(d, c) || t.xor(d, c, l(n, d, c));
     }, e.getBestMask = function(n, t) {
-      const l = Object.keys(e.Patterns).length;
-      let s = 0, c = 1 / 0;
-      for (let f = 0; f < l; f++) {
+      const a = Object.keys(e.Patterns).length;
+      let c = 0, d = 1 / 0;
+      for (let f = 0; f < a; f++) {
         t(f), e.applyMask(f, n);
-        const h = e.getPenaltyN1(n) + e.getPenaltyN2(n) + e.getPenaltyN3(n) + e.getPenaltyN4(n);
-        e.applyMask(f, n), h < c && (c = h, s = f);
+        const p = e.getPenaltyN1(n) + e.getPenaltyN2(n) + e.getPenaltyN3(n) + e.getPenaltyN4(n);
+        e.applyMask(f, n), p < d && (d = p, c = f);
       }
-      return s;
+      return c;
     };
-  })(Se)), Se;
+  })(ve)), ve;
 }
-var ie = {}, nt;
-function Lt() {
-  if (nt) return ie;
-  nt = 1;
-  const e = je(), o = [
+var oe = {}, lt;
+function qt() {
+  if (lt) return oe;
+  lt = 1;
+  const e = Ke(), i = [
     // L  M  Q  H
     1,
     1,
@@ -463,7 +463,7 @@ function Lt() {
     49,
     68,
     81
-  ], a = [
+  ], l = [
     // L  M  Q  H
     7,
     10,
@@ -626,135 +626,135 @@ function Lt() {
     2040,
     2430
   ];
-  return ie.getBlocksCount = function(n, t) {
+  return oe.getBlocksCount = function(n, t) {
     switch (t) {
       case e.L:
-        return o[(n - 1) * 4 + 0];
+        return i[(n - 1) * 4 + 0];
       case e.M:
-        return o[(n - 1) * 4 + 1];
+        return i[(n - 1) * 4 + 1];
       case e.Q:
-        return o[(n - 1) * 4 + 2];
+        return i[(n - 1) * 4 + 2];
       case e.H:
-        return o[(n - 1) * 4 + 3];
+        return i[(n - 1) * 4 + 3];
       default:
         return;
     }
-  }, ie.getTotalCodewordsCount = function(n, t) {
+  }, oe.getTotalCodewordsCount = function(n, t) {
     switch (t) {
       case e.L:
-        return a[(n - 1) * 4 + 0];
+        return l[(n - 1) * 4 + 0];
       case e.M:
-        return a[(n - 1) * 4 + 1];
+        return l[(n - 1) * 4 + 1];
       case e.Q:
-        return a[(n - 1) * 4 + 2];
+        return l[(n - 1) * 4 + 2];
       case e.H:
-        return a[(n - 1) * 4 + 3];
+        return l[(n - 1) * 4 + 3];
       default:
         return;
     }
-  }, ie;
+  }, oe;
 }
-var xe = {}, te = {}, rt;
-function sn() {
-  if (rt) return te;
-  rt = 1;
-  const e = new Uint8Array(512), o = new Uint8Array(256);
+var Ce = {}, ne = {}, at;
+function pn() {
+  if (at) return ne;
+  at = 1;
+  const e = new Uint8Array(512), i = new Uint8Array(256);
   return (function() {
     let r = 1;
     for (let n = 0; n < 255; n++)
-      e[n] = r, o[r] = n, r <<= 1, r & 256 && (r ^= 285);
+      e[n] = r, i[r] = n, r <<= 1, r & 256 && (r ^= 285);
     for (let n = 255; n < 512; n++)
       e[n] = e[n - 255];
-  })(), te.log = function(r) {
+  })(), ne.log = function(r) {
     if (r < 1) throw new Error("log(" + r + ")");
-    return o[r];
-  }, te.exp = function(r) {
+    return i[r];
+  }, ne.exp = function(r) {
     return e[r];
-  }, te.mul = function(r, n) {
-    return r === 0 || n === 0 ? 0 : e[o[r] + o[n]];
-  }, te;
+  }, ne.mul = function(r, n) {
+    return r === 0 || n === 0 ? 0 : e[i[r] + i[n]];
+  }, ne;
 }
-var ot;
-function ln() {
-  return ot || (ot = 1, (function(e) {
-    const o = sn();
+var st;
+function yn() {
+  return st || (st = 1, (function(e) {
+    const i = pn();
     e.mul = function(r, n) {
       const t = new Uint8Array(r.length + n.length - 1);
-      for (let l = 0; l < r.length; l++)
-        for (let s = 0; s < n.length; s++)
-          t[l + s] ^= o.mul(r[l], n[s]);
+      for (let a = 0; a < r.length; a++)
+        for (let c = 0; c < n.length; c++)
+          t[a + c] ^= i.mul(r[a], n[c]);
       return t;
     }, e.mod = function(r, n) {
       let t = new Uint8Array(r);
       for (; t.length - n.length >= 0; ) {
-        const l = t[0];
-        for (let c = 0; c < n.length; c++)
-          t[c] ^= o.mul(n[c], l);
-        let s = 0;
-        for (; s < t.length && t[s] === 0; ) s++;
-        t = t.slice(s);
+        const a = t[0];
+        for (let d = 0; d < n.length; d++)
+          t[d] ^= i.mul(n[d], a);
+        let c = 0;
+        for (; c < t.length && t[c] === 0; ) c++;
+        t = t.slice(c);
       }
       return t;
     }, e.generateECPolynomial = function(r) {
       let n = new Uint8Array([1]);
       for (let t = 0; t < r; t++)
-        n = e.mul(n, new Uint8Array([1, o.exp(t)]));
+        n = e.mul(n, new Uint8Array([1, i.exp(t)]));
       return n;
     };
-  })(xe)), xe;
+  })(Ce)), Ce;
 }
-var we, it;
-function dn() {
-  if (it) return we;
-  it = 1;
-  const e = ln();
-  function o(a) {
-    this.genPoly = void 0, this.degree = a, this.degree && this.initialize(this.degree);
+var ke, ct;
+function mn() {
+  if (ct) return ke;
+  ct = 1;
+  const e = yn();
+  function i(l) {
+    this.genPoly = void 0, this.degree = l, this.degree && this.initialize(this.degree);
   }
-  return o.prototype.initialize = function(r) {
+  return i.prototype.initialize = function(r) {
     this.degree = r, this.genPoly = e.generateECPolynomial(this.degree);
-  }, o.prototype.encode = function(r) {
+  }, i.prototype.encode = function(r) {
     if (!this.genPoly)
       throw new Error("Encoder not initialized");
     const n = new Uint8Array(r.length + this.degree);
     n.set(r);
-    const t = e.mod(n, this.genPoly), l = this.degree - t.length;
-    if (l > 0) {
-      const s = new Uint8Array(this.degree);
-      return s.set(t, l), s;
+    const t = e.mod(n, this.genPoly), a = this.degree - t.length;
+    if (a > 0) {
+      const c = new Uint8Array(this.degree);
+      return c.set(t, a), c;
     }
     return t;
-  }, we = o, we;
+  }, ke = i, ke;
 }
-var Ce = {}, ve = {}, Be = {}, at;
-function Nt() {
-  return at || (at = 1, Be.isValid = function(o) {
-    return !isNaN(o) && o >= 1 && o <= 40;
+var Te = {}, Ee = {}, Be = {}, dt;
+function Ut() {
+  return dt || (dt = 1, Be.isValid = function(i) {
+    return !isNaN(i) && i >= 1 && i <= 40;
   }), Be;
 }
-var N = {}, st;
-function zt() {
-  if (st) return N;
-  st = 1;
-  const e = "[0-9]+", o = "[A-Z $%*+\\-./:]+";
-  let a = "(?:[u3000-u303F]|[u3040-u309F]|[u30A0-u30FF]|[uFF00-uFFEF]|[u4E00-u9FAF]|[u2605-u2606]|[u2190-u2195]|u203B|[u2010u2015u2018u2019u2025u2026u201Cu201Du2225u2260]|[u0391-u0451]|[u00A7u00A8u00B1u00B4u00D7u00F7])+";
-  a = a.replace(/u/g, "\\u");
-  const r = "(?:(?![A-Z0-9 $%*+\\-./:]|" + a + `)(?:.|[\r
+var N = {}, ut;
+function Wt() {
+  if (ut) return N;
+  ut = 1;
+  const e = "[0-9]+", i = "[A-Z $%*+\\-./:]+";
+  let l = "(?:[u3000-u303F]|[u3040-u309F]|[u30A0-u30FF]|[uFF00-uFFEF]|[u4E00-u9FAF]|[u2605-u2606]|[u2190-u2195]|u203B|[u2010u2015u2018u2019u2025u2026u201Cu201Du2225u2260]|[u0391-u0451]|[u00A7u00A8u00B1u00B4u00D7u00F7])+";
+  l = l.replace(/u/g, "\\u");
+  const r = "(?:(?![A-Z0-9 $%*+\\-./:]|" + l + `)(?:.|[\r
 ]))+`;
-  N.KANJI = new RegExp(a, "g"), N.BYTE_KANJI = new RegExp("[^A-Z0-9 $%*+\\-./:]+", "g"), N.BYTE = new RegExp(r, "g"), N.NUMERIC = new RegExp(e, "g"), N.ALPHANUMERIC = new RegExp(o, "g");
-  const n = new RegExp("^" + a + "$"), t = new RegExp("^" + e + "$"), l = new RegExp("^[A-Z0-9 $%*+\\-./:]+$");
-  return N.testKanji = function(c) {
-    return n.test(c);
-  }, N.testNumeric = function(c) {
-    return t.test(c);
-  }, N.testAlphanumeric = function(c) {
-    return l.test(c);
+  N.KANJI = new RegExp(l, "g"), N.BYTE_KANJI = new RegExp("[^A-Z0-9 $%*+\\-./:]+", "g"), N.BYTE = new RegExp(r, "g"), N.NUMERIC = new RegExp(e, "g"), N.ALPHANUMERIC = new RegExp(i, "g");
+  const n = new RegExp("^" + l + "$"), t = new RegExp("^" + e + "$"), a = new RegExp("^[A-Z0-9 $%*+\\-./:]+$");
+  return N.testKanji = function(d) {
+    return n.test(d);
+  }, N.testNumeric = function(d) {
+    return t.test(d);
+  }, N.testAlphanumeric = function(d) {
+    return a.test(d);
   }, N;
 }
-var lt;
+var ft;
 function J() {
-  return lt || (lt = 1, (function(e) {
-    const o = Nt(), a = zt();
+  return ft || (ft = 1, (function(e) {
+    const i = Ut(), l = Wt();
     e.NUMERIC = {
       id: "Numeric",
       bit: 1,
@@ -773,13 +773,13 @@ function J() {
       ccBits: [8, 10, 12]
     }, e.MIXED = {
       bit: -1
-    }, e.getCharCountIndicator = function(t, l) {
+    }, e.getCharCountIndicator = function(t, a) {
       if (!t.ccBits) throw new Error("Invalid mode: " + t);
-      if (!o.isValid(l))
-        throw new Error("Invalid version: " + l);
-      return l >= 1 && l < 10 ? t.ccBits[0] : l < 27 ? t.ccBits[1] : t.ccBits[2];
+      if (!i.isValid(a))
+        throw new Error("Invalid version: " + a);
+      return a >= 1 && a < 10 ? t.ccBits[0] : a < 27 ? t.ccBits[1] : t.ccBits[2];
     }, e.getBestModeForData = function(t) {
-      return a.testNumeric(t) ? e.NUMERIC : a.testAlphanumeric(t) ? e.ALPHANUMERIC : a.testKanji(t) ? e.KANJI : e.BYTE;
+      return l.testNumeric(t) ? e.NUMERIC : l.testAlphanumeric(t) ? e.ALPHANUMERIC : l.testKanji(t) ? e.KANJI : e.BYTE;
     }, e.toString = function(t) {
       if (t && t.id) return t.id;
       throw new Error("Invalid mode");
@@ -802,123 +802,123 @@ function J() {
           throw new Error("Unknown mode: " + n);
       }
     }
-    e.from = function(t, l) {
+    e.from = function(t, a) {
       if (e.isValid(t))
         return t;
       try {
         return r(t);
       } catch {
-        return l;
+        return a;
       }
     };
-  })(ve)), ve;
+  })(Ee)), Ee;
 }
-var dt;
-function cn() {
-  return dt || (dt = 1, (function(e) {
-    const o = K(), a = Lt(), r = je(), n = J(), t = Nt(), l = 7973, s = o.getBCHDigit(l);
-    function c(p, S, y) {
-      for (let I = 1; I <= 40; I++)
-        if (S <= e.getCapacity(I, y, p))
-          return I;
+var gt;
+function bn() {
+  return gt || (gt = 1, (function(e) {
+    const i = Y(), l = qt(), r = Ke(), n = J(), t = Ut(), a = 7973, c = i.getBCHDigit(a);
+    function d(y, S, u) {
+      for (let k = 1; k <= 40; k++)
+        if (S <= e.getCapacity(k, u, y))
+          return k;
     }
-    function f(p, S) {
-      return n.getCharCountIndicator(p, S) + 4;
+    function f(y, S) {
+      return n.getCharCountIndicator(y, S) + 4;
     }
-    function h(p, S) {
-      let y = 0;
-      return p.forEach(function(I) {
-        const _ = f(I.mode, S);
-        y += _ + I.getBitsLength();
-      }), y;
+    function p(y, S) {
+      let u = 0;
+      return y.forEach(function(k) {
+        const L = f(k.mode, S);
+        u += L + k.getBitsLength();
+      }), u;
     }
-    function g(p, S) {
-      for (let y = 1; y <= 40; y++)
-        if (h(p, y) <= e.getCapacity(y, S, n.MIXED))
-          return y;
+    function h(y, S) {
+      for (let u = 1; u <= 40; u++)
+        if (p(y, u) <= e.getCapacity(u, S, n.MIXED))
+          return u;
     }
-    e.from = function(S, y) {
-      return t.isValid(S) ? parseInt(S, 10) : y;
-    }, e.getCapacity = function(S, y, I) {
+    e.from = function(S, u) {
+      return t.isValid(S) ? parseInt(S, 10) : u;
+    }, e.getCapacity = function(S, u, k) {
       if (!t.isValid(S))
         throw new Error("Invalid QR Code version");
-      typeof I > "u" && (I = n.BYTE);
-      const _ = o.getSymbolTotalCodewords(S), u = a.getTotalCodewordsCount(S, y), v = (_ - u) * 8;
-      if (I === n.MIXED) return v;
-      const R = v - f(I, S);
-      switch (I) {
+      typeof k > "u" && (k = n.BYTE);
+      const L = i.getSymbolTotalCodewords(S), g = l.getTotalCodewordsCount(S, u), C = (L - g) * 8;
+      if (k === n.MIXED) return C;
+      const I = C - f(k, S);
+      switch (k) {
         case n.NUMERIC:
-          return Math.floor(R / 10 * 3);
+          return Math.floor(I / 10 * 3);
         case n.ALPHANUMERIC:
-          return Math.floor(R / 11 * 2);
+          return Math.floor(I / 11 * 2);
         case n.KANJI:
-          return Math.floor(R / 13);
+          return Math.floor(I / 13);
         case n.BYTE:
         default:
-          return Math.floor(R / 8);
+          return Math.floor(I / 8);
       }
-    }, e.getBestVersionForData = function(S, y) {
-      let I;
-      const _ = r.from(y, r.M);
+    }, e.getBestVersionForData = function(S, u) {
+      let k;
+      const L = r.from(u, r.M);
       if (Array.isArray(S)) {
         if (S.length > 1)
-          return g(S, _);
+          return h(S, L);
         if (S.length === 0)
           return 1;
-        I = S[0];
+        k = S[0];
       } else
-        I = S;
-      return c(I.mode, I.getLength(), _);
+        k = S;
+      return d(k.mode, k.getLength(), L);
     }, e.getEncodedBits = function(S) {
       if (!t.isValid(S) || S < 7)
         throw new Error("Invalid QR Code version");
-      let y = S << 12;
-      for (; o.getBCHDigit(y) - s >= 0; )
-        y ^= l << o.getBCHDigit(y) - s;
-      return S << 12 | y;
+      let u = S << 12;
+      for (; i.getBCHDigit(u) - c >= 0; )
+        u ^= a << i.getBCHDigit(u) - c;
+      return S << 12 | u;
     };
-  })(Ce)), Ce;
+  })(Te)), Te;
 }
-var Ee = {}, ct;
-function un() {
-  if (ct) return Ee;
-  ct = 1;
-  const e = K(), o = 1335, a = 21522, r = e.getBCHDigit(o);
-  return Ee.getEncodedBits = function(t, l) {
-    const s = t.bit << 3 | l;
-    let c = s << 10;
-    for (; e.getBCHDigit(c) - r >= 0; )
-      c ^= o << e.getBCHDigit(c) - r;
-    return (s << 10 | c) ^ a;
-  }, Ee;
+var Re = {}, ht;
+function Sn() {
+  if (ht) return Re;
+  ht = 1;
+  const e = Y(), i = 1335, l = 21522, r = e.getBCHDigit(i);
+  return Re.getEncodedBits = function(t, a) {
+    const c = t.bit << 3 | a;
+    let d = c << 10;
+    for (; e.getBCHDigit(d) - r >= 0; )
+      d ^= i << e.getBCHDigit(d) - r;
+    return (c << 10 | d) ^ l;
+  }, Re;
 }
-var Te = {}, ke, ut;
-function fn() {
-  if (ut) return ke;
-  ut = 1;
+var Me = {}, Ie, pt;
+function xn() {
+  if (pt) return Ie;
+  pt = 1;
   const e = J();
-  function o(a) {
-    this.mode = e.NUMERIC, this.data = a.toString();
+  function i(l) {
+    this.mode = e.NUMERIC, this.data = l.toString();
   }
-  return o.getBitsLength = function(r) {
+  return i.getBitsLength = function(r) {
     return 10 * Math.floor(r / 3) + (r % 3 ? r % 3 * 3 + 1 : 0);
-  }, o.prototype.getLength = function() {
+  }, i.prototype.getLength = function() {
     return this.data.length;
-  }, o.prototype.getBitsLength = function() {
-    return o.getBitsLength(this.data.length);
-  }, o.prototype.write = function(r) {
-    let n, t, l;
+  }, i.prototype.getBitsLength = function() {
+    return i.getBitsLength(this.data.length);
+  }, i.prototype.write = function(r) {
+    let n, t, a;
     for (n = 0; n + 3 <= this.data.length; n += 3)
-      t = this.data.substr(n, 3), l = parseInt(t, 10), r.put(l, 10);
-    const s = this.data.length - n;
-    s > 0 && (t = this.data.substr(n), l = parseInt(t, 10), r.put(l, s * 3 + 1));
-  }, ke = o, ke;
+      t = this.data.substr(n, 3), a = parseInt(t, 10), r.put(a, 10);
+    const c = this.data.length - n;
+    c > 0 && (t = this.data.substr(n), a = parseInt(t, 10), r.put(a, c * 3 + 1));
+  }, Ie = i, Ie;
 }
-var Me, ft;
-function gn() {
-  if (ft) return Me;
-  ft = 1;
-  const e = J(), o = [
+var Ae, yt;
+function wn() {
+  if (yt) return Ae;
+  yt = 1;
+  const e = J(), i = [
     "0",
     "1",
     "2",
@@ -965,61 +965,61 @@ function gn() {
     "/",
     ":"
   ];
-  function a(r) {
+  function l(r) {
     this.mode = e.ALPHANUMERIC, this.data = r;
   }
-  return a.getBitsLength = function(n) {
+  return l.getBitsLength = function(n) {
     return 11 * Math.floor(n / 2) + 6 * (n % 2);
-  }, a.prototype.getLength = function() {
+  }, l.prototype.getLength = function() {
     return this.data.length;
-  }, a.prototype.getBitsLength = function() {
-    return a.getBitsLength(this.data.length);
-  }, a.prototype.write = function(n) {
+  }, l.prototype.getBitsLength = function() {
+    return l.getBitsLength(this.data.length);
+  }, l.prototype.write = function(n) {
     let t;
     for (t = 0; t + 2 <= this.data.length; t += 2) {
-      let l = o.indexOf(this.data[t]) * 45;
-      l += o.indexOf(this.data[t + 1]), n.put(l, 11);
+      let a = i.indexOf(this.data[t]) * 45;
+      a += i.indexOf(this.data[t + 1]), n.put(a, 11);
     }
-    this.data.length % 2 && n.put(o.indexOf(this.data[t]), 6);
-  }, Me = a, Me;
+    this.data.length % 2 && n.put(i.indexOf(this.data[t]), 6);
+  }, Ae = l, Ae;
 }
-var Ie, gt;
-function hn() {
-  if (gt) return Ie;
-  gt = 1;
+var _e, mt;
+function vn() {
+  if (mt) return _e;
+  mt = 1;
   const e = J();
-  function o(a) {
-    this.mode = e.BYTE, typeof a == "string" ? this.data = new TextEncoder().encode(a) : this.data = new Uint8Array(a);
+  function i(l) {
+    this.mode = e.BYTE, typeof l == "string" ? this.data = new TextEncoder().encode(l) : this.data = new Uint8Array(l);
   }
-  return o.getBitsLength = function(r) {
+  return i.getBitsLength = function(r) {
     return r * 8;
-  }, o.prototype.getLength = function() {
+  }, i.prototype.getLength = function() {
     return this.data.length;
-  }, o.prototype.getBitsLength = function() {
-    return o.getBitsLength(this.data.length);
-  }, o.prototype.write = function(a) {
+  }, i.prototype.getBitsLength = function() {
+    return i.getBitsLength(this.data.length);
+  }, i.prototype.write = function(l) {
     for (let r = 0, n = this.data.length; r < n; r++)
-      a.put(this.data[r], 8);
-  }, Ie = o, Ie;
+      l.put(this.data[r], 8);
+  }, _e = i, _e;
 }
-var Re, ht;
-function pn() {
-  if (ht) return Re;
-  ht = 1;
-  const e = J(), o = K();
-  function a(r) {
+var Pe, bt;
+function Cn() {
+  if (bt) return Pe;
+  bt = 1;
+  const e = J(), i = Y();
+  function l(r) {
     this.mode = e.KANJI, this.data = r;
   }
-  return a.getBitsLength = function(n) {
+  return l.getBitsLength = function(n) {
     return n * 13;
-  }, a.prototype.getLength = function() {
+  }, l.prototype.getLength = function() {
     return this.data.length;
-  }, a.prototype.getBitsLength = function() {
-    return a.getBitsLength(this.data.length);
-  }, a.prototype.write = function(r) {
+  }, l.prototype.getBitsLength = function() {
+    return l.getBitsLength(this.data.length);
+  }, l.prototype.write = function(r) {
     let n;
     for (n = 0; n < this.data.length; n++) {
-      let t = o.toSJIS(this.data[n]);
+      let t = i.toSJIS(this.data[n]);
       if (t >= 33088 && t <= 40956)
         t -= 33088;
       else if (t >= 57408 && t <= 60351)
@@ -1031,36 +1031,36 @@ Make sure your charset is UTF-8`
         );
       t = (t >>> 8 & 255) * 192 + (t & 255), r.put(t, 13);
     }
-  }, Re = a, Re;
+  }, Pe = l, Pe;
 }
-var Ae = { exports: {} }, pt;
-function yn() {
-  return pt || (pt = 1, (function(e) {
-    var o = {
-      single_source_shortest_paths: function(a, r, n) {
-        var t = {}, l = {};
-        l[r] = 0;
-        var s = o.PriorityQueue.make();
-        s.push(r, 0);
-        for (var c, f, h, g, p, S, y, I, _; !s.empty(); ) {
-          c = s.pop(), f = c.value, g = c.cost, p = a[f] || {};
-          for (h in p)
-            p.hasOwnProperty(h) && (S = p[h], y = g + S, I = l[h], _ = typeof l[h] > "u", (_ || I > y) && (l[h] = y, s.push(h, y), t[h] = f));
+var Le = { exports: {} }, St;
+function kn() {
+  return St || (St = 1, (function(e) {
+    var i = {
+      single_source_shortest_paths: function(l, r, n) {
+        var t = {}, a = {};
+        a[r] = 0;
+        var c = i.PriorityQueue.make();
+        c.push(r, 0);
+        for (var d, f, p, h, y, S, u, k, L; !c.empty(); ) {
+          d = c.pop(), f = d.value, h = d.cost, y = l[f] || {};
+          for (p in y)
+            y.hasOwnProperty(p) && (S = y[p], u = h + S, k = a[p], L = typeof a[p] > "u", (L || k > u) && (a[p] = u, c.push(p, u), t[p] = f));
         }
-        if (typeof n < "u" && typeof l[n] > "u") {
-          var u = ["Could not find a path from ", r, " to ", n, "."].join("");
-          throw new Error(u);
+        if (typeof n < "u" && typeof a[n] > "u") {
+          var g = ["Could not find a path from ", r, " to ", n, "."].join("");
+          throw new Error(g);
         }
         return t;
       },
-      extract_shortest_path_from_predecessor_list: function(a, r) {
+      extract_shortest_path_from_predecessor_list: function(l, r) {
         for (var n = [], t = r; t; )
-          n.push(t), a[t], t = a[t];
+          n.push(t), l[t], t = l[t];
         return n.reverse(), n;
       },
-      find_path: function(a, r, n) {
-        var t = o.single_source_shortest_paths(a, r, n);
-        return o.extract_shortest_path_from_predecessor_list(
+      find_path: function(l, r, n) {
+        var t = i.single_source_shortest_paths(l, r, n);
+        return i.extract_shortest_path_from_predecessor_list(
           t,
           n
         );
@@ -1069,22 +1069,22 @@ function yn() {
        * A very naive priority queue implementation.
        */
       PriorityQueue: {
-        make: function(a) {
-          var r = o.PriorityQueue, n = {}, t;
-          a = a || {};
+        make: function(l) {
+          var r = i.PriorityQueue, n = {}, t;
+          l = l || {};
           for (t in r)
             r.hasOwnProperty(t) && (n[t] = r[t]);
-          return n.queue = [], n.sorter = a.sorter || r.default_sorter, n;
+          return n.queue = [], n.sorter = l.sorter || r.default_sorter, n;
         },
-        default_sorter: function(a, r) {
-          return a.cost - r.cost;
+        default_sorter: function(l, r) {
+          return l.cost - r.cost;
         },
         /**
          * Add a new item to the queue and ensure the highest priority element
          * is at the front of the queue.
          */
-        push: function(a, r) {
-          var n = { value: a, cost: r };
+        push: function(l, r) {
+          var n = { value: l, cost: r };
           this.queue.push(n), this.queue.sort(this.sorter);
         },
         /**
@@ -1098,289 +1098,289 @@ function yn() {
         }
       }
     };
-    e.exports = o;
-  })(Ae)), Ae.exports;
+    e.exports = i;
+  })(Le)), Le.exports;
 }
-var yt;
-function mn() {
-  return yt || (yt = 1, (function(e) {
-    const o = J(), a = fn(), r = gn(), n = hn(), t = pn(), l = zt(), s = K(), c = yn();
-    function f(u) {
-      return unescape(encodeURIComponent(u)).length;
+var xt;
+function Tn() {
+  return xt || (xt = 1, (function(e) {
+    const i = J(), l = xn(), r = wn(), n = vn(), t = Cn(), a = Wt(), c = Y(), d = kn();
+    function f(g) {
+      return unescape(encodeURIComponent(g)).length;
     }
-    function h(u, v, R) {
+    function p(g, C, I) {
       const m = [];
-      let C;
-      for (; (C = u.exec(R)) !== null; )
+      let v;
+      for (; (v = g.exec(I)) !== null; )
         m.push({
-          data: C[0],
-          index: C.index,
-          mode: v,
-          length: C[0].length
+          data: v[0],
+          index: v.index,
+          mode: C,
+          length: v[0].length
         });
       return m;
     }
-    function g(u) {
-      const v = h(l.NUMERIC, o.NUMERIC, u), R = h(l.ALPHANUMERIC, o.ALPHANUMERIC, u);
-      let m, C;
-      return s.isKanjiModeEnabled() ? (m = h(l.BYTE, o.BYTE, u), C = h(l.KANJI, o.KANJI, u)) : (m = h(l.BYTE_KANJI, o.BYTE, u), C = []), v.concat(R, m, C).sort(function(B, k) {
-        return B.index - k.index;
-      }).map(function(B) {
+    function h(g) {
+      const C = p(a.NUMERIC, i.NUMERIC, g), I = p(a.ALPHANUMERIC, i.ALPHANUMERIC, g);
+      let m, v;
+      return c.isKanjiModeEnabled() ? (m = p(a.BYTE, i.BYTE, g), v = p(a.KANJI, i.KANJI, g)) : (m = p(a.BYTE_KANJI, i.BYTE, g), v = []), C.concat(I, m, v).sort(function(T, R) {
+        return T.index - R.index;
+      }).map(function(T) {
         return {
-          data: B.data,
-          mode: B.mode,
-          length: B.length
+          data: T.data,
+          mode: T.mode,
+          length: T.length
         };
       });
     }
-    function p(u, v) {
-      switch (v) {
-        case o.NUMERIC:
-          return a.getBitsLength(u);
-        case o.ALPHANUMERIC:
-          return r.getBitsLength(u);
-        case o.KANJI:
-          return t.getBitsLength(u);
-        case o.BYTE:
-          return n.getBitsLength(u);
+    function y(g, C) {
+      switch (C) {
+        case i.NUMERIC:
+          return l.getBitsLength(g);
+        case i.ALPHANUMERIC:
+          return r.getBitsLength(g);
+        case i.KANJI:
+          return t.getBitsLength(g);
+        case i.BYTE:
+          return n.getBitsLength(g);
       }
     }
-    function S(u) {
-      return u.reduce(function(v, R) {
-        const m = v.length - 1 >= 0 ? v[v.length - 1] : null;
-        return m && m.mode === R.mode ? (v[v.length - 1].data += R.data, v) : (v.push(R), v);
+    function S(g) {
+      return g.reduce(function(C, I) {
+        const m = C.length - 1 >= 0 ? C[C.length - 1] : null;
+        return m && m.mode === I.mode ? (C[C.length - 1].data += I.data, C) : (C.push(I), C);
       }, []);
     }
-    function y(u) {
-      const v = [];
-      for (let R = 0; R < u.length; R++) {
-        const m = u[R];
+    function u(g) {
+      const C = [];
+      for (let I = 0; I < g.length; I++) {
+        const m = g[I];
         switch (m.mode) {
-          case o.NUMERIC:
-            v.push([
+          case i.NUMERIC:
+            C.push([
               m,
-              { data: m.data, mode: o.ALPHANUMERIC, length: m.length },
-              { data: m.data, mode: o.BYTE, length: m.length }
+              { data: m.data, mode: i.ALPHANUMERIC, length: m.length },
+              { data: m.data, mode: i.BYTE, length: m.length }
             ]);
             break;
-          case o.ALPHANUMERIC:
-            v.push([
+          case i.ALPHANUMERIC:
+            C.push([
               m,
-              { data: m.data, mode: o.BYTE, length: m.length }
+              { data: m.data, mode: i.BYTE, length: m.length }
             ]);
             break;
-          case o.KANJI:
-            v.push([
+          case i.KANJI:
+            C.push([
               m,
-              { data: m.data, mode: o.BYTE, length: f(m.data) }
+              { data: m.data, mode: i.BYTE, length: f(m.data) }
             ]);
             break;
-          case o.BYTE:
-            v.push([
-              { data: m.data, mode: o.BYTE, length: f(m.data) }
+          case i.BYTE:
+            C.push([
+              { data: m.data, mode: i.BYTE, length: f(m.data) }
             ]);
         }
       }
-      return v;
+      return C;
     }
-    function I(u, v) {
-      const R = {}, m = { start: {} };
-      let C = ["start"];
-      for (let x = 0; x < u.length; x++) {
-        const B = u[x], k = [];
-        for (let w = 0; w < B.length; w++) {
-          const A = B[w], E = "" + x + w;
-          k.push(E), R[E] = { node: A, lastCount: 0 }, m[E] = {};
-          for (let M = 0; M < C.length; M++) {
-            const T = C[M];
-            R[T] && R[T].node.mode === A.mode ? (m[T][E] = p(R[T].lastCount + A.length, A.mode) - p(R[T].lastCount, A.mode), R[T].lastCount += A.length) : (R[T] && (R[T].lastCount = A.length), m[T][E] = p(A.length, A.mode) + 4 + o.getCharCountIndicator(A.mode, v));
+    function k(g, C) {
+      const I = {}, m = { start: {} };
+      let v = ["start"];
+      for (let x = 0; x < g.length; x++) {
+        const T = g[x], R = [];
+        for (let w = 0; w < T.length; w++) {
+          const A = T[w], E = "" + x + w;
+          R.push(E), I[E] = { node: A, lastCount: 0 }, m[E] = {};
+          for (let M = 0; M < v.length; M++) {
+            const B = v[M];
+            I[B] && I[B].node.mode === A.mode ? (m[B][E] = y(I[B].lastCount + A.length, A.mode) - y(I[B].lastCount, A.mode), I[B].lastCount += A.length) : (I[B] && (I[B].lastCount = A.length), m[B][E] = y(A.length, A.mode) + 4 + i.getCharCountIndicator(A.mode, C));
           }
         }
-        C = k;
+        v = R;
       }
-      for (let x = 0; x < C.length; x++)
-        m[C[x]].end = 0;
-      return { map: m, table: R };
+      for (let x = 0; x < v.length; x++)
+        m[v[x]].end = 0;
+      return { map: m, table: I };
     }
-    function _(u, v) {
-      let R;
-      const m = o.getBestModeForData(u);
-      if (R = o.from(v, m), R !== o.BYTE && R.bit < m.bit)
-        throw new Error('"' + u + '" cannot be encoded with mode ' + o.toString(R) + `.
- Suggested mode is: ` + o.toString(m));
-      switch (R === o.KANJI && !s.isKanjiModeEnabled() && (R = o.BYTE), R) {
-        case o.NUMERIC:
-          return new a(u);
-        case o.ALPHANUMERIC:
-          return new r(u);
-        case o.KANJI:
-          return new t(u);
-        case o.BYTE:
-          return new n(u);
+    function L(g, C) {
+      let I;
+      const m = i.getBestModeForData(g);
+      if (I = i.from(C, m), I !== i.BYTE && I.bit < m.bit)
+        throw new Error('"' + g + '" cannot be encoded with mode ' + i.toString(I) + `.
+ Suggested mode is: ` + i.toString(m));
+      switch (I === i.KANJI && !c.isKanjiModeEnabled() && (I = i.BYTE), I) {
+        case i.NUMERIC:
+          return new l(g);
+        case i.ALPHANUMERIC:
+          return new r(g);
+        case i.KANJI:
+          return new t(g);
+        case i.BYTE:
+          return new n(g);
       }
     }
-    e.fromArray = function(v) {
-      return v.reduce(function(R, m) {
-        return typeof m == "string" ? R.push(_(m, null)) : m.data && R.push(_(m.data, m.mode)), R;
+    e.fromArray = function(C) {
+      return C.reduce(function(I, m) {
+        return typeof m == "string" ? I.push(L(m, null)) : m.data && I.push(L(m.data, m.mode)), I;
       }, []);
-    }, e.fromString = function(v, R) {
-      const m = g(v, s.isKanjiModeEnabled()), C = y(m), x = I(C, R), B = c.find_path(x.map, "start", "end"), k = [];
-      for (let w = 1; w < B.length - 1; w++)
-        k.push(x.table[B[w]].node);
-      return e.fromArray(S(k));
-    }, e.rawSplit = function(v) {
+    }, e.fromString = function(C, I) {
+      const m = h(C, c.isKanjiModeEnabled()), v = u(m), x = k(v, I), T = d.find_path(x.map, "start", "end"), R = [];
+      for (let w = 1; w < T.length - 1; w++)
+        R.push(x.table[T[w]].node);
+      return e.fromArray(S(R));
+    }, e.rawSplit = function(C) {
       return e.fromArray(
-        g(v, s.isKanjiModeEnabled())
+        h(C, c.isKanjiModeEnabled())
       );
     };
-  })(Te)), Te;
+  })(Me)), Me;
 }
-var mt;
-function bn() {
-  if (mt) return ge;
-  mt = 1;
-  const e = K(), o = je(), a = tn(), r = nn(), n = rn(), t = on(), l = an(), s = Lt(), c = dn(), f = cn(), h = un(), g = J(), p = mn();
-  function S(x, B) {
-    const k = x.size, w = t.getPositions(B);
+var wt;
+function En() {
+  if (wt) return ye;
+  wt = 1;
+  const e = Y(), i = Ke(), l = dn(), r = un(), n = fn(), t = gn(), a = hn(), c = qt(), d = mn(), f = bn(), p = Sn(), h = J(), y = Tn();
+  function S(x, T) {
+    const R = x.size, w = t.getPositions(T);
     for (let A = 0; A < w.length; A++) {
       const E = w[A][0], M = w[A][1];
-      for (let T = -1; T <= 7; T++)
-        if (!(E + T <= -1 || k <= E + T))
-          for (let P = -1; P <= 7; P++)
-            M + P <= -1 || k <= M + P || (T >= 0 && T <= 6 && (P === 0 || P === 6) || P >= 0 && P <= 6 && (T === 0 || T === 6) || T >= 2 && T <= 4 && P >= 2 && P <= 4 ? x.set(E + T, M + P, !0, !0) : x.set(E + T, M + P, !1, !0));
+      for (let B = -1; B <= 7; B++)
+        if (!(E + B <= -1 || R <= E + B))
+          for (let _ = -1; _ <= 7; _++)
+            M + _ <= -1 || R <= M + _ || (B >= 0 && B <= 6 && (_ === 0 || _ === 6) || _ >= 0 && _ <= 6 && (B === 0 || B === 6) || B >= 2 && B <= 4 && _ >= 2 && _ <= 4 ? x.set(E + B, M + _, !0, !0) : x.set(E + B, M + _, !1, !0));
     }
   }
-  function y(x) {
-    const B = x.size;
-    for (let k = 8; k < B - 8; k++) {
-      const w = k % 2 === 0;
-      x.set(k, 6, w, !0), x.set(6, k, w, !0);
+  function u(x) {
+    const T = x.size;
+    for (let R = 8; R < T - 8; R++) {
+      const w = R % 2 === 0;
+      x.set(R, 6, w, !0), x.set(6, R, w, !0);
     }
   }
-  function I(x, B) {
-    const k = n.getPositions(B);
-    for (let w = 0; w < k.length; w++) {
-      const A = k[w][0], E = k[w][1];
+  function k(x, T) {
+    const R = n.getPositions(T);
+    for (let w = 0; w < R.length; w++) {
+      const A = R[w][0], E = R[w][1];
       for (let M = -2; M <= 2; M++)
-        for (let T = -2; T <= 2; T++)
-          M === -2 || M === 2 || T === -2 || T === 2 || M === 0 && T === 0 ? x.set(A + M, E + T, !0, !0) : x.set(A + M, E + T, !1, !0);
+        for (let B = -2; B <= 2; B++)
+          M === -2 || M === 2 || B === -2 || B === 2 || M === 0 && B === 0 ? x.set(A + M, E + B, !0, !0) : x.set(A + M, E + B, !1, !0);
     }
   }
-  function _(x, B) {
-    const k = x.size, w = f.getEncodedBits(B);
+  function L(x, T) {
+    const R = x.size, w = f.getEncodedBits(T);
     let A, E, M;
-    for (let T = 0; T < 18; T++)
-      A = Math.floor(T / 3), E = T % 3 + k - 8 - 3, M = (w >> T & 1) === 1, x.set(A, E, M, !0), x.set(E, A, M, !0);
+    for (let B = 0; B < 18; B++)
+      A = Math.floor(B / 3), E = B % 3 + R - 8 - 3, M = (w >> B & 1) === 1, x.set(A, E, M, !0), x.set(E, A, M, !0);
   }
-  function u(x, B, k) {
-    const w = x.size, A = h.getEncodedBits(B, k);
+  function g(x, T, R) {
+    const w = x.size, A = p.getEncodedBits(T, R);
     let E, M;
     for (E = 0; E < 15; E++)
       M = (A >> E & 1) === 1, E < 6 ? x.set(E, 8, M, !0) : E < 8 ? x.set(E + 1, 8, M, !0) : x.set(w - 15 + E, 8, M, !0), E < 8 ? x.set(8, w - E - 1, M, !0) : E < 9 ? x.set(8, 15 - E - 1 + 1, M, !0) : x.set(8, 15 - E - 1, M, !0);
     x.set(w - 8, 8, 1, !0);
   }
-  function v(x, B) {
-    const k = x.size;
-    let w = -1, A = k - 1, E = 7, M = 0;
-    for (let T = k - 1; T > 0; T -= 2)
-      for (T === 6 && T--; ; ) {
-        for (let P = 0; P < 2; P++)
-          if (!x.isReserved(A, T - P)) {
-            let U = !1;
-            M < B.length && (U = (B[M] >>> E & 1) === 1), x.set(A, T - P, U), E--, E === -1 && (M++, E = 7);
+  function C(x, T) {
+    const R = x.size;
+    let w = -1, A = R - 1, E = 7, M = 0;
+    for (let B = R - 1; B > 0; B -= 2)
+      for (B === 6 && B--; ; ) {
+        for (let _ = 0; _ < 2; _++)
+          if (!x.isReserved(A, B - _)) {
+            let W = !1;
+            M < T.length && (W = (T[M] >>> E & 1) === 1), x.set(A, B - _, W), E--, E === -1 && (M++, E = 7);
           }
-        if (A += w, A < 0 || k <= A) {
+        if (A += w, A < 0 || R <= A) {
           A -= w, w = -w;
           break;
         }
       }
   }
-  function R(x, B, k) {
-    const w = new a();
-    k.forEach(function(P) {
-      w.put(P.mode.bit, 4), w.put(P.getLength(), g.getCharCountIndicator(P.mode, x)), P.write(w);
+  function I(x, T, R) {
+    const w = new l();
+    R.forEach(function(_) {
+      w.put(_.mode.bit, 4), w.put(_.getLength(), h.getCharCountIndicator(_.mode, x)), _.write(w);
     });
-    const A = e.getSymbolTotalCodewords(x), E = s.getTotalCodewordsCount(x, B), M = (A - E) * 8;
+    const A = e.getSymbolTotalCodewords(x), E = c.getTotalCodewordsCount(x, T), M = (A - E) * 8;
     for (w.getLengthInBits() + 4 <= M && w.put(0, 4); w.getLengthInBits() % 8 !== 0; )
       w.putBit(0);
-    const T = (M - w.getLengthInBits()) / 8;
-    for (let P = 0; P < T; P++)
-      w.put(P % 2 ? 17 : 236, 8);
-    return m(w, x, B);
+    const B = (M - w.getLengthInBits()) / 8;
+    for (let _ = 0; _ < B; _++)
+      w.put(_ % 2 ? 17 : 236, 8);
+    return m(w, x, T);
   }
-  function m(x, B, k) {
-    const w = e.getSymbolTotalCodewords(B), A = s.getTotalCodewordsCount(B, k), E = w - A, M = s.getBlocksCount(B, k), T = w % M, P = M - T, U = Math.floor(w / M), ee = Math.floor(E / M), Gt = ee + 1, Ve = U - ee, Yt = new c(Ve);
-    let le = 0;
-    const oe = new Array(M), Ke = new Array(M);
-    let de = 0;
-    const $t = new Uint8Array(x.buffer);
-    for (let G = 0; G < M; G++) {
-      const ue = G < P ? ee : Gt;
-      oe[G] = $t.slice(le, le + ue), Ke[G] = Yt.encode(oe[G]), le += ue, de = Math.max(de, ue);
+  function m(x, T, R) {
+    const w = e.getSymbolTotalCodewords(T), A = c.getTotalCodewordsCount(T, R), E = w - A, M = c.getBlocksCount(T, R), B = w % M, _ = M - B, W = Math.floor(w / M), te = Math.floor(E / M), rn = te + 1, Ye = W - te, on = new d(Ye);
+    let ue = 0;
+    const re = new Array(M), Je = new Array(M);
+    let fe = 0;
+    const ln = new Uint8Array(x.buffer);
+    for (let Q = 0; Q < M; Q++) {
+      const he = Q < _ ? te : rn;
+      re[Q] = ln.slice(ue, ue + he), Je[Q] = on.encode(re[Q]), ue += he, fe = Math.max(fe, he);
     }
-    const ce = new Uint8Array(w);
-    let Je = 0, z, D;
-    for (z = 0; z < de; z++)
-      for (D = 0; D < M; D++)
-        z < oe[D].length && (ce[Je++] = oe[D][z]);
-    for (z = 0; z < Ve; z++)
-      for (D = 0; D < M; D++)
-        ce[Je++] = Ke[D][z];
-    return ce;
+    const ge = new Uint8Array(w);
+    let Qe = 0, D, F;
+    for (D = 0; D < fe; D++)
+      for (F = 0; F < M; F++)
+        D < re[F].length && (ge[Qe++] = re[F][D]);
+    for (D = 0; D < Ye; D++)
+      for (F = 0; F < M; F++)
+        ge[Qe++] = Je[F][D];
+    return ge;
   }
-  function C(x, B, k, w) {
+  function v(x, T, R, w) {
     let A;
     if (Array.isArray(x))
-      A = p.fromArray(x);
+      A = y.fromArray(x);
     else if (typeof x == "string") {
-      let U = B;
-      if (!U) {
-        const ee = p.rawSplit(x);
-        U = f.getBestVersionForData(ee, k);
+      let W = T;
+      if (!W) {
+        const te = y.rawSplit(x);
+        W = f.getBestVersionForData(te, R);
       }
-      A = p.fromString(x, U || 40);
+      A = y.fromString(x, W || 40);
     } else
       throw new Error("Invalid data");
-    const E = f.getBestVersionForData(A, k);
+    const E = f.getBestVersionForData(A, R);
     if (!E)
       throw new Error("The amount of data is too big to be stored in a QR Code");
-    if (!B)
-      B = E;
-    else if (B < E)
+    if (!T)
+      T = E;
+    else if (T < E)
       throw new Error(
         `
 The chosen QR Code version cannot contain this amount of data.
 Minimum version required to store current data is: ` + E + `.
 `
       );
-    const M = R(B, k, A), T = e.getSymbolSize(B), P = new r(T);
-    return S(P, B), y(P), I(P, B), u(P, k, 0), B >= 7 && _(P, B), v(P, M), isNaN(w) && (w = l.getBestMask(
-      P,
-      u.bind(null, P, k)
-    )), l.applyMask(w, P), u(P, k, w), {
-      modules: P,
-      version: B,
-      errorCorrectionLevel: k,
+    const M = I(T, R, A), B = e.getSymbolSize(T), _ = new r(B);
+    return S(_, T), u(_), k(_, T), g(_, R, 0), T >= 7 && L(_, T), C(_, M), isNaN(w) && (w = a.getBestMask(
+      _,
+      g.bind(null, _, R)
+    )), a.applyMask(w, _), g(_, R, w), {
+      modules: _,
+      version: T,
+      errorCorrectionLevel: R,
       maskPattern: w,
       segments: A
     };
   }
-  return ge.create = function(B, k) {
-    if (typeof B > "u" || B === "")
+  return ye.create = function(T, R) {
+    if (typeof T > "u" || T === "")
       throw new Error("No input text");
-    let w = o.M, A, E;
-    return typeof k < "u" && (w = o.from(k.errorCorrectionLevel, o.M), A = f.from(k.version), E = l.from(k.maskPattern), k.toSJISFunc && e.setToSJISFunction(k.toSJISFunc)), C(B, A, w, E);
-  }, ge;
+    let w = i.M, A, E;
+    return typeof R < "u" && (w = i.from(R.errorCorrectionLevel, i.M), A = f.from(R.version), E = a.from(R.maskPattern), R.toSJISFunc && e.setToSJISFunction(R.toSJISFunc)), v(T, A, w, E);
+  }, ye;
 }
-var Pe = {}, _e = {}, bt;
-function Dt() {
-  return bt || (bt = 1, (function(e) {
-    function o(a) {
-      if (typeof a == "number" && (a = a.toString()), typeof a != "string")
+var ze = {}, Ne = {}, vt;
+function Ot() {
+  return vt || (vt = 1, (function(e) {
+    function i(l) {
+      if (typeof l == "number" && (l = l.toString()), typeof l != "string")
         throw new Error("Color should be defined as hex string");
-      let r = a.slice().replace("#", "").split("");
+      let r = l.slice().replace("#", "").split("");
       if (r.length < 3 || r.length === 5 || r.length > 8)
-        throw new Error("Invalid hex color: " + a);
+        throw new Error("Invalid hex color: " + l);
       (r.length === 3 || r.length === 4) && (r = Array.prototype.concat.apply([], r.map(function(t) {
         return [t, t];
       }))), r.length === 6 && r.push("F", "F");
@@ -1395,14 +1395,14 @@ function Dt() {
     }
     e.getOptions = function(r) {
       r || (r = {}), r.color || (r.color = {});
-      const n = typeof r.margin > "u" || r.margin === null || r.margin < 0 ? 4 : r.margin, t = r.width && r.width >= 21 ? r.width : void 0, l = r.scale || 4;
+      const n = typeof r.margin > "u" || r.margin === null || r.margin < 0 ? 4 : r.margin, t = r.width && r.width >= 21 ? r.width : void 0, a = r.scale || 4;
       return {
         width: t,
-        scale: t ? 4 : l,
+        scale: t ? 4 : a,
         margin: n,
         color: {
-          dark: o(r.color.dark || "#000000ff"),
-          light: o(r.color.light || "#ffffffff")
+          dark: i(r.color.dark || "#000000ff"),
+          light: i(r.color.light || "#ffffffff")
         },
         type: r.type,
         rendererOpts: r.rendererOpts || {}
@@ -1413,25 +1413,25 @@ function Dt() {
       const t = e.getScale(r, n);
       return Math.floor((r + n.margin * 2) * t);
     }, e.qrToImageData = function(r, n, t) {
-      const l = n.modules.size, s = n.modules.data, c = e.getScale(l, t), f = Math.floor((l + t.margin * 2) * c), h = t.margin * c, g = [t.color.light, t.color.dark];
-      for (let p = 0; p < f; p++)
+      const a = n.modules.size, c = n.modules.data, d = e.getScale(a, t), f = Math.floor((a + t.margin * 2) * d), p = t.margin * d, h = [t.color.light, t.color.dark];
+      for (let y = 0; y < f; y++)
         for (let S = 0; S < f; S++) {
-          let y = (p * f + S) * 4, I = t.color.light;
-          if (p >= h && S >= h && p < f - h && S < f - h) {
-            const _ = Math.floor((p - h) / c), u = Math.floor((S - h) / c);
-            I = g[s[_ * l + u] ? 1 : 0];
+          let u = (y * f + S) * 4, k = t.color.light;
+          if (y >= p && S >= p && y < f - p && S < f - p) {
+            const L = Math.floor((y - p) / d), g = Math.floor((S - p) / d);
+            k = h[c[L * a + g] ? 1 : 0];
           }
-          r[y++] = I.r, r[y++] = I.g, r[y++] = I.b, r[y] = I.a;
+          r[u++] = k.r, r[u++] = k.g, r[u++] = k.b, r[u] = k.a;
         }
     };
-  })(_e)), _e;
+  })(Ne)), Ne;
 }
-var St;
-function Sn() {
-  return St || (St = 1, (function(e) {
-    const o = Dt();
-    function a(n, t, l) {
-      n.clearRect(0, 0, t.width, t.height), t.style || (t.style = {}), t.height = l, t.width = l, t.style.height = l + "px", t.style.width = l + "px";
+var Ct;
+function Bn() {
+  return Ct || (Ct = 1, (function(e) {
+    const i = Ot();
+    function l(n, t, a) {
+      n.clearRect(0, 0, t.width, t.height), t.style || (t.style = {}), t.height = a, t.width = a, t.style.height = a + "px", t.style.width = a + "px";
     }
     function r() {
       try {
@@ -1440,401 +1440,416 @@ function Sn() {
         throw new Error("You need to specify a canvas element");
       }
     }
-    e.render = function(t, l, s) {
-      let c = s, f = l;
-      typeof c > "u" && (!l || !l.getContext) && (c = l, l = void 0), l || (f = r()), c = o.getOptions(c);
-      const h = o.getImageWidth(t.modules.size, c), g = f.getContext("2d"), p = g.createImageData(h, h);
-      return o.qrToImageData(p.data, t, c), a(g, f, h), g.putImageData(p, 0, 0), f;
-    }, e.renderToDataURL = function(t, l, s) {
-      let c = s;
-      typeof c > "u" && (!l || !l.getContext) && (c = l, l = void 0), c || (c = {});
-      const f = e.render(t, l, c), h = c.type || "image/png", g = c.rendererOpts || {};
-      return f.toDataURL(h, g.quality);
+    e.render = function(t, a, c) {
+      let d = c, f = a;
+      typeof d > "u" && (!a || !a.getContext) && (d = a, a = void 0), a || (f = r()), d = i.getOptions(d);
+      const p = i.getImageWidth(t.modules.size, d), h = f.getContext("2d"), y = h.createImageData(p, p);
+      return i.qrToImageData(y.data, t, d), l(h, f, p), h.putImageData(y, 0, 0), f;
+    }, e.renderToDataURL = function(t, a, c) {
+      let d = c;
+      typeof d > "u" && (!a || !a.getContext) && (d = a, a = void 0), d || (d = {});
+      const f = e.render(t, a, d), p = d.type || "image/png", h = d.rendererOpts || {};
+      return f.toDataURL(p, h.quality);
     };
-  })(Pe)), Pe;
+  })(ze)), ze;
 }
-var Le = {}, xt;
-function xn() {
-  if (xt) return Le;
-  xt = 1;
-  const e = Dt();
-  function o(n, t) {
-    const l = n.a / 255, s = t + '="' + n.hex + '"';
-    return l < 1 ? s + " " + t + '-opacity="' + l.toFixed(2).slice(1) + '"' : s;
+var $e = {}, kt;
+function Rn() {
+  if (kt) return $e;
+  kt = 1;
+  const e = Ot();
+  function i(n, t) {
+    const a = n.a / 255, c = t + '="' + n.hex + '"';
+    return a < 1 ? c + " " + t + '-opacity="' + a.toFixed(2).slice(1) + '"' : c;
   }
-  function a(n, t, l) {
-    let s = n + t;
-    return typeof l < "u" && (s += " " + l), s;
+  function l(n, t, a) {
+    let c = n + t;
+    return typeof a < "u" && (c += " " + a), c;
   }
-  function r(n, t, l) {
-    let s = "", c = 0, f = !1, h = 0;
-    for (let g = 0; g < n.length; g++) {
-      const p = Math.floor(g % t), S = Math.floor(g / t);
-      !p && !f && (f = !0), n[g] ? (h++, g > 0 && p > 0 && n[g - 1] || (s += f ? a("M", p + l, 0.5 + S + l) : a("m", c, 0), c = 0, f = !1), p + 1 < t && n[g + 1] || (s += a("h", h), h = 0)) : c++;
+  function r(n, t, a) {
+    let c = "", d = 0, f = !1, p = 0;
+    for (let h = 0; h < n.length; h++) {
+      const y = Math.floor(h % t), S = Math.floor(h / t);
+      !y && !f && (f = !0), n[h] ? (p++, h > 0 && y > 0 && n[h - 1] || (c += f ? l("M", y + a, 0.5 + S + a) : l("m", d, 0), d = 0, f = !1), y + 1 < t && n[h + 1] || (c += l("h", p), p = 0)) : d++;
     }
-    return s;
+    return c;
   }
-  return Le.render = function(t, l, s) {
-    const c = e.getOptions(l), f = t.modules.size, h = t.modules.data, g = f + c.margin * 2, p = c.color.light.a ? "<path " + o(c.color.light, "fill") + ' d="M0 0h' + g + "v" + g + 'H0z"/>' : "", S = "<path " + o(c.color.dark, "stroke") + ' d="' + r(h, f, c.margin) + '"/>', y = 'viewBox="0 0 ' + g + " " + g + '"', _ = '<svg xmlns="http://www.w3.org/2000/svg" ' + (c.width ? 'width="' + c.width + '" height="' + c.width + '" ' : "") + y + ' shape-rendering="crispEdges">' + p + S + `</svg>
+  return $e.render = function(t, a, c) {
+    const d = e.getOptions(a), f = t.modules.size, p = t.modules.data, h = f + d.margin * 2, y = d.color.light.a ? "<path " + i(d.color.light, "fill") + ' d="M0 0h' + h + "v" + h + 'H0z"/>' : "", S = "<path " + i(d.color.dark, "stroke") + ' d="' + r(p, f, d.margin) + '"/>', u = 'viewBox="0 0 ' + h + " " + h + '"', L = '<svg xmlns="http://www.w3.org/2000/svg" ' + (d.width ? 'width="' + d.width + '" height="' + d.width + '" ' : "") + u + ' shape-rendering="crispEdges">' + y + S + `</svg>
 `;
-    return typeof s == "function" && s(null, _), _;
-  }, Le;
+    return typeof c == "function" && c(null, L), L;
+  }, $e;
 }
-var wt;
-function wn() {
-  if (wt) return Y;
-  wt = 1;
-  const e = en(), o = bn(), a = Sn(), r = xn();
-  function n(t, l, s, c, f) {
-    const h = [].slice.call(arguments, 1), g = h.length, p = typeof h[g - 1] == "function";
-    if (!p && !e())
+var Tt;
+function Mn() {
+  if (Tt) return X;
+  Tt = 1;
+  const e = cn(), i = En(), l = Bn(), r = Rn();
+  function n(t, a, c, d, f) {
+    const p = [].slice.call(arguments, 1), h = p.length, y = typeof p[h - 1] == "function";
+    if (!y && !e())
       throw new Error("Callback required as last argument");
-    if (p) {
-      if (g < 2)
+    if (y) {
+      if (h < 2)
         throw new Error("Too few arguments provided");
-      g === 2 ? (f = s, s = l, l = c = void 0) : g === 3 && (l.getContext && typeof f > "u" ? (f = c, c = void 0) : (f = c, c = s, s = l, l = void 0));
+      h === 2 ? (f = c, c = a, a = d = void 0) : h === 3 && (a.getContext && typeof f > "u" ? (f = d, d = void 0) : (f = d, d = c, c = a, a = void 0));
     } else {
-      if (g < 1)
+      if (h < 1)
         throw new Error("Too few arguments provided");
-      return g === 1 ? (s = l, l = c = void 0) : g === 2 && !l.getContext && (c = s, s = l, l = void 0), new Promise(function(S, y) {
+      return h === 1 ? (c = a, a = d = void 0) : h === 2 && !a.getContext && (d = c, c = a, a = void 0), new Promise(function(S, u) {
         try {
-          const I = o.create(s, c);
-          S(t(I, l, c));
-        } catch (I) {
-          y(I);
+          const k = i.create(c, d);
+          S(t(k, a, d));
+        } catch (k) {
+          u(k);
         }
       });
     }
     try {
-      const S = o.create(s, c);
-      f(null, t(S, l, c));
+      const S = i.create(c, d);
+      f(null, t(S, a, d));
     } catch (S) {
       f(S);
     }
   }
-  return Y.create = o.create, Y.toCanvas = n.bind(null, a.render), Y.toDataURL = n.bind(null, a.renderToDataURL), Y.toString = n.bind(null, function(t, l, s) {
-    return r.render(t, s);
-  }), Y;
+  return X.create = i.create, X.toCanvas = n.bind(null, l.render), X.toDataURL = n.bind(null, l.renderToDataURL), X.toString = n.bind(null, function(t, a, c) {
+    return r.render(t, c);
+  }), X;
 }
-var Cn = wn();
-const vn = /* @__PURE__ */ Zt(Cn), Ft = {
-  primary: "#3ecfb4",
-  primaryHover: "#62dcc4",
-  primarySubtle: "rgba(62, 207, 180, 0.08)",
-  primaryGlow: "rgba(62, 207, 180, 0.14)",
-  success: "#34d399",
-  successSubtle: "rgba(52, 211, 153, 0.12)",
-  warning: "#fbbf24",
-  warningSubtle: "rgba(251, 191, 36, 0.12)",
-  danger: "#fb7185",
-  dangerSubtle: "rgba(251, 113, 133, 0.12)",
-  info: "#7dd3fc",
-  infoSubtle: "rgba(125, 211, 252, 0.12)",
-  // 背景：深蓝黑，带微蓝底调增加深度感
-  bgDeep: "#06080e",
-  bg: "#0c0f17",
-  bgElevated: "#131722",
-  bgSurface: "#1a1e2a",
-  bgHover: "#232836",
-  bgActive: "#2c3240",
-  // 边框：蓝调透明
-  border: "rgba(148, 175, 225, 0.08)",
-  borderSubtle: "rgba(148, 175, 225, 0.05)",
-  borderFocus: "rgba(62, 207, 180, 0.40)",
-  // 文字：微蓝白，长时间阅读更舒适
-  text: "#e2e6f0",
-  textSecondary: "#8d93a8",
-  textTertiary: "#565d73",
-  textInverse: "#06080e",
-  glass: "rgba(148, 175, 225, 0.03)",
-  glassBorder: "rgba(148, 175, 225, 0.06)",
-  shadowSm: "0 2px 8px rgba(0, 0, 0, 0.36)",
-  shadowMd: "0 8px 24px rgba(0, 0, 0, 0.48)",
-  shadowLg: "0 20px 48px rgba(0, 0, 0, 0.60)",
-  shadowGlow: "0 0 0 1px rgba(62, 207, 180, 0.08), 0 8px 32px rgba(62, 207, 180, 0.10)"
-}, Bn = {
-  radiusSm: "12px",
-  radiusMd: "18px",
-  radiusLg: "22px",
-  radiusXl: "28px",
-  fontSans: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-  fontMono: "'JetBrains Mono', 'SF Mono', 'Cascadia Code', monospace",
+var In = Mn();
+const Ht = /* @__PURE__ */ sn(In), jt = {
+  primary: "oklch(0.9848 0 0)",
+  primaryForeground: "oklch(15% 0.0000 0.00)",
+  primaryHover: "color-mix(in oklab, oklch(0.9848 0 0) 88%, oklch(15% 0.0000 0.00) 12%)",
+  primarySubtle: "color-mix(in oklab, oklch(0.9848 0 0) 14%, transparent)",
+  primaryGlow: "color-mix(in oklab, oklch(0.9848 0 0) 22%, transparent)",
+  success: "oklch(73.29% 0.1935 120.35)",
+  successForeground: "oklch(21.03% 0.0059 120.35)",
+  successSubtle: "color-mix(in oklab, oklch(73.29% 0.1935 120.35) 15%, transparent)",
+  warning: "oklch(0.8803 0.1348 86.06)",
+  warningForeground: "oklch(15% 0.0404 86.06)",
+  warningSubtle: "color-mix(in oklab, oklch(0.8803 0.1348 86.06) 15%, transparent)",
+  danger: "oklch(0.7044 0.1872 23.19)",
+  dangerForeground: "oklch(15% 0.0500 23.19)",
+  dangerSubtle: "color-mix(in oklab, oklch(0.7044 0.1872 23.19) 15%, transparent)",
+  info: "oklch(0.9848 0 0)",
+  infoSubtle: "color-mix(in oklab, oklch(0.9848 0 0) 14%, transparent)",
+  defaultBg: "oklch(27.40% 0.0000 0.00)",
+  defaultForeground: "oklch(99.11% 0 0)",
+  fieldBackground: "oklch(21.03% 0.0000 0.00)",
+  fieldForeground: "oklch(99.11% 0.0000 0.00)",
+  fieldPlaceholder: "oklch(70.50% 0.0000 0.00)",
+  muted: "oklch(70.50% 0.0000 0.00)",
+  overlay: "oklch(21.03% 0.0000 0.00)",
+  overlayForeground: "oklch(99.11% 0.0000 0.00)",
+  scrollbar: "oklch(70.50% 0.0000 0.00)",
+  segment: "oklch(39.64% 0.0000 0.00)",
+  segmentForeground: "oklch(99.11% 0.0000 0.00)",
+  surface: "oklch(21.03% 0.0000 0.00)",
+  surfaceForeground: "oklch(99.11% 0.0000 0.00)",
+  surfaceSecondary: "oklch(25.70% 0.0000 0.00)",
+  surfaceSecondaryForeground: "oklch(99.11% 0.0000 0.00)",
+  surfaceTertiary: "oklch(27.21% 0.0000 0.00)",
+  surfaceTertiaryForeground: "oklch(99.11% 0.0000 0.00)",
+  bgDeep: "oklch(12.00% 0.0000 0.00)",
+  bg: "oklch(12.00% 0.0000 0.00)",
+  bgElevated: "oklch(21.03% 0.0000 0.00)",
+  bgSurface: "oklch(21.03% 0.0000 0.00)",
+  bgHover: "oklch(25.70% 0.0000 0.00)",
+  bgActive: "oklch(27.21% 0.0000 0.00)",
+  border: "oklch(28.00% 0.0000 0.00)",
+  borderSubtle: "oklch(25.00% 0.0000 0.00)",
+  borderFocus: "oklch(0.9848 0 0)",
+  text: "oklch(99.11% 0.0000 0.00)",
+  textSecondary: "oklch(70.50% 0.0000 0.00)",
+  textTertiary: "oklch(70.50% 0.0000 0.00)",
+  textInverse: "oklch(15% 0.0000 0.00)",
+  glass: "color-mix(in oklab, oklch(21.03% 0.0000 0.00) 92%, transparent)",
+  glassBorder: "oklch(28.00% 0.0000 0.00)",
+  shadowSm: "0 0 0 0 transparent inset",
+  shadowMd: "0 0 0 0 transparent inset",
+  shadowLg: "0 0 1px 0 #ffffff4d inset",
+  shadowGlow: "0 0 0 1px color-mix(in oklab, oklch(0.9848 0 0) 18%, transparent)"
+}, An = {
+  radiusSm: "0.25rem",
+  radiusMd: "0.25rem",
+  radiusLg: "0.25rem",
+  radiusXl: "0.25rem",
+  fieldRadius: "0.5rem",
+  fontSans: "'Geist Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+  fontMono: "'Geist Mono', 'SF Mono', 'Cascadia Code', monospace",
   transition: "200ms cubic-bezier(0.4, 0, 0.2, 1)",
   transitionSlow: "400ms cubic-bezier(0.4, 0, 0.2, 1)"
-}, En = {
+}, _n = {
   sidebarWidth: "260px",
   sidebarCollapsed: "72px",
   topbarHeight: "64px"
-}, He = {
-  ...Bn,
-  ...En
-}, qt = {
-  dark: Ft
+}, Ge = {
+  ...An,
+  ..._n
+}, Vt = {
+  dark: jt
 };
-function Tn(e) {
-  return e.replace(/[A-Z]/g, (o) => "-" + o.toLowerCase());
+function Pn(e) {
+  return e.replace(/[A-Z]/g, (i) => "-" + i.toLowerCase());
 }
-function Ut(e = "ag") {
+function Kt(e = "ag") {
   return e.trim() || "ag";
 }
-function se(e, o) {
-  return `--${e}-${Tn(o)}`;
+function de(e, i) {
+  return `--${e}-${Pn(i)}`;
 }
-Object.keys(qt.dark).reduce((e, o) => (e[o] = se("ag", o), e), {});
-Object.keys(He).reduce((e, o) => (e[o] = se("ag", o), e), {});
-function Wt(e = {}) {
-  const o = Ut(e.prefix);
-  return Object.keys(qt.dark).reduce((a, r) => (a[r] = se(o, r), a), {});
+Object.keys(Vt.dark).reduce((e, i) => (e[i] = de("ag", i), e), {});
+Object.keys(Ge).reduce((e, i) => (e[i] = de("ag", i), e), {});
+function Gt(e = {}) {
+  const i = Kt(e.prefix);
+  return Object.keys(Vt.dark).reduce((l, r) => (l[r] = de(i, r), l), {});
 }
-function Ot(e = {}) {
-  const o = Ut(e.prefix);
-  return Object.keys(He).reduce((a, r) => (a[r] = se(o, r), a), {});
+function Yt(e = {}) {
+  const i = Kt(e.prefix);
+  return Object.keys(Ge).reduce((l, r) => (l[r] = de(i, r), l), {});
 }
-const kn = Wt(), Mn = Ot();
-function i(e, o = {}) {
-  const a = o.prefix ? Wt(o) : kn, r = o.prefix ? Ot(o) : Mn;
-  if (e in a) {
+const Ln = Gt(), zn = Yt();
+function o(e, i = {}) {
+  const l = i.prefix ? Gt(i) : Ln, r = i.prefix ? Yt(i) : zn;
+  if (e in l) {
     const t = e;
-    return `var(${a[t]}, ${Ft[t]})`;
+    return `var(${l[t]}, ${jt[t]})`;
   }
   const n = e;
-  return `var(${r[n]}, ${He[n]})`;
+  return `var(${r[n]}, ${Ge[n]})`;
 }
-const In = "/api/v1/ext-user/payment-epay", Rn = "/api/v1/ext/payment-epay";
-async function F(e, o, a, r) {
+const Nn = "/api/v1/ext-user/payment-epay", $n = "/api/v1/ext/payment-epay";
+async function q(e, i, l, r) {
   const n = {};
-  a !== void 0 && (n["Content-Type"] = "application/json");
+  l !== void 0 && (n["Content-Type"] = "application/json");
   const t = localStorage.getItem("token");
   t && (n.Authorization = `Bearer ${t}`);
-  const l = r != null && r.admin ? Rn : In, s = await fetch(l + o, {
+  const a = r != null && r.admin ? $n : Nn, c = await fetch(a + i, {
     method: e,
     headers: n,
-    body: a ? JSON.stringify(a) : void 0
-  }), c = await s.text();
+    body: l ? JSON.stringify(l) : void 0
+  }), d = await c.text();
   let f = null;
   try {
-    f = c ? JSON.parse(c) : null;
+    f = d ? JSON.parse(d) : null;
   } catch {
   }
-  if (!s.ok) {
-    const g = f, p = (g == null ? void 0 : g.message) || (f == null ? void 0 : f.error) || `HTTP ${s.status}`;
-    throw s.status === 401 && (localStorage.removeItem("token"), window.location.href = "/login"), new Error(p);
+  if (!c.ok) {
+    const h = f, y = (h == null ? void 0 : h.message) || (f == null ? void 0 : f.error) || `HTTP ${c.status}`;
+    throw c.status === 401 && (localStorage.removeItem("token"), window.location.href = "/login"), new Error(y);
   }
-  const h = f;
-  if (h && typeof h == "object" && "code" in h && "data" in h) {
-    if (h.code !== 0)
-      throw new Error(h.message || "请求失败");
-    return h.data;
+  const p = f;
+  if (p && typeof p == "object" && "code" in p && "data" in p) {
+    if (p.code !== 0)
+      throw new Error(p.message || "请求失败");
+    return p.data;
   }
   return f;
 }
-const q = {
+const $ = {
   // ============ User ============
   /** 列出当前可用的支付方式（PayMethod，不是 Provider） */
-  methods: () => F(
+  methods: () => q(
     "GET",
     "/user/methods"
   ),
-  createOrder: (e) => F("POST", "/user/orders", e),
-  listOrders: (e = 50) => F("GET", `/user/orders?limit=${e}`),
-  getOrder: (e) => F("GET", `/user/orders/${encodeURIComponent(e)}`),
+  createOrder: (e) => q("POST", "/user/orders", e),
+  listOrders: (e = 50) => q("GET", `/user/orders?limit=${e}`),
+  getOrder: (e) => q("GET", `/user/orders/${encodeURIComponent(e)}`),
   // ============ Admin: 订单 ============
   // email 为子串过滤（后端走 ILIKE %x%）；status='all' 或留空表示不过滤
   adminListOrders: (e = {}) => {
-    const o = new URLSearchParams();
-    return o.set("page", String(e.page ?? 1)), o.set("page_size", String(e.pageSize ?? 20)), e.email && e.email.trim() && o.set("email", e.email.trim()), e.status && e.status !== "all" && o.set("status", e.status), F("GET", `/admin/orders?${o.toString()}`, void 0, { admin: !0 });
+    const i = new URLSearchParams();
+    return i.set("page", String(e.page ?? 1)), i.set("page_size", String(e.pageSize ?? 20)), e.email && e.email.trim() && i.set("email", e.email.trim()), e.status && e.status !== "all" && i.set("status", e.status), q("GET", `/admin/orders?${i.toString()}`, void 0, { admin: !0 });
   },
   // ============ Admin: Provider 配置 ============
-  adminListProviders: () => F("GET", "/admin/providers", void 0, { admin: !0 }),
-  adminUpsertProvider: (e) => F("POST", "/admin/providers", e, { admin: !0 }),
-  adminDeleteProvider: (e) => F("DELETE", `/admin/providers/${encodeURIComponent(e)}`, void 0, { admin: !0 }),
-  adminReloadProviders: () => F("POST", "/admin/providers/reload", {}, { admin: !0 })
+  adminListProviders: () => q("GET", "/admin/providers", void 0, { admin: !0 }),
+  adminUpsertProvider: (e) => q("POST", "/admin/providers", e, { admin: !0 }),
+  adminDeleteProvider: (e) => q("DELETE", `/admin/providers/${encodeURIComponent(e)}`, void 0, { admin: !0 }),
+  adminReloadProviders: () => q("POST", "/admin/providers/reload", {}, { admin: !0 })
 };
-function An() {
-  const [e, o] = L([]), [a, r] = L(!0), [n, t] = L(null), [l, s] = L(30), [c, f] = L(""), [h, g] = L(!1), [p, S] = L(null), [y, I] = L(null), [_, u] = L(null), v = _t(null);
-  H(() => {
-    q.methods().then((C) => {
+function U(e, i = {}) {
+  const l = e.toFixed(2);
+  return i.compact ? `$${e}` : `$${l}`;
+}
+function Dn() {
+  const [e, i] = P([]), [l, r] = P(!0), [n, t] = P(null), [a, c] = P(30), [d, f] = P(""), [p, h] = P(!1), [y, S] = P(null), [u, k] = P(null), [L, g] = P(null), C = ce(null);
+  z(() => {
+    $.methods().then((v) => {
       var x;
-      o(C.methods || []), (x = C.methods) != null && x.length && f(C.methods[0].key);
-    }).catch((C) => t(String((C == null ? void 0 : C.message) || C))).finally(() => r(!1));
-  }, []), H(() => {
-    if (!y || y.status !== "pending") {
-      v.current && (window.clearInterval(v.current), v.current = null);
+      i(v.methods || []), (x = v.methods) != null && x.length && f(v.methods[0].key);
+    }).catch((v) => t(String((v == null ? void 0 : v.message) || v))).finally(() => r(!1));
+  }, []), z(() => {
+    if (!u || u.status !== "pending") {
+      C.current && (window.clearInterval(C.current), C.current = null);
       return;
     }
-    const C = async () => {
+    const v = async () => {
       try {
-        const x = await q.getOrder(y.out_trade_no);
-        I(x);
+        const x = await $.getOrder(u.out_trade_no);
+        k(x);
       } catch {
       }
     };
-    return v.current = window.setInterval(C, 3e3), () => {
-      v.current && (window.clearInterval(v.current), v.current = null);
+    return C.current = window.setInterval(v, 3e3), () => {
+      C.current && (window.clearInterval(C.current), C.current = null);
     };
-  }, [y == null ? void 0 : y.out_trade_no, y == null ? void 0 : y.status]), H(() => {
-    if (!y) {
-      u(null);
+  }, [u == null ? void 0 : u.out_trade_no, u == null ? void 0 : u.status]), z(() => {
+    if (!u) {
+      g(null);
       return;
     }
-    const C = y.qr_code_content || y.payment_url;
-    if (!C) {
-      u(null);
+    const v = u.qr_code_content || u.payment_url;
+    if (!v) {
+      g(null);
       return;
     }
     let x = !1;
-    return vn.toDataURL(C, { width: 240, margin: 2, errorCorrectionLevel: "M" }).then((B) => {
-      x || u(B);
+    return Ht.toDataURL(v, { width: 240, margin: 2, errorCorrectionLevel: "M" }).then((T) => {
+      x || g(T);
     }).catch(() => {
-      x || u(null);
+      x || g(null);
     }), () => {
       x = !0;
     };
-  }, [y == null ? void 0 : y.payment_url, y == null ? void 0 : y.qr_code_content]);
-  const R = async () => {
-    if (S(null), !c) {
+  }, [u == null ? void 0 : u.payment_url, u == null ? void 0 : u.qr_code_content]);
+  const I = async () => {
+    if (S(null), !d) {
       S("请选择支付方式");
       return;
     }
-    if (!l || l <= 0) {
+    if (!a || a <= 0) {
       S("请输入有效金额");
       return;
     }
-    g(!0);
+    h(!0);
     try {
-      const C = await q.createOrder({ amount: l, method: c, subject: "AirGate 余额充值" });
-      I(C);
-    } catch (C) {
-      S(String(C.message || C));
+      const v = await $.createOrder({ amount: a, method: d, subject: "AirGate 余额充值" });
+      k(v);
+    } catch (v) {
+      S(String(v.message || v));
     } finally {
-      g(!1);
+      h(!1);
     }
   }, m = () => {
-    I(null), S(null);
+    k(null), S(null);
   };
-  return a ? /* @__PURE__ */ d("div", { style: V, children: /* @__PURE__ */ d("div", { style: Ct, children: "加载中..." }) }) : n ? /* @__PURE__ */ d("div", { style: V, children: /* @__PURE__ */ b("div", { style: { ...Ct, color: i("danger") }, children: [
+  return l ? /* @__PURE__ */ s("div", { style: V, children: /* @__PURE__ */ s("div", { style: Et, children: "加载中..." }) }) : n ? /* @__PURE__ */ s("div", { style: V, children: /* @__PURE__ */ b("div", { style: { ...Et, color: o("danger") }, children: [
     "加载支付方式失败: ",
     n
-  ] }) }) : e.length === 0 ? /* @__PURE__ */ b("div", { style: V, children: [
-    /* @__PURE__ */ d("h2", { style: ne, children: "充值" }),
-    /* @__PURE__ */ d("div", { style: ae, children: /* @__PURE__ */ d("p", { style: { color: i("textSecondary"), margin: 0 }, children: "当前没有可用的支付方式，请联系管理员在「插件管理 → 支付服务商」中启用至少一个服务商。" }) })
-  ] }) : y ? y.status === "paid" ? /* @__PURE__ */ b("div", { style: V, children: [
-    /* @__PURE__ */ d("h2", { style: ne, children: "充值成功" }),
-    /* @__PURE__ */ b("div", { style: ae, children: [
-      /* @__PURE__ */ b("p", { style: { margin: 0, color: i("text") }, children: [
+  ] }) }) : e.length === 0 ? /* @__PURE__ */ s("div", { style: V, children: /* @__PURE__ */ s("div", { style: le, children: /* @__PURE__ */ s("p", { style: { color: o("textSecondary"), margin: 0, textAlign: "center" }, children: "充值功能暂未开放，请联系管理员。" }) }) }) : u ? u.status === "paid" ? /* @__PURE__ */ b("div", { style: V, children: [
+    /* @__PURE__ */ s("h2", { style: ie, children: "充值成功" }),
+    /* @__PURE__ */ b("div", { style: le, children: [
+      /* @__PURE__ */ b("p", { style: { margin: 0, color: o("text") }, children: [
         "订单 ",
-        /* @__PURE__ */ d("code", { style: ze, children: y.out_trade_no }),
+        /* @__PURE__ */ s("code", { style: Fe, children: u.out_trade_no }),
         " 已支付，金额",
         " ",
-        /* @__PURE__ */ b("strong", { style: { color: i("success") }, children: [
-          "¥",
-          y.amount.toFixed(2)
-        ] }),
+        /* @__PURE__ */ s("strong", { style: { color: o("success") }, children: U(u.amount) }),
         " 已入账。"
       ] }),
-      /* @__PURE__ */ d("button", { style: { ...Ne, marginTop: 20 }, onClick: m, children: "再次充值" })
+      /* @__PURE__ */ s("button", { style: { ...De, marginTop: 20 }, onClick: m, children: "再次充值" })
     ] })
-  ] }) : y.status === "pending" ? /* @__PURE__ */ b("div", { style: V, children: [
-    /* @__PURE__ */ d("h2", { style: ne, children: "扫码付款" }),
-    /* @__PURE__ */ b("div", { style: qn, children: [
-      _ ? /* @__PURE__ */ d("img", { src: _, alt: "付款二维码", style: Bt }) : /* @__PURE__ */ d("div", { style: { ...Bt, display: "flex", alignItems: "center", justifyContent: "center", color: i("textTertiary") }, children: "生成二维码中..." }),
-      /* @__PURE__ */ b("div", { style: Un, children: [
-        "¥ ",
-        y.amount.toFixed(2)
-      ] }),
-      /* @__PURE__ */ b("div", { style: { color: i("textSecondary"), fontSize: 13 }, children: [
+  ] }) : u.status === "pending" ? /* @__PURE__ */ b("div", { style: V, children: [
+    /* @__PURE__ */ s("h2", { style: ie, children: "扫码付款" }),
+    /* @__PURE__ */ b("div", { style: Kn, children: [
+      L ? /* @__PURE__ */ s("img", { src: L, alt: "付款二维码", style: Rt }) : /* @__PURE__ */ s("div", { style: { ...Rt, display: "flex", alignItems: "center", justifyContent: "center", color: o("textTertiary") }, children: "生成二维码中..." }),
+      /* @__PURE__ */ s("div", { style: Gn, children: U(u.amount) }),
+      /* @__PURE__ */ b("div", { style: { color: o("textSecondary"), fontSize: 13 }, children: [
         "请使用 ",
-        Pn(y.method),
+        Fn(u.method),
         " 扫码完成付款"
       ] }),
-      /* @__PURE__ */ b("div", { style: { marginTop: 8, color: i("textTertiary"), fontSize: 12 }, children: [
+      /* @__PURE__ */ b("div", { style: { marginTop: 8, color: o("textTertiary"), fontSize: 12 }, children: [
         "订单号：",
-        /* @__PURE__ */ d("code", { style: ze, children: y.out_trade_no })
+        /* @__PURE__ */ s("code", { style: Fe, children: u.out_trade_no })
       ] }),
-      /* @__PURE__ */ d("p", { style: { textAlign: "center", color: i("textTertiary"), fontSize: 13, marginTop: 20, marginBottom: 0 }, children: "支付完成后本页将自动跳转到结果页（每 3 秒检查一次）" }),
-      y.payment_url && /* @__PURE__ */ b("p", { style: { textAlign: "center", fontSize: 12, marginTop: 8, marginBottom: 0 }, children: [
+      /* @__PURE__ */ s("p", { style: { textAlign: "center", color: o("textTertiary"), fontSize: 13, marginTop: 20, marginBottom: 0 }, children: "支付完成后本页将自动跳转到结果页（每 3 秒检查一次）" }),
+      u.payment_url && /* @__PURE__ */ b("p", { style: { textAlign: "center", fontSize: 12, marginTop: 8, marginBottom: 0 }, children: [
         "扫码不便？",
         " ",
-        /* @__PURE__ */ d("a", { href: y.payment_url, target: "_blank", rel: "noreferrer", style: { color: i("primary"), textDecoration: "none" }, children: "点此在新窗口打开付款页 →" })
+        /* @__PURE__ */ s("a", { href: u.payment_url, target: "_blank", rel: "noreferrer", style: { color: o("primary"), textDecoration: "none" }, children: "点此在新窗口打开付款页 →" })
       ] }),
-      /* @__PURE__ */ d("button", { style: { ...Fn, marginTop: 20 }, onClick: m, children: "取消" })
+      /* @__PURE__ */ s("button", { style: { ...Vn, marginTop: 20 }, onClick: m, children: "取消" })
     ] })
   ] }) : /* @__PURE__ */ b("div", { style: V, children: [
-    /* @__PURE__ */ b("h2", { style: ne, children: [
+    /* @__PURE__ */ b("h2", { style: ie, children: [
       "订单已",
-      _n(y.status)
+      qn(u.status)
     ] }),
-    /* @__PURE__ */ b("div", { style: ae, children: [
-      /* @__PURE__ */ b("p", { style: { margin: 0, color: i("textSecondary") }, children: [
+    /* @__PURE__ */ b("div", { style: le, children: [
+      /* @__PURE__ */ b("p", { style: { margin: 0, color: o("textSecondary") }, children: [
         "订单号：",
-        /* @__PURE__ */ d("code", { style: ze, children: y.out_trade_no })
+        /* @__PURE__ */ s("code", { style: Fe, children: u.out_trade_no })
       ] }),
-      /* @__PURE__ */ d("button", { style: { ...Ne, marginTop: 20 }, onClick: m, children: "重新发起" })
+      /* @__PURE__ */ s("button", { style: { ...De, marginTop: 20 }, onClick: m, children: "重新发起" })
     ] })
   ] }) : /* @__PURE__ */ b("div", { style: V, children: [
-    /* @__PURE__ */ d("h2", { style: ne, children: "账户充值" }),
-    /* @__PURE__ */ b("div", { style: ae, children: [
+    /* @__PURE__ */ s("h2", { style: ie, children: "账户充值" }),
+    /* @__PURE__ */ b("div", { style: le, children: [
+      /* @__PURE__ */ b("p", { style: Wn, children: [
+        "充值比例：",
+        /* @__PURE__ */ s("strong", { style: { color: o("text") }, children: "1 CNY = $1" })
+      ] }),
       /* @__PURE__ */ b("section", { children: [
-        /* @__PURE__ */ d("h3", { style: vt, children: "选择金额" }),
-        /* @__PURE__ */ d("div", { style: { display: "flex", flexWrap: "wrap", gap: 10 }, children: [10, 30, 50, 100, 200, 500].map((C) => /* @__PURE__ */ b(
+        /* @__PURE__ */ s("h3", { style: Bt, children: "选择金额" }),
+        /* @__PURE__ */ s("div", { style: { display: "flex", flexWrap: "wrap", gap: 10 }, children: [10, 30, 50, 100, 200, 500].map((v) => /* @__PURE__ */ s(
           "button",
           {
             type: "button",
-            onClick: () => s(C),
-            style: l === C ? Nn : jt,
-            children: [
-              "¥",
-              C
-            ]
+            onClick: () => c(v),
+            style: a === v ? On : Jt,
+            children: U(v, { compact: !0 })
           },
-          C
+          v
         )) }),
-        /* @__PURE__ */ b("div", { style: { marginTop: 16, display: "flex", alignItems: "center", gap: 8, color: i("textSecondary"), fontSize: 13 }, children: [
-          /* @__PURE__ */ d("span", { children: "自定义金额" }),
-          /* @__PURE__ */ d(
+        /* @__PURE__ */ b("div", { style: { marginTop: 16, display: "flex", alignItems: "center", gap: 8, color: o("textSecondary"), fontSize: 13 }, children: [
+          /* @__PURE__ */ s("span", { children: "自定义金额" }),
+          /* @__PURE__ */ s(
             "input",
             {
               type: "number",
               min: 1,
               max: 1e4,
               step: 1,
-              value: l,
-              onChange: (C) => s(Number(C.target.value)),
-              style: Dn
+              value: a,
+              onChange: (v) => c(Number(v.target.value)),
+              style: jn
             }
           ),
-          /* @__PURE__ */ d("span", { children: "元" })
+          /* @__PURE__ */ s("span", { children: "$" })
         ] })
       ] }),
-      /* @__PURE__ */ b("section", { style: Ln, children: [
-        /* @__PURE__ */ d("h3", { style: vt, children: "选择支付方式" }),
-        /* @__PURE__ */ d("div", { style: { display: "flex", gap: 12, flexWrap: "wrap" }, children: e.map((C) => /* @__PURE__ */ d(
+      /* @__PURE__ */ b("section", { style: Un, children: [
+        /* @__PURE__ */ s("h3", { style: Bt, children: "选择支付方式" }),
+        /* @__PURE__ */ s("div", { style: { display: "flex", gap: 12, flexWrap: "wrap" }, children: e.map((v) => /* @__PURE__ */ s(
           "button",
           {
             type: "button",
-            onClick: () => f(C.key),
-            style: c === C.key ? zn : Ht,
-            title: C.description,
-            children: C.label
+            onClick: () => f(v.key),
+            style: d === v.key ? Hn : Qt,
+            title: v.description,
+            children: v.label
           },
-          C.key
+          v.key
         )) })
       ] }),
-      p && /* @__PURE__ */ d("p", { style: { color: i("danger"), marginTop: 16, fontSize: 13 }, children: p }),
-      /* @__PURE__ */ d(
+      y && /* @__PURE__ */ s("p", { style: { color: o("danger"), marginTop: 16, fontSize: 13 }, children: y }),
+      /* @__PURE__ */ s(
         "button",
         {
           type: "button",
-          onClick: R,
-          disabled: h,
-          style: { ...Ne, marginTop: 24, width: "100%", opacity: h ? 0.6 : 1 },
-          children: h ? "处理中..." : "立即支付"
+          onClick: I,
+          disabled: p,
+          style: { ...De, marginTop: 24, width: "100%", opacity: p ? 0.6 : 1 },
+          children: p ? "处理中..." : "立即支付"
         }
       )
     ] })
   ] });
 }
-function Pn(e) {
+function Fn(e) {
   switch (e) {
     case "alipay":
       return "支付宝";
@@ -1844,7 +1859,7 @@ function Pn(e) {
       return e;
   }
 }
-function _n(e) {
+function qn(e) {
   switch (e) {
     case "expired":
       return "过期";
@@ -1862,162 +1877,242 @@ const V = {
   maxWidth: 720,
   margin: "0 auto",
   padding: "24px 24px 48px",
-  color: i("text")
-}, ne = {
+  color: o("text")
+}, ie = {
   margin: "0 0 20px",
   fontSize: 22,
   fontWeight: 600,
-  color: i("text"),
+  color: o("text"),
   letterSpacing: "-0.01em"
-}, Ct = {
+}, Et = {
   padding: "40px 0",
   textAlign: "center",
-  color: i("textSecondary")
-}, ae = {
-  border: `1px solid ${i("glassBorder")}`,
-  borderRadius: i("radiusLg"),
-  background: i("bgSurface"),
+  color: o("textSecondary")
+}, le = {
+  border: `1px solid ${o("glassBorder")}`,
+  borderRadius: o("radiusLg"),
+  background: o("bgSurface"),
   padding: "24px"
-}, Ln = {
+}, Un = {
   marginTop: 28
-}, vt = {
+}, Wn = {
+  margin: "0 0 20px",
+  padding: "10px 12px",
+  border: `1px solid ${o("glassBorder")}`,
+  borderRadius: o("radiusMd"),
+  background: o("bgElevated"),
+  color: o("textSecondary"),
+  fontSize: 13,
+  lineHeight: 1.6
+}, Bt = {
   margin: "0 0 12px",
   fontSize: 13,
   fontWeight: 600,
-  color: i("textSecondary"),
+  color: o("textSecondary"),
   textTransform: "uppercase",
   letterSpacing: "0.04em"
-}, jt = {
+}, Jt = {
   minWidth: 88,
   padding: "12px 18px",
-  border: `1px solid ${i("glassBorder")}`,
-  borderRadius: i("radiusMd"),
-  background: i("bg"),
-  color: i("text"),
+  border: `1px solid ${o("glassBorder")}`,
+  borderRadius: o("radiusMd"),
+  background: o("bg"),
+  color: o("text"),
   cursor: "pointer",
   fontSize: 15,
   fontWeight: 500,
-  transition: i("transition")
-}, Nn = {
-  ...jt,
-  borderColor: i("primary"),
-  background: i("primarySubtle"),
-  color: i("primary"),
+  transition: o("transition")
+}, On = {
+  ...Jt,
+  borderColor: o("primary"),
+  background: o("primarySubtle"),
+  color: o("primary"),
   fontWeight: 600
-}, Ht = {
+}, Qt = {
   minWidth: 140,
   padding: "16px 24px",
-  border: `1px solid ${i("glassBorder")}`,
-  borderRadius: i("radiusMd"),
-  background: i("bg"),
-  color: i("text"),
+  border: `1px solid ${o("glassBorder")}`,
+  borderRadius: o("radiusMd"),
+  background: o("bgElevated"),
+  color: o("text"),
   cursor: "pointer",
   fontSize: 14,
   fontWeight: 500,
-  transition: i("transition")
-}, zn = {
-  ...Ht,
-  borderColor: i("primary"),
-  background: i("primarySubtle"),
-  color: i("primary"),
+  transition: o("transition")
+}, Hn = {
+  ...Qt,
+  borderColor: o("primary"),
+  background: o("primarySubtle"),
+  color: o("primary"),
   fontWeight: 600
-}, Dn = {
+}, jn = {
   padding: "8px 12px",
   width: 140,
-  border: `1px solid ${i("glassBorder")}`,
-  borderRadius: i("radiusMd"),
-  background: i("bg"),
-  color: i("text"),
+  border: `1px solid ${o("glassBorder")}`,
+  borderRadius: o("radiusMd"),
+  background: o("bgElevated"),
+  color: o("text"),
   fontSize: 14,
   outline: "none"
-}, Ne = {
+}, De = {
   padding: "12px 28px",
   border: "none",
-  borderRadius: i("radiusMd"),
-  background: i("primary"),
-  color: i("textInverse"),
+  borderRadius: o("radiusMd"),
+  background: o("primary"),
+  color: o("textInverse"),
   fontSize: 14,
   fontWeight: 600,
   cursor: "pointer",
-  transition: i("transition")
-}, Fn = {
+  transition: o("transition")
+}, Vn = {
   padding: "10px 24px",
-  border: `1px solid ${i("glassBorder")}`,
-  borderRadius: i("radiusMd"),
-  background: i("bg"),
-  color: i("text"),
+  border: `1px solid ${o("glassBorder")}`,
+  borderRadius: o("radiusMd"),
+  background: o("bgElevated"),
+  color: o("text"),
   fontSize: 13,
   fontWeight: 500,
   cursor: "pointer",
-  transition: i("transition")
-}, qn = {
+  transition: o("transition")
+}, Kn = {
   padding: "28px 24px",
-  border: `1px solid ${i("glassBorder")}`,
-  borderRadius: i("radiusLg"),
+  border: `1px solid ${o("glassBorder")}`,
+  borderRadius: o("radiusLg"),
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  background: i("bgSurface")
-}, Bt = {
+  background: o("bgSurface")
+}, Rt = {
   width: 240,
   height: 240,
-  background: "#fff",
+  background: o("bgElevated"),
   padding: 8,
-  borderRadius: i("radiusMd")
-}, Un = {
+  borderRadius: o("radiusMd")
+}, Gn = {
   marginTop: 20,
   fontSize: 32,
   fontWeight: 700,
-  color: i("text"),
-  fontFamily: i("fontMono"),
+  color: o("text"),
+  fontFamily: o("fontMono"),
   letterSpacing: "-0.02em"
-}, ze = {
-  fontFamily: i("fontMono"),
+}, Fe = {
+  fontFamily: o("fontMono"),
   fontSize: "0.9em",
   padding: "1px 6px",
   borderRadius: 4,
-  background: i("bg"),
-  color: i("textSecondary")
+  background: o("bg"),
+  color: o("textSecondary")
 };
-function Wn() {
-  const [e, o] = L([]), [a, r] = L(!0), [n, t] = L(null), l = () => {
-    r(!0), q.listOrders(100).then((s) => o(s.list || [])).catch((s) => t(String((s == null ? void 0 : s.message) || s))).finally(() => r(!1));
+function Yn() {
+  const [e, i] = P([]), [l, r] = P(!0), [n, t] = P(null), [a, c] = P(null), [d, f] = P(null), p = ce(null), h = () => {
+    r(!0), $.listOrders(100).then((u) => i(u.list || [])).catch((u) => t(String((u == null ? void 0 : u.message) || u))).finally(() => r(!1));
   };
-  return H(l, []), a ? /* @__PURE__ */ d("div", { style: De, children: /* @__PURE__ */ d("div", { style: Tt, children: "加载中..." }) }) : n ? /* @__PURE__ */ d("div", { style: De, children: /* @__PURE__ */ b("div", { style: { ...Tt, color: i("danger") }, children: [
+  z(h, []), z(() => {
+    if (!a) {
+      f(null);
+      return;
+    }
+    const u = a.qr_code_content || a.payment_url;
+    if (!u) {
+      f(null);
+      return;
+    }
+    let k = !1;
+    return Ht.toDataURL(u, { width: 240, margin: 2, errorCorrectionLevel: "M" }).then((L) => {
+      k || f(L);
+    }).catch(() => {
+      k || f(null);
+    }), () => {
+      k = !0;
+    };
+  }, [a == null ? void 0 : a.payment_url, a == null ? void 0 : a.qr_code_content]), z(() => {
+    if (!a || a.status !== "pending") {
+      p.current && (window.clearInterval(p.current), p.current = null);
+      return;
+    }
+    return p.current = window.setInterval(async () => {
+      try {
+        const u = await $.getOrder(a.out_trade_no);
+        c(u), u.status !== "pending" && h();
+      } catch {
+      }
+    }, 3e3), () => {
+      p.current && (window.clearInterval(p.current), p.current = null);
+    };
+  }, [a == null ? void 0 : a.out_trade_no, a == null ? void 0 : a.status]);
+  const y = (u) => {
+    c(u);
+  }, S = () => {
+    c(null), f(null);
+  };
+  return l ? /* @__PURE__ */ s("div", { style: qe, children: /* @__PURE__ */ s("div", { style: _t, children: "加载中..." }) }) : n ? /* @__PURE__ */ s("div", { style: qe, children: /* @__PURE__ */ b("div", { style: { ..._t, color: o("danger") }, children: [
     "加载失败: ",
     n
-  ] }) }) : /* @__PURE__ */ b("div", { style: De, children: [
-    /* @__PURE__ */ b("div", { style: Vn, children: [
-      /* @__PURE__ */ d("h2", { style: Kn, children: "充值记录" }),
-      /* @__PURE__ */ d("button", { onClick: l, style: Jn, children: "刷新" })
-    ] }),
-    /* @__PURE__ */ d("div", { style: Gn, children: e.length === 0 ? /* @__PURE__ */ d("p", { style: Yn, children: "暂无充值记录" }) : /* @__PURE__ */ d("div", { style: $n, children: /* @__PURE__ */ b("table", { style: Qn, children: [
-      /* @__PURE__ */ d("thead", { children: /* @__PURE__ */ b("tr", { children: [
-        /* @__PURE__ */ d("th", { style: $, children: "订单号" }),
-        /* @__PURE__ */ d("th", { style: $, children: "金额" }),
-        /* @__PURE__ */ d("th", { style: $, children: "支付方式" }),
-        /* @__PURE__ */ d("th", { style: $, children: "状态" }),
-        /* @__PURE__ */ d("th", { style: $, children: "创建时间" }),
-        /* @__PURE__ */ d("th", { style: $, children: "支付时间" })
+  ] }) }) : /* @__PURE__ */ b("div", { style: qe, children: [
+    a && /* @__PURE__ */ s("div", { style: tr, onClick: S, children: /* @__PURE__ */ s("div", { style: nr, onClick: (u) => u.stopPropagation(), children: a.status === "paid" ? /* @__PURE__ */ b(ae, { children: [
+      /* @__PURE__ */ s("h3", { style: { margin: "0 0 12px", color: o("success") }, children: "支付成功" }),
+      /* @__PURE__ */ b("p", { style: { margin: 0, color: o("text"), fontSize: 14 }, children: [
+        "订单 ",
+        /* @__PURE__ */ s("code", { style: Ue, children: a.out_trade_no }),
+        " 已支付",
+        " ",
+        /* @__PURE__ */ s("strong", { children: U(a.amount) })
+      ] }),
+      /* @__PURE__ */ s("button", { style: { ...Pt, marginTop: 16 }, onClick: S, children: "关闭" })
+    ] }) : a.status === "pending" ? /* @__PURE__ */ b(ae, { children: [
+      /* @__PURE__ */ s("h3", { style: { margin: "0 0 12px", color: o("text") }, children: "扫码付款" }),
+      d ? /* @__PURE__ */ s("img", { src: d, alt: "付款二维码", style: { width: 240, height: 240, borderRadius: 8 } }) : /* @__PURE__ */ s("div", { style: { width: 240, height: 240, display: "flex", alignItems: "center", justifyContent: "center", color: o("textTertiary"), border: `1px solid ${o("glassBorder")}`, borderRadius: 8 }, children: "生成二维码中..." }),
+      /* @__PURE__ */ s("div", { style: { marginTop: 12, fontWeight: 600, fontSize: 20, color: o("text") }, children: U(a.amount) }),
+      /* @__PURE__ */ b("div", { style: { color: o("textSecondary"), fontSize: 13, marginTop: 4 }, children: [
+        "请使用 ",
+        Mt(a.method),
+        " 扫码完成付款"
+      ] }),
+      /* @__PURE__ */ b("div", { style: { marginTop: 6, color: o("textTertiary"), fontSize: 12 }, children: [
+        "订单号：",
+        /* @__PURE__ */ s("code", { style: Ue, children: a.out_trade_no })
+      ] }),
+      /* @__PURE__ */ s("p", { style: { color: o("textTertiary"), fontSize: 12, marginTop: 12, marginBottom: 0 }, children: "支付完成后将自动刷新（每 3 秒检查一次）" }),
+      a.payment_url && /* @__PURE__ */ b("p", { style: { fontSize: 12, marginTop: 6, marginBottom: 0 }, children: [
+        "扫码不便？",
+        " ",
+        /* @__PURE__ */ s("a", { href: a.payment_url, target: "_blank", rel: "noreferrer", style: { color: o("primary"), textDecoration: "none" }, children: "点此在新窗口打开付款页 →" })
+      ] }),
+      /* @__PURE__ */ s("button", { style: { ...rr, marginTop: 16 }, onClick: S, children: "取消" })
+    ] }) : /* @__PURE__ */ b(ae, { children: [
+      /* @__PURE__ */ b("h3", { style: { margin: "0 0 12px", color: o("textSecondary") }, children: [
+        "订单已",
+        It(a.status)
+      ] }),
+      /* @__PURE__ */ s("p", { style: { margin: 0, color: o("textSecondary"), fontSize: 14 }, children: "该订单无法继续支付，请重新发起充值。" }),
+      /* @__PURE__ */ s("button", { style: { ...Pt, marginTop: 16 }, onClick: S, children: "关闭" })
+    ] }) }) }),
+    /* @__PURE__ */ s("div", { style: Qn, children: e.length === 0 ? /* @__PURE__ */ s("p", { style: Xn, children: "暂无充值记录" }) : /* @__PURE__ */ s("div", { style: Zn, children: /* @__PURE__ */ b("table", { style: er, children: [
+      /* @__PURE__ */ s("thead", { children: /* @__PURE__ */ b("tr", { children: [
+        /* @__PURE__ */ s("th", { style: K, children: "订单号" }),
+        /* @__PURE__ */ s("th", { style: K, children: "金额" }),
+        /* @__PURE__ */ s("th", { style: K, children: "支付方式" }),
+        /* @__PURE__ */ s("th", { style: K, children: "状态" }),
+        /* @__PURE__ */ s("th", { style: K, children: "创建时间" }),
+        /* @__PURE__ */ s("th", { style: K, children: "支付时间" }),
+        /* @__PURE__ */ s("th", { style: K, children: "操作" })
       ] }) }),
-      /* @__PURE__ */ d("tbody", { children: e.map((s) => /* @__PURE__ */ b("tr", { children: [
-        /* @__PURE__ */ d("td", { style: Q, children: /* @__PURE__ */ d("code", { style: Xn, children: s.out_trade_no }) }),
-        /* @__PURE__ */ b("td", { style: { ...Q, fontWeight: 600 }, children: [
-          "¥",
-          s.amount.toFixed(2)
-        ] }),
-        /* @__PURE__ */ d("td", { style: Q, children: On(s.method) }),
-        /* @__PURE__ */ d("td", { style: { ...Q, color: Hn(s.status), fontWeight: 600 }, children: jn(s.status) }),
-        /* @__PURE__ */ d("td", { style: { ...Q, color: i("textSecondary") }, children: Et(s.created_at) }),
-        /* @__PURE__ */ d("td", { style: { ...Q, color: i("textSecondary") }, children: s.paid_at ? Et(s.paid_at) : "-" })
-      ] }, s.id)) })
+      /* @__PURE__ */ s("tbody", { children: e.map((u) => /* @__PURE__ */ b("tr", { children: [
+        /* @__PURE__ */ s("td", { style: G, children: /* @__PURE__ */ s("code", { style: Ue, children: u.out_trade_no }) }),
+        /* @__PURE__ */ s("td", { style: { ...G, fontWeight: 600 }, children: U(u.amount) }),
+        /* @__PURE__ */ s("td", { style: G, children: Mt(u.method) }),
+        /* @__PURE__ */ s("td", { style: { ...G, color: Jn(u.status), fontWeight: 600 }, children: It(u.status) }),
+        /* @__PURE__ */ s("td", { style: { ...G, color: o("textSecondary") }, children: At(u.created_at) }),
+        /* @__PURE__ */ s("td", { style: { ...G, color: o("textSecondary") }, children: u.paid_at ? At(u.paid_at) : "-" }),
+        /* @__PURE__ */ s("td", { style: G, children: u.status === "pending" && (u.qr_code_content || u.payment_url) ? /* @__PURE__ */ s("button", { style: or, onClick: () => y(u), children: "继续支付" }) : null })
+      ] }, u.id)) })
     ] }) }) })
   ] });
 }
-function On(e) {
+function Mt(e) {
   return { alipay: "支付宝", wxpay: "微信支付" }[e] || e || "-";
 }
-function jn(e) {
+function It(e) {
   return {
     pending: "待支付",
     paid: "已支付",
@@ -2027,91 +2122,114 @@ function jn(e) {
     refunded: "已退款"
   }[e] || e;
 }
-function Hn(e) {
+function Jn(e) {
   return {
-    pending: i("warning"),
-    paid: i("success"),
-    expired: i("textTertiary"),
-    failed: i("danger"),
-    cancelled: i("textTertiary"),
-    refunded: i("textTertiary")
+    pending: o("warning"),
+    paid: o("success"),
+    expired: o("textTertiary"),
+    failed: o("danger"),
+    cancelled: o("textTertiary"),
+    refunded: o("textTertiary")
   }[e] || "inherit";
 }
-function Et(e) {
+function At(e) {
   try {
     return new Date(e).toLocaleString();
   } catch {
     return e;
   }
 }
-const De = {
+const qe = {
   maxWidth: 960,
   margin: "0 auto",
   padding: "24px 24px 48px",
-  color: i("text")
-}, Vn = {
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-between",
-  marginBottom: 20
-}, Kn = {
-  margin: 0,
-  fontSize: 22,
-  fontWeight: 600,
-  color: i("text"),
-  letterSpacing: "-0.01em"
-}, Tt = {
+  color: o("text")
+}, _t = {
   padding: "40px 0",
   textAlign: "center",
-  color: i("textSecondary")
-}, Jn = {
-  padding: "8px 16px",
-  border: `1px solid ${i("glassBorder")}`,
-  borderRadius: i("radiusMd"),
-  background: i("bgSurface"),
-  color: i("text"),
-  cursor: "pointer",
-  fontSize: 13,
-  fontWeight: 500,
-  transition: i("transition")
-}, Gn = {
-  border: `1px solid ${i("glassBorder")}`,
-  borderRadius: i("radiusLg"),
-  background: i("bgSurface"),
+  color: o("textSecondary")
+}, Qn = {
+  border: `1px solid ${o("glassBorder")}`,
+  borderRadius: o("radiusLg"),
+  background: o("bgElevated"),
   padding: "8px 0",
   overflow: "hidden"
-}, Yn = {
-  color: i("textTertiary"),
+}, Xn = {
+  color: o("textTertiary"),
   textAlign: "center",
   padding: "40px 0",
   fontSize: 14
-}, $n = {
+}, Zn = {
   overflowX: "auto"
-}, Qn = {
+}, er = {
   width: "100%",
   borderCollapse: "collapse"
-}, $ = {
+}, K = {
   textAlign: "left",
   padding: "10px 16px",
-  borderBottom: `1px solid ${i("glassBorder")}`,
-  background: i("bg"),
-  color: i("textSecondary"),
+  borderBottom: `1px solid ${o("glassBorder")}`,
+  background: o("bgSurface"),
+  color: o("textSecondary"),
   fontWeight: 600,
   fontSize: 12,
   textTransform: "uppercase",
   letterSpacing: "0.04em",
   whiteSpace: "nowrap"
-}, Q = {
+}, G = {
   padding: "12px 16px",
-  borderBottom: `1px solid ${i("glassBorder")}`,
+  borderBottom: `1px solid ${o("glassBorder")}`,
   fontSize: 13,
-  color: i("text"),
+  color: o("text"),
   whiteSpace: "nowrap"
-}, Xn = {
+}, Ue = {
   fontSize: 12,
-  fontFamily: i("fontMono"),
-  color: i("textSecondary")
-}, kt = {
+  fontFamily: o("fontMono"),
+  color: o("textSecondary")
+}, tr = {
+  position: "fixed",
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  background: "rgba(0,0,0,0.45)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  zIndex: 1e3
+}, nr = {
+  background: o("bgElevated"),
+  borderRadius: o("radiusLg"),
+  padding: "32px",
+  textAlign: "center",
+  minWidth: 320,
+  maxWidth: 400,
+  boxShadow: "0 8px 32px rgba(0,0,0,0.2)"
+}, Pt = {
+  padding: "8px 24px",
+  border: "none",
+  borderRadius: o("radiusMd"),
+  background: o("primary"),
+  color: "#fff",
+  fontSize: 14,
+  cursor: "pointer"
+}, rr = {
+  padding: "8px 24px",
+  border: `1px solid ${o("glassBorder")}`,
+  borderRadius: o("radiusMd"),
+  background: "transparent",
+  color: o("textSecondary"),
+  fontSize: 14,
+  cursor: "pointer"
+}, or = {
+  padding: "4px 12px",
+  border: `1px solid ${o("primary")}`,
+  borderRadius: o("radiusMd"),
+  background: "transparent",
+  color: o("primary"),
+  fontSize: 12,
+  cursor: "pointer",
+  whiteSpace: "nowrap"
+}, Lt = {
   total: 0,
   paid: 0,
   pending: 0,
@@ -2121,115 +2239,112 @@ const De = {
   refunded: 0,
   total_amount_paid: 0,
   today_amount_paid: 0
-}, Zn = [10, 20, 50, 100];
-function er() {
-  const [e, o] = L([]), [a, r] = L(0), [n, t] = L(kt), [l, s] = L(!0), [c, f] = L(null), [h, g] = L("all"), [p, S] = L(""), [y, I] = L(1), [_, u] = L(20), v = Z(() => {
-    s(!0), f(null), q.adminListOrders({ page: y, pageSize: _, email: p, status: h }).then((m) => {
-      o(m.list || []), r(m.total || 0), t(m.stats || kt);
-    }).catch((m) => f(String((m == null ? void 0 : m.message) || m))).finally(() => s(!1));
-  }, [y, _, p, h]);
-  H(() => {
-    const C = setTimeout(v, p ? 300 : 0);
-    return () => clearTimeout(C);
-  }, [v, p]), H(() => {
-    I(1);
-  }, [h, p, _]);
-  const R = Math.max(1, Math.ceil(a / _));
-  return /* @__PURE__ */ b("div", { style: sr, children: [
-    /* @__PURE__ */ b("div", { style: lr, children: [
-      /* @__PURE__ */ d(X, { label: "总订单数", value: n.total }),
-      /* @__PURE__ */ d(X, { label: "已支付", value: n.paid, accent: i("success") }),
-      /* @__PURE__ */ d(X, { label: "待支付", value: n.pending, accent: i("warning") }),
-      /* @__PURE__ */ d(X, { label: "已过期", value: n.expired }),
-      /* @__PURE__ */ d(X, { label: "累计收款", value: `¥${n.total_amount_paid.toFixed(2)}`, accent: i("success") }),
-      /* @__PURE__ */ d(X, { label: "今日收款", value: `¥${n.today_amount_paid.toFixed(2)}`, accent: i("success") })
+}, ir = [10, 20, 50, 100], lr = [
+  { value: "all", label: "全部状态" },
+  { value: "pending", label: "待支付" },
+  { value: "paid", label: "已支付" },
+  { value: "expired", label: "已过期" },
+  { value: "failed", label: "失败" },
+  { value: "cancelled", label: "已取消" },
+  { value: "refunded", label: "已退款" }
+];
+function ar() {
+  const [e, i] = P([]), [l, r] = P(0), [n, t] = P(Lt), [a, c] = P(!0), [d, f] = P(null), [p, h] = P("all"), [y, S] = P(""), [u, k] = P(1), [L, g] = P(20), C = ee(() => {
+    c(!0), f(null), $.adminListOrders({ page: u, pageSize: L, email: y, status: p }).then((m) => {
+      i(m.list || []), r(m.total || 0), t(m.stats || Lt);
+    }).catch((m) => f(String((m == null ? void 0 : m.message) || m))).finally(() => c(!1));
+  }, [u, L, y, p]);
+  z(() => {
+    const v = setTimeout(C, y ? 300 : 0);
+    return () => clearTimeout(v);
+  }, [C, y]), z(() => {
+    k(1);
+  }, [p, y, L]);
+  const I = Math.max(1, Math.ceil(l / L));
+  return /* @__PURE__ */ b("div", { style: hr, children: [
+    /* @__PURE__ */ b("div", { style: pr, children: [
+      /* @__PURE__ */ s(Z, { label: "总订单数", value: n.total }),
+      /* @__PURE__ */ s(Z, { label: "已支付", value: n.paid, accent: o("success") }),
+      /* @__PURE__ */ s(Z, { label: "待支付", value: n.pending, accent: o("warning") }),
+      /* @__PURE__ */ s(Z, { label: "已过期", value: n.expired }),
+      /* @__PURE__ */ s(Z, { label: "累计收款", value: U(n.total_amount_paid), accent: o("success") }),
+      /* @__PURE__ */ s(Z, { label: "今日收款", value: U(n.today_amount_paid), accent: o("success") })
     ] }),
-    /* @__PURE__ */ b("div", { style: fr, children: [
-      /* @__PURE__ */ b("div", { style: gr, children: [
-        /* @__PURE__ */ b(
-          "select",
+    /* @__PURE__ */ b("div", { style: Sr, children: [
+      /* @__PURE__ */ b("div", { style: xr, children: [
+        /* @__PURE__ */ s(
+          Xt,
           {
-            value: h,
-            onChange: (m) => g(m.target.value),
-            style: hr,
-            children: [
-              /* @__PURE__ */ d("option", { value: "all", children: "全部状态" }),
-              /* @__PURE__ */ d("option", { value: "pending", children: "待支付" }),
-              /* @__PURE__ */ d("option", { value: "paid", children: "已支付" }),
-              /* @__PURE__ */ d("option", { value: "expired", children: "已过期" }),
-              /* @__PURE__ */ d("option", { value: "failed", children: "失败" }),
-              /* @__PURE__ */ d("option", { value: "cancelled", children: "已取消" }),
-              /* @__PURE__ */ d("option", { value: "refunded", children: "已退款" })
-            ]
+            value: p,
+            onChange: h,
+            options: lr,
+            style: wr
           }
         ),
-        /* @__PURE__ */ d(
+        /* @__PURE__ */ s(
           "input",
           {
             type: "text",
-            value: p,
+            value: y,
             onChange: (m) => S(m.target.value),
             placeholder: "搜索用户邮箱",
-            style: { ...pr, width: 240 }
+            style: { ...Ir, width: 240 }
           }
         ),
-        /* @__PURE__ */ d(or, { onClick: v, loading: l })
+        /* @__PURE__ */ s(ur, { onClick: C, loading: a })
       ] }),
-      c ? /* @__PURE__ */ b("p", { style: { ...Fe, color: i("danger") }, children: [
+      d ? /* @__PURE__ */ b("p", { style: { ...We, color: o("danger") }, children: [
         "加载失败: ",
-        c
-      ] }) : l && e.length === 0 ? /* @__PURE__ */ d("p", { style: Fe, children: "加载中..." }) : e.length === 0 ? /* @__PURE__ */ d("p", { style: Fe, children: "暂无订单" }) : /* @__PURE__ */ d("div", { style: yr, children: /* @__PURE__ */ b("table", { style: mr, children: [
-        /* @__PURE__ */ d("thead", { children: /* @__PURE__ */ b("tr", { children: [
-          /* @__PURE__ */ d("th", { style: O, children: "订单号" }),
-          /* @__PURE__ */ d("th", { style: O, children: "用户邮箱" }),
-          /* @__PURE__ */ d("th", { style: O, children: "金额" }),
-          /* @__PURE__ */ d("th", { style: O, children: "支付方式" }),
-          /* @__PURE__ */ d("th", { style: O, children: "服务商" }),
-          /* @__PURE__ */ d("th", { style: O, children: "状态" }),
-          /* @__PURE__ */ d("th", { style: O, children: "创建时间" }),
-          /* @__PURE__ */ d("th", { style: O, children: "支付时间" })
+        d
+      ] }) : a && e.length === 0 ? /* @__PURE__ */ s("p", { style: We, children: "加载中..." }) : e.length === 0 ? /* @__PURE__ */ s("p", { style: We, children: "暂无订单" }) : /* @__PURE__ */ s("div", { style: Ar, children: /* @__PURE__ */ b("table", { style: _r, children: [
+        /* @__PURE__ */ s("thead", { children: /* @__PURE__ */ b("tr", { children: [
+          /* @__PURE__ */ s("th", { style: H, children: "订单号" }),
+          /* @__PURE__ */ s("th", { style: H, children: "用户邮箱" }),
+          /* @__PURE__ */ s("th", { style: H, children: "金额" }),
+          /* @__PURE__ */ s("th", { style: H, children: "支付方式" }),
+          /* @__PURE__ */ s("th", { style: H, children: "服务商" }),
+          /* @__PURE__ */ s("th", { style: H, children: "状态" }),
+          /* @__PURE__ */ s("th", { style: H, children: "创建时间" }),
+          /* @__PURE__ */ s("th", { style: H, children: "支付时间" })
         ] }) }),
-        /* @__PURE__ */ d("tbody", { children: e.map((m) => /* @__PURE__ */ b("tr", { children: [
-          /* @__PURE__ */ d("td", { style: j, children: /* @__PURE__ */ d("code", { style: br, children: m.out_trade_no }) }),
-          /* @__PURE__ */ d("td", { style: j, children: m.user_email ? /* @__PURE__ */ d("span", { style: { color: i("text") }, children: m.user_email }) : /* @__PURE__ */ b("span", { style: { color: i("textTertiary") }, children: [
+        /* @__PURE__ */ s("tbody", { children: e.map((m) => /* @__PURE__ */ b("tr", { children: [
+          /* @__PURE__ */ s("td", { style: j, children: /* @__PURE__ */ s("code", { style: Pr, children: m.out_trade_no }) }),
+          /* @__PURE__ */ s("td", { style: j, children: m.user_email ? /* @__PURE__ */ s("span", { style: { color: o("text") }, children: m.user_email }) : /* @__PURE__ */ b("span", { style: { color: o("textTertiary") }, children: [
             "#",
             m.user_id
           ] }) }),
-          /* @__PURE__ */ b("td", { style: { ...j, fontWeight: 600 }, children: [
-            "¥",
-            m.amount.toFixed(2)
-          ] }),
-          /* @__PURE__ */ d("td", { style: j, children: tr(m.method) }),
-          /* @__PURE__ */ d("td", { style: { ...j, color: i("textSecondary") }, children: m.provider_id || "-" }),
-          /* @__PURE__ */ d("td", { style: { ...j, color: rr(m.status), fontWeight: 600 }, children: nr(m.status) }),
-          /* @__PURE__ */ d("td", { style: { ...j, color: i("textSecondary") }, children: Mt(m.created_at) }),
-          /* @__PURE__ */ d("td", { style: { ...j, color: i("textSecondary") }, children: m.paid_at ? Mt(m.paid_at) : "-" })
+          /* @__PURE__ */ s("td", { style: { ...j, fontWeight: 600 }, children: U(m.amount) }),
+          /* @__PURE__ */ s("td", { style: j, children: sr(m.method) }),
+          /* @__PURE__ */ s("td", { style: { ...j, color: o("textSecondary") }, children: m.provider_id || "-" }),
+          /* @__PURE__ */ s("td", { style: { ...j, color: dr(m.status), fontWeight: 600 }, children: cr(m.status) }),
+          /* @__PURE__ */ s("td", { style: { ...j, color: o("textSecondary") }, children: zt(m.created_at) }),
+          /* @__PURE__ */ s("td", { style: { ...j, color: o("textSecondary") }, children: m.paid_at ? zt(m.paid_at) : "-" })
         ] }, m.id)) })
       ] }) }),
-      /* @__PURE__ */ d(
-        ir,
+      /* @__PURE__ */ s(
+        fr,
         {
-          page: y,
-          pageSize: _,
-          total: a,
-          totalPages: R,
-          onPageChange: I,
-          onPageSizeChange: u
+          page: u,
+          pageSize: L,
+          total: l,
+          totalPages: I,
+          onPageChange: k,
+          onPageSizeChange: g
         }
       )
     ] })
   ] });
 }
-function X({ label: e, value: o, accent: a }) {
-  return /* @__PURE__ */ b("div", { style: dr, children: [
-    /* @__PURE__ */ d("div", { style: cr, children: e }),
-    /* @__PURE__ */ d("div", { style: { ...ur, color: a || i("text") }, children: o })
+function Z({ label: e, value: i, accent: l }) {
+  return /* @__PURE__ */ b("div", { style: yr, children: [
+    /* @__PURE__ */ s("div", { style: mr, children: e }),
+    /* @__PURE__ */ s("div", { style: { ...br, color: l || o("text") }, children: i })
   ] });
 }
-function tr(e) {
+function sr(e) {
   return { alipay: "支付宝", wxpay: "微信支付" }[e] || e || "-";
 }
-function nr(e) {
+function cr(e) {
   return {
     pending: "待支付",
     paid: "已支付",
@@ -2239,34 +2354,34 @@ function nr(e) {
     refunded: "已退款"
   }[e] || e;
 }
-function rr(e) {
+function dr(e) {
   return {
-    pending: i("warning"),
-    paid: i("success"),
-    expired: i("textTertiary"),
-    failed: i("danger"),
-    cancelled: i("textTertiary"),
-    refunded: i("textTertiary")
+    pending: o("warning"),
+    paid: o("success"),
+    expired: o("textTertiary"),
+    failed: o("danger"),
+    cancelled: o("textTertiary"),
+    refunded: o("textTertiary")
   }[e] || "inherit";
 }
-function Mt(e) {
+function zt(e) {
   try {
     return new Date(e).toLocaleString();
   } catch {
     return e;
   }
 }
-function or({ onClick: e, loading: o }) {
-  const [a, r] = L(!1);
-  return /* @__PURE__ */ b(Qt, { children: [
-    /* @__PURE__ */ d("style", { children: "@keyframes ag-epay-spin { to { transform: rotate(360deg); } }" }),
-    /* @__PURE__ */ d(
+function ur({ onClick: e, loading: i }) {
+  const [l, r] = P(!1);
+  return /* @__PURE__ */ b(ae, { children: [
+    /* @__PURE__ */ s("style", { children: "@keyframes ag-epay-spin { to { transform: rotate(360deg); } }" }),
+    /* @__PURE__ */ s(
       "button",
       {
         type: "button",
         "aria-label": "刷新",
         onClick: e,
-        disabled: o,
+        disabled: i,
         onMouseEnter: () => r(!0),
         onMouseLeave: () => r(!1),
         style: {
@@ -2276,13 +2391,13 @@ function or({ onClick: e, loading: o }) {
           justifyContent: "center",
           width: 36,
           height: 36,
-          border: `1px solid ${i("glassBorder")}`,
+          border: `1px solid ${o("glassBorder")}`,
           borderRadius: 10,
-          background: a ? i("bgHover") : "transparent",
-          color: i(a ? "textSecondary" : "textTertiary"),
-          cursor: o ? "not-allowed" : "pointer",
-          opacity: o ? 0.6 : 1,
-          transition: i("transition"),
+          background: l ? o("bgHover") : "transparent",
+          color: o(l ? "textSecondary" : "textTertiary"),
+          cursor: i ? "not-allowed" : "pointer",
+          opacity: i ? 0.6 : 1,
+          transition: o("transition"),
           padding: 0
         },
         children: /* @__PURE__ */ b(
@@ -2297,13 +2412,13 @@ function or({ onClick: e, loading: o }) {
             strokeLinecap: "round",
             strokeLinejoin: "round",
             style: {
-              animation: o ? "ag-epay-spin 1s linear infinite" : void 0
+              animation: i ? "ag-epay-spin 1s linear infinite" : void 0
             },
             children: [
-              /* @__PURE__ */ d("path", { d: "M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" }),
-              /* @__PURE__ */ d("path", { d: "M21 3v5h-5" }),
-              /* @__PURE__ */ d("path", { d: "M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" }),
-              /* @__PURE__ */ d("path", { d: "M8 16H3v5" })
+              /* @__PURE__ */ s("path", { d: "M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" }),
+              /* @__PURE__ */ s("path", { d: "M21 3v5h-5" }),
+              /* @__PURE__ */ s("path", { d: "M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" }),
+              /* @__PURE__ */ s("path", { d: "M8 16H3v5" })
             ]
           }
         )
@@ -2311,62 +2426,106 @@ function or({ onClick: e, loading: o }) {
     )
   ] });
 }
-function ir({ page: e, pageSize: o, total: a, totalPages: r, onPageChange: n, onPageSizeChange: t }) {
-  const l = ar(e, r);
-  return /* @__PURE__ */ b("div", { style: Sr, children: [
+function Xt({
+  value: e,
+  options: i,
+  onChange: l,
+  style: r
+}) {
+  const [n, t] = P(!1), a = ce(null), c = i.find((d) => d.value === e);
+  return z(() => {
+    if (!n) return;
+    const d = (f) => {
+      a.current && !a.current.contains(f.target) && t(!1);
+    };
+    return document.addEventListener("mousedown", d), () => document.removeEventListener("mousedown", d);
+  }, [n]), /* @__PURE__ */ b("div", { ref: a, style: vr, children: [
+    /* @__PURE__ */ b(
+      "button",
+      {
+        type: "button",
+        style: { ...r, ...Cr, ...n ? kr : null },
+        "aria-haspopup": "listbox",
+        "aria-expanded": n,
+        onClick: () => t((d) => !d),
+        children: [
+          /* @__PURE__ */ s("span", { style: Tr, children: (c == null ? void 0 : c.label) ?? "" }),
+          /* @__PURE__ */ s("span", { "aria-hidden": "true", style: Er, children: "v" })
+        ]
+      }
+    ),
+    n && /* @__PURE__ */ s("div", { role: "listbox", style: Br, children: i.map((d) => {
+      const f = d.value === e;
+      return /* @__PURE__ */ s(
+        "button",
+        {
+          type: "button",
+          role: "option",
+          "aria-selected": f,
+          style: { ...Rr, ...f ? Mr : null },
+          onClick: () => {
+            l(d.value), t(!1);
+          },
+          children: d.label
+        },
+        d.value
+      );
+    }) })
+  ] });
+}
+function fr({ page: e, pageSize: i, total: l, totalPages: r, onPageChange: n, onPageSizeChange: t }) {
+  const a = gr(e, r);
+  return /* @__PURE__ */ b("div", { style: Lr, children: [
     /* @__PURE__ */ b("div", { style: { display: "flex", alignItems: "center", gap: 10 }, children: [
-      /* @__PURE__ */ b("span", { style: xr, children: [
+      /* @__PURE__ */ b("span", { style: zr, children: [
         "共 ",
-        a,
+        l,
         " 条 · 第 ",
         e,
         "/",
         r,
         " 页"
       ] }),
-      /* @__PURE__ */ d(
-        "select",
+      /* @__PURE__ */ s(
+        Xt,
         {
-          value: o,
-          onChange: (s) => t(Number(s.target.value)),
-          style: wr,
-          children: Zn.map((s) => /* @__PURE__ */ b("option", { value: s, children: [
-            s,
-            " 条/页"
-          ] }, s))
+          value: String(i),
+          onChange: (c) => t(Number(c)),
+          options: ir.map((c) => ({ value: String(c), label: `${c} 条/页` })),
+          style: Nr
         }
       )
     ] }),
     /* @__PURE__ */ b("div", { style: { display: "flex", alignItems: "center", gap: 4 }, children: [
-      /* @__PURE__ */ d(
+      /* @__PURE__ */ s(
         "button",
         {
           type: "button",
           "aria-label": "上一页",
-          style: It(e <= 1),
+          style: Nt(e <= 1),
           disabled: e <= 1,
           onClick: () => n(e - 1),
           children: "‹"
         }
       ),
-      l.map(
-        (s, c) => s === "..." ? /* @__PURE__ */ d("span", { style: vr, children: "···" }, `e-${c}`) : /* @__PURE__ */ d(
+      a.map(
+        (c, d) => c === "..." ? /* @__PURE__ */ s("span", { style: Dr, children: "···" }, `e-${d}`) : /* @__PURE__ */ s(
           "button",
           {
             type: "button",
-            style: s === e ? Cr : Vt,
-            onClick: () => n(s),
-            children: s
+            style: c === e ? $r : Zt,
+            onClick: () => n(c),
+            children: c
           },
-          s
+          c
         )
       ),
-      /* @__PURE__ */ d(
+      /* @__PURE__ */ s(
         "button",
         {
           type: "button",
           "aria-label": "下一页",
-          style: It(e >= r),
+          style: Nt(e >= r),
           disabled: e >= r,
           onClick: () => n(e + 1),
           children: "›"
@@ -2375,86 +2534,144 @@ function ir({ page: e, pageSize: o, total: a, totalPages: r, onPageChange: n, on
     ] })
   ] });
 }
-function ar(e, o) {
-  if (o <= 7) return Array.from({ length: o }, (r, n) => n + 1);
-  const a = [1];
-  e > 3 && a.push("...");
-  for (let r = Math.max(2, e - 1); r <= Math.min(o - 1, e + 1); r++)
-    a.push(r);
-  return e < o - 2 && a.push("..."), a.push(o), a;
+function gr(e, i) {
+  if (i <= 7) return Array.from({ length: i }, (r, n) => n + 1);
+  const l = [1];
+  e > 3 && l.push("...");
+  for (let r = Math.max(2, e - 1); r <= Math.min(i - 1, e + 1); r++)
+    l.push(r);
+  return e < i - 2 && l.push("..."), l.push(i), l;
 }
-const sr = {
+const hr = {
   maxWidth: 1280,
   margin: "0 auto",
   padding: "24px 24px 48px",
-  color: i("text")
-}, lr = {
+  color: o("text")
+}, pr = {
   display: "grid",
   gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
   gap: 12,
   marginBottom: 20
-}, dr = {
+}, yr = {
   padding: "18px 20px",
-  border: `1px solid ${i("glassBorder")}`,
-  borderRadius: i("radiusLg"),
-  background: i("bgSurface")
-}, cr = {
+  border: `1px solid ${o("glassBorder")}`,
+  borderRadius: o("radiusLg"),
+  background: o("bgSurface")
+}, mr = {
   fontSize: 12,
-  color: i("textSecondary"),
+  color: o("textSecondary"),
   fontWeight: 500,
   letterSpacing: "0.02em"
-}, ur = {
+}, br = {
   fontSize: 26,
   fontWeight: 700,
   marginTop: 8,
   letterSpacing: "-0.02em"
-}, fr = {
-  border: `1px solid ${i("glassBorder")}`,
-  borderRadius: i("radiusLg"),
-  background: i("bgSurface"),
+}, Sr = {
+  border: `1px solid ${o("glassBorder")}`,
+  borderRadius: o("radiusLg"),
+  background: o("bgSurface"),
   padding: "20px 20px 8px"
-}, gr = {
+}, xr = {
   display: "flex",
   alignItems: "center",
   gap: 12,
   marginBottom: 16,
   flexWrap: "wrap"
-}, hr = {
+}, wr = {
   padding: "8px 12px",
   minWidth: 140,
-  border: `1px solid ${i("glassBorder")}`,
-  borderRadius: i("radiusMd"),
-  background: i("bg"),
-  color: i("text"),
-  fontSize: 13,
+  border: `1px solid ${o("glassBorder")}`,
+  borderRadius: o("radiusMd"),
+  background: o("bgElevated"),
+  color: o("text"),
+  fontSize: 13
+}, vr = {
+  position: "relative",
+  display: "inline-block"
+}, Cr = {
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  gap: 8,
+  width: "100%",
+  fontFamily: "inherit",
+  cursor: "pointer",
   outline: "none"
-}, pr = {
+}, kr = {
+  borderColor: o("primary"),
+  boxShadow: `0 0 0 3px ${o("primarySubtle")}`
+}, Tr = {
+  minWidth: 0,
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap"
+}, Er = {
+  flexShrink: 0,
+  color: o("textTertiary"),
+  fontSize: 10,
+  lineHeight: 1
+}, Br = {
+  position: "absolute",
+  left: 0,
+  top: "calc(100% + 6px)",
+  zIndex: 20,
+  display: "flex",
+  flexDirection: "column",
+  minWidth: "100%",
+  width: "max-content",
+  maxHeight: 260,
+  padding: 6,
+  border: `1px solid ${o("glassBorder")}`,
+  borderRadius: o("radiusMd"),
+  background: o("bgSurface"),
+  boxShadow: "0 18px 48px rgba(0, 0, 0, 0.28)",
+  overflowY: "auto"
+}, Rr = {
+  display: "block",
+  width: "100%",
+  padding: "8px 10px",
+  border: "none",
+  borderRadius: 8,
+  background: "transparent",
+  color: o("textSecondary"),
+  fontFamily: "inherit",
+  fontSize: 13,
+  lineHeight: 1.35,
+  textAlign: "left",
+  whiteSpace: "nowrap",
+  cursor: "pointer"
+}, Mr = {
+  background: o("primarySubtle"),
+  color: o("primary"),
+  fontWeight: 600
+}, Ir = {
   padding: "8px 12px",
   width: 200,
-  border: `1px solid ${i("glassBorder")}`,
-  borderRadius: i("radiusMd"),
-  background: i("bg"),
-  color: i("text"),
+  border: `1px solid ${o("glassBorder")}`,
+  borderRadius: o("radiusMd"),
+  background: o("bgElevated"),
+  color: o("text"),
   fontSize: 13,
   outline: "none"
-}, Fe = {
-  color: i("textTertiary"),
+}, We = {
+  color: o("textTertiary"),
   textAlign: "center",
   padding: "40px 0",
   fontSize: 14
-}, yr = {
+}, Ar = {
   overflowX: "auto",
   margin: "0 -20px"
-}, mr = {
+}, _r = {
   width: "100%",
   borderCollapse: "collapse"
-}, O = {
+}, H = {
   textAlign: "left",
   padding: "10px 16px",
-  borderTop: `1px solid ${i("glassBorder")}`,
-  borderBottom: `1px solid ${i("glassBorder")}`,
-  background: i("bg"),
-  color: i("textSecondary"),
+  borderTop: `1px solid ${o("glassBorder")}`,
+  borderBottom: `1px solid ${o("glassBorder")}`,
+  background: o("bgSurface"),
+  color: o("textSecondary"),
   fontWeight: 600,
   fontSize: 12,
   textTransform: "uppercase",
@@ -2462,35 +2679,35 @@ const sr = {
   whiteSpace: "nowrap"
 }, j = {
   padding: "12px 16px",
-  borderBottom: `1px solid ${i("glassBorder")}`,
+  borderBottom: `1px solid ${o("glassBorder")}`,
   fontSize: 13,
-  color: i("text"),
+  color: o("text"),
   whiteSpace: "nowrap"
-}, br = {
+}, Pr = {
   fontSize: 12,
-  fontFamily: i("fontMono"),
-  color: i("textSecondary")
-}, Sr = {
+  fontFamily: o("fontMono"),
+  color: o("textSecondary")
+}, Lr = {
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
   padding: "14px 4px 6px",
   flexWrap: "wrap",
   gap: 12
-}, xr = {
+}, zr = {
   fontSize: 12,
-  color: i("textTertiary"),
-  fontFamily: i("fontMono")
-}, wr = {
+  color: o("textTertiary"),
+  fontFamily: o("fontMono")
+}, Nr = {
   fontSize: 12,
-  color: i("textSecondary"),
+  color: o("textSecondary"),
   background: "transparent",
-  border: `1px solid ${i("glassBorder")}`,
+  border: `1px solid ${o("glassBorder")}`,
   borderRadius: 6,
   padding: "2px 8px",
   cursor: "pointer",
   outline: "none"
-}, Vt = {
+}, Zt = {
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
@@ -2499,18 +2716,18 @@ const sr = {
   borderRadius: 6,
   border: "none",
   background: "transparent",
-  color: i("textSecondary"),
+  color: o("textSecondary"),
   fontSize: 12,
   fontWeight: 500,
   cursor: "pointer",
-  transition: i("transition")
-}, Cr = {
-  ...Vt,
-  background: i("primary"),
-  color: i("textInverse"),
+  transition: o("transition")
+}, $r = {
+  ...Zt,
+  background: o("primary"),
+  color: o("textInverse"),
   fontWeight: 600
 };
-function It(e) {
+function Nt(e) {
   return {
     display: "inline-flex",
     alignItems: "center",
@@ -2520,73 +2737,73 @@ function It(e) {
     borderRadius: 6,
     border: "none",
     background: "transparent",
-    color: i("textSecondary"),
+    color: o("textSecondary"),
     fontSize: 18,
     lineHeight: 1,
     cursor: e ? "not-allowed" : "pointer",
     opacity: e ? 0.3 : 1,
-    transition: i("transition")
+    transition: o("transition")
   };
 }
-const vr = {
+const Dr = {
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
   width: 28,
-  color: i("textTertiary"),
+  color: o("textTertiary"),
   fontSize: 12
 };
-let Br = 0;
-function Er() {
-  const [e, o] = L([]), a = _t(o);
-  a.current = o;
-  const r = Z((s) => {
-    a.current((c) => c.filter((f) => f.id !== s));
-  }, []), n = Z((s, c) => {
-    const f = Br++;
-    a.current((h) => [...h, { id: f, type: s, text: c }]), setTimeout(() => r(f), 4e3);
-  }, [r]), t = Z((s) => n("success", s), [n]), l = Z((s) => n("error", s), [n]);
+let Fr = 0;
+function qr() {
+  const [e, i] = P([]), l = ce(i);
+  l.current = i;
+  const r = ee((c) => {
+    l.current((d) => d.filter((f) => f.id !== c));
+  }, []), n = ee((c, d) => {
+    const f = Fr++;
+    l.current((p) => [...p, { id: f, type: c, text: d }]), setTimeout(() => r(f), 4e3);
+  }, [r]), t = ee((c) => n("success", c), [n]), a = ee((c) => n("error", c), [n]);
   return {
-    toast: { success: t, error: l },
-    Toaster: /* @__PURE__ */ d(Tr, { messages: e, onClose: r })
+    toast: { success: t, error: a },
+    Toaster: /* @__PURE__ */ s(Ur, { messages: e, onClose: r })
   };
 }
-function Tr({
+function Ur({
   messages: e,
-  onClose: o
+  onClose: i
 }) {
-  return H(() => {
-    const a = "airgate-epay-toast-keyframes";
-    if (document.getElementById(a)) return;
+  return z(() => {
+    const l = "airgate-epay-toast-keyframes";
+    if (document.getElementById(l)) return;
     const r = document.createElement("style");
-    r.id = a, r.textContent = `
+    r.id = l, r.textContent = `
 @keyframes airgate-epay-toast-in {
   from { opacity: 0; transform: translateY(-8px); }
   to   { opacity: 1; transform: translateY(0); }
 }`, document.head.appendChild(r);
-  }, []), e.length === 0 ? null : /* @__PURE__ */ d("div", { style: Mr, children: e.map((a) => /* @__PURE__ */ d(kr, { message: a, onClose: () => o(a.id) }, a.id)) });
+  }, []), e.length === 0 ? null : /* @__PURE__ */ s("div", { style: Or, children: e.map((l) => /* @__PURE__ */ s(Wr, { message: l, onClose: () => i(l.id) }, l.id)) });
 }
-function kr({
+function Wr({
   message: e,
-  onClose: o
+  onClose: i
 }) {
-  const a = e.type === "success", r = i(a ? "success" : "danger"), n = i(a ? "success" : "danger");
+  const l = e.type === "success", r = o(l ? "success" : "danger"), n = o(l ? "success" : "danger");
   return /* @__PURE__ */ b(
     "div",
     {
       style: {
-        ...Ir,
+        ...Hr,
         borderColor: n
       },
       children: [
-        /* @__PURE__ */ d("span", { style: { ...Rr, color: r }, children: a ? "✓" : "✕" }),
-        /* @__PURE__ */ d("span", { style: { ...Ar, color: i("text") }, children: e.text }),
-        /* @__PURE__ */ d("button", { onClick: o, style: Pr, "aria-label": "关闭", children: "×" })
+        /* @__PURE__ */ s("span", { style: { ...jr, color: r }, children: l ? "✓" : "✕" }),
+        /* @__PURE__ */ s("span", { style: { ...Vr, color: o("text") }, children: e.text }),
+        /* @__PURE__ */ s("button", { onClick: i, style: Kr, "aria-label": "关闭", children: "×" })
       ]
     }
   );
 }
-const Mr = {
+const Or = {
   position: "fixed",
   top: 20,
   right: 20,
@@ -2595,7 +2812,7 @@ const Mr = {
   flexDirection: "column",
   gap: 10,
   pointerEvents: "none"
-}, Ir = {
+}, Hr = {
   pointerEvents: "auto",
   display: "flex",
   alignItems: "center",
@@ -2603,26 +2820,26 @@ const Mr = {
   minWidth: 260,
   maxWidth: 400,
   padding: "12px 14px",
-  borderRadius: i("radiusLg"),
+  borderRadius: o("radiusLg"),
   border: "1px solid",
-  background: i("bgElevated"),
+  background: o("bgElevated"),
   boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
   animation: "airgate-epay-toast-in 0.25s cubic-bezier(0.16, 1, 0.3, 1)"
-}, Rr = {
+}, jr = {
   fontSize: 16,
   fontWeight: 700,
   width: 18,
   textAlign: "center",
   flexShrink: 0
-}, Ar = {
+}, Vr = {
   flex: 1,
   fontSize: 13,
   lineHeight: 1.4
-}, Pr = {
+}, Kr = {
   flexShrink: 0,
   background: "transparent",
   border: "none",
-  color: i("textTertiary"),
+  color: o("textTertiary"),
   fontSize: 18,
   lineHeight: 1,
   cursor: "pointer",
@@ -2630,240 +2847,242 @@ const Mr = {
   width: 18,
   height: 18
 };
-function _r() {
-  const [e, o] = L([]), [a, r] = L([]), [n, t] = L(!0), [l, s] = L(null), [c, f] = L(null), { toast: h, Toaster: g } = Er(), p = Z(() => {
-    t(!0), s(null), q.adminListProviders().then((u) => {
-      o(u.providers || []), r(u.kinds || []);
-    }).catch((u) => s(String((u == null ? void 0 : u.message) || u))).finally(() => t(!1));
+function en(e, i) {
+  var r;
+  const l = window;
+  return (r = l.airgate) != null && r.confirm ? l.airgate.confirm(e, i) : Promise.resolve(window.confirm(e));
+}
+function Gr() {
+  const [e, i] = P([]), [l, r] = P([]), [n, t] = P(!0), [a, c] = P(null), [d, f] = P(null), { toast: p, Toaster: h } = qr(), y = ee(() => {
+    t(!0), c(null), $.adminListProviders().then((g) => {
+      i(g.providers || []), r(g.kinds || []);
+    }).catch((g) => c(String((g == null ? void 0 : g.message) || g))).finally(() => t(!1));
   }, []);
-  H(p, [p]);
-  const S = (u) => {
+  z(y, [y]);
+  const S = (g) => {
     f({
       mode: "create",
       id: "",
-      kind: u.kind,
+      kind: g.kind,
       enabled: !0,
-      config: zr(u)
+      config: Qr(g)
     });
-  }, y = (u) => {
+  }, u = (g) => {
     f({
       mode: "edit",
-      id: u.id,
-      originalId: u.id,
-      kind: u.kind,
-      enabled: u.enabled,
-      config: { ...u.config }
+      id: g.id,
+      originalId: g.id,
+      kind: g.kind,
+      enabled: g.enabled,
+      config: { ...g.config }
     });
-  }, I = async (u) => {
-    if (window.confirm(`确认删除服务商 ${u}？此操作无法撤销。`))
+  }, k = async (g) => {
+    if (await en(`确认删除服务商 ${g}？此操作无法撤销。`, { title: "删除服务商", danger: !0 }))
       try {
-        await q.adminDeleteProvider(u), h.success(`已删除 ${u}`), p();
-      } catch (v) {
-        h.error("删除失败: " + v.message);
+        await $.adminDeleteProvider(g), p.success(`已删除 ${g}`), y();
+      } catch (C) {
+        p.error("删除失败: " + C.message);
       }
-  }, _ = async (u) => {
+  }, L = async (g) => {
     try {
-      await q.adminUpsertProvider({
-        id: u.id,
-        kind: u.kind,
-        enabled: !u.enabled,
-        config: u.config
-      }), h.success(`${u.id} 已${u.enabled ? "禁用" : "启用"}`), p();
-    } catch (v) {
-      h.error("操作失败: " + v.message);
+      await $.adminUpsertProvider({
+        id: g.id,
+        kind: g.kind,
+        enabled: !g.enabled,
+        config: g.config
+      }), p.success(`${g.id} 已${g.enabled ? "禁用" : "启用"}`), y();
+    } catch (C) {
+      p.error("操作失败: " + C.message);
     }
   };
-  return n ? /* @__PURE__ */ d("div", { style: Ue, children: /* @__PURE__ */ d("div", { style: Rt, children: "加载中..." }) }) : l ? /* @__PURE__ */ d("div", { style: Ue, children: /* @__PURE__ */ b("div", { style: { ...Rt, color: i("danger") }, children: [
+  return n ? /* @__PURE__ */ s("div", { style: He, children: /* @__PURE__ */ s("div", { style: $t, children: "加载中..." }) }) : a ? /* @__PURE__ */ s("div", { style: He, children: /* @__PURE__ */ b("div", { style: { ...$t, color: o("danger") }, children: [
     "加载失败: ",
-    l
-  ] }) }) : /* @__PURE__ */ b("div", { style: Ue, children: [
-    g,
-    /* @__PURE__ */ b("div", { style: Dr, children: [
-      /* @__PURE__ */ d("h2", { style: Fr, children: "支付服务商" }),
-      /* @__PURE__ */ d("button", { style: re, onClick: p, children: "刷新" })
-    ] }),
-    /* @__PURE__ */ b("div", { style: Pt, children: [
-      /* @__PURE__ */ d("h3", { style: At, children: "添加服务商" }),
-      /* @__PURE__ */ d("p", { style: qr, children: "每种类型的服务商可以创建多个实例（例如 xunhu_main / xunhu_backup），便于多商户号或主备切换。" }),
-      /* @__PURE__ */ d("div", { style: Ur, children: a.map((u) => /* @__PURE__ */ b("div", { style: Wr, children: [
-        /* @__PURE__ */ d("div", { style: { fontWeight: 600, color: i("text"), fontSize: 15 }, children: u.name }),
-        /* @__PURE__ */ d("div", { style: { fontSize: 12, color: i("textSecondary"), marginTop: 6 }, children: u.description }),
-        /* @__PURE__ */ b("div", { style: { fontSize: 12, color: i("textTertiary"), marginTop: 8 }, children: [
+    a
+  ] }) }) : /* @__PURE__ */ b("div", { style: He, children: [
+    h,
+    /* @__PURE__ */ b("div", { style: Ft, children: [
+      /* @__PURE__ */ s("h3", { style: Dt, children: "添加服务商" }),
+      /* @__PURE__ */ s("p", { style: Xr, children: "每种类型的服务商可以创建多个实例（例如 xunhu_main / xunhu_backup），便于多商户号或主备切换。" }),
+      /* @__PURE__ */ s("div", { style: Zr, children: l.map((g) => /* @__PURE__ */ b("div", { style: eo, children: [
+        /* @__PURE__ */ s("div", { style: { fontWeight: 600, color: o("text"), fontSize: 15 }, children: g.name }),
+        /* @__PURE__ */ s("div", { style: { fontSize: 12, color: o("textSecondary"), marginTop: 6 }, children: g.description }),
+        /* @__PURE__ */ b("div", { style: { fontSize: 12, color: o("textTertiary"), marginTop: 8 }, children: [
           "支持: ",
-          u.supported_methods.map(Oe).join(" / ")
+          g.supported_methods.map(Ve).join(" / ")
         ] }),
-        /* @__PURE__ */ d("button", { style: { ...Jt, marginTop: 12, width: "100%" }, onClick: () => S(u), children: "+ 添加" })
-      ] }, u.kind)) })
+        /* @__PURE__ */ s("button", { style: { ...nn, marginTop: 12, width: "100%" }, onClick: () => S(g), children: "+ 添加" })
+      ] }, g.kind)) })
     ] }),
-    /* @__PURE__ */ b("div", { style: Pt, children: [
-      /* @__PURE__ */ d("h3", { style: At, children: "已配置的服务商实例" }),
-      e.length === 0 ? /* @__PURE__ */ d("p", { style: Hr, children: "暂未配置任何服务商。请在上方点「+ 添加」选择类型。" }) : /* @__PURE__ */ d("div", { style: Or, children: e.map((u) => /* @__PURE__ */ b("div", { style: jr, children: [
+    /* @__PURE__ */ b("div", { style: Ft, children: [
+      /* @__PURE__ */ s("h3", { style: Dt, children: "已配置的服务商实例" }),
+      e.length === 0 ? /* @__PURE__ */ s("p", { style: ro, children: "暂未配置任何服务商。请在上方点「+ 添加」选择类型。" }) : /* @__PURE__ */ s("div", { style: to, children: e.map((g) => /* @__PURE__ */ b("div", { style: no, children: [
         /* @__PURE__ */ b("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-start" }, children: [
           /* @__PURE__ */ b("div", { children: [
-            /* @__PURE__ */ d("div", { style: { fontWeight: 600, color: i("text"), fontSize: 15 }, children: u.name || u.id }),
-            /* @__PURE__ */ b("div", { style: { fontSize: 12, color: i("textTertiary"), marginTop: 4, fontFamily: i("fontMono") }, children: [
-              u.id,
+            /* @__PURE__ */ s("div", { style: { fontWeight: 600, color: o("text"), fontSize: 15 }, children: g.name || g.id }),
+            /* @__PURE__ */ b("div", { style: { fontSize: 12, color: o("textTertiary"), marginTop: 4, fontFamily: o("fontMono") }, children: [
+              g.id,
               " · ",
-              u.kind
+              g.kind
             ] })
           ] }),
-          /* @__PURE__ */ d("span", { style: u.is_running ? Kt : Vr, children: u.is_running ? "运行中" : u.enabled ? "已启用未就绪" : "已禁用" })
+          /* @__PURE__ */ s("span", { style: g.is_running ? tn : oo, children: g.is_running ? "运行中" : g.enabled ? "已启用未就绪" : "已禁用" })
         ] }),
-        /* @__PURE__ */ b("div", { style: { fontSize: 12, color: i("textSecondary"), marginTop: 12 }, children: [
+        /* @__PURE__ */ b("div", { style: { fontSize: 12, color: o("textSecondary"), marginTop: 12 }, children: [
           "支持: ",
-          u.supported_methods.map(Oe).join(" / ")
+          g.supported_methods.map(Ve).join(" / ")
         ] }),
         /* @__PURE__ */ b("div", { style: { display: "flex", gap: 8, marginTop: 16 }, children: [
-          /* @__PURE__ */ d("button", { style: re, onClick: () => y(u), children: "编辑" }),
-          /* @__PURE__ */ d("button", { style: re, onClick: () => _(u), children: u.enabled ? "禁用" : "启用" }),
-          /* @__PURE__ */ d("button", { style: { ...re, color: i("danger") }, onClick: () => I(u.id), children: "删除" })
+          /* @__PURE__ */ s("button", { style: se, onClick: () => u(g), children: "编辑" }),
+          /* @__PURE__ */ s("button", { style: se, onClick: () => L(g), children: g.enabled ? "禁用" : "启用" }),
+          /* @__PURE__ */ s("button", { style: { ...se, color: o("danger") }, onClick: () => k(g.id), children: "删除" })
         ] })
-      ] }, u.id)) })
+      ] }, g.id)) })
     ] }),
-    c && /* @__PURE__ */ d(
-      Lr,
+    d && /* @__PURE__ */ s(
+      Yr,
       {
-        editing: c,
-        kinds: a,
+        editing: d,
+        kinds: l,
         onCancel: () => f(null),
-        onSaved: (u) => {
-          f(null), h.success(u), p();
+        onSaved: (g) => {
+          f(null), p.success(g), y();
         },
-        onError: (u) => h.error(u)
+        onError: (g) => p.error(g)
       }
     )
   ] });
 }
-function Lr({
+function Yr({
   editing: e,
-  kinds: o,
-  onCancel: a,
+  kinds: i,
+  onCancel: l,
   onSaved: r,
   onError: n
 }) {
-  const [t, l] = L(e), [s, c] = L(!1), f = Xt(() => o.find((g) => g.kind === t.kind), [o, t.kind]), h = async () => {
+  const [t, a] = P(e), [c, d] = P(!1), f = an(() => i.find((h) => h.kind === t.kind), [i, t.kind]), p = async () => {
     if (!f) {
       n("未知的服务商类型");
       return;
     }
-    for (const g of f.field_descriptors)
-      if (g.required && !t.config[g.key]) {
-        n(`「${g.label}」必填`);
+    for (const h of f.field_descriptors)
+      if (h.required && !t.config[h.key]) {
+        n(`「${h.label}」必填`);
         return;
       }
-    if (!(t.mode === "edit" && t.originalId && t.id.trim() !== t.originalId && !window.confirm(
+    if (!(t.mode === "edit" && t.originalId && t.id.trim() !== t.originalId && !await en(
       `确认将实例 ID 从「${t.originalId}」重命名为「${t.id.trim()}」？
 
 所有历史订单的 provider_id 引用会在事务里同步更新；如果该商户号在第三方支付平台已经下过单，
-已发出去的回调地址（含原 ID）会失效——平台未来回调请求会路由不到本服务。`
+已发出去的回调地址（含原 ID）会失效——平台未来回调请求会路由不到本服务。`,
+      { title: "重命名服务商 ID", danger: !0 }
     ))) {
-      c(!0);
+      d(!0);
       try {
-        const p = (await q.adminUpsertProvider({
+        const y = (await $.adminUpsertProvider({
           id: t.id.trim(),
           original_id: t.originalId,
           kind: t.kind,
           enabled: t.enabled,
           config: t.config
         })).id || t.id.trim();
-        r(t.mode === "create" ? `已创建 ${p}` : `已更新 ${p}`);
-      } catch (g) {
-        n("保存失败: " + g.message);
+        r(t.mode === "create" ? `已创建 ${y}` : `已更新 ${y}`);
+      } catch (h) {
+        n("保存失败: " + h.message);
       } finally {
-        c(!1);
+        d(!1);
       }
     }
   };
-  return /* @__PURE__ */ d("div", { style: Gr, onClick: a, children: /* @__PURE__ */ b("div", { style: Yr, onClick: (g) => g.stopPropagation(), children: [
-    /* @__PURE__ */ b("div", { style: $r, children: [
+  return /* @__PURE__ */ s("div", { style: ao, onClick: l, children: /* @__PURE__ */ b("div", { style: so, onClick: (h) => h.stopPropagation(), children: [
+    /* @__PURE__ */ b("div", { style: co, children: [
       /* @__PURE__ */ b("h3", { style: { margin: 0, fontSize: 16, fontWeight: 600 }, children: [
         t.mode === "create" ? "添加" : "编辑",
         "服务商 - ",
         (f == null ? void 0 : f.name) || t.kind
       ] }),
-      /* @__PURE__ */ d("button", { style: Qr, onClick: a, children: "×" })
+      /* @__PURE__ */ s("button", { style: uo, onClick: l, children: "×" })
     ] }),
-    /* @__PURE__ */ b("div", { style: Xr, children: [
-      /* @__PURE__ */ d(
-        qe,
+    /* @__PURE__ */ b("div", { style: fo, children: [
+      /* @__PURE__ */ s(
+        Oe,
         {
           label: "实例 ID",
           description: t.mode === "edit" ? "可修改。改名时后端会在事务里同步更新所有历史订单的 provider_id 引用，回调路径也会立即指向新名字。" : "可选。留空则自动生成 epay_xunhu_1 之类的序号；也可以填一个有意义的名字如 xunhu_main / xunhu_backup 便于多商户号区分。",
-          children: /* @__PURE__ */ d(
+          children: /* @__PURE__ */ s(
             "input",
             {
               type: "text",
               value: t.id,
-              onChange: (g) => l({ ...t, id: g.target.value }),
+              onChange: (h) => a({ ...t, id: h.target.value }),
               placeholder: t.mode === "create" ? "留空自动生成" : "",
-              style: { ...We, fontFamily: i("fontMono"), fontSize: 12 }
+              style: { ...je, fontFamily: o("fontMono"), fontSize: 12 }
             }
           )
         }
       ),
-      /* @__PURE__ */ d(qe, { label: "启用", children: /* @__PURE__ */ b("label", { style: { display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }, children: [
-        /* @__PURE__ */ d(
+      /* @__PURE__ */ s(Oe, { label: "启用", children: /* @__PURE__ */ b("label", { style: { display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }, children: [
+        /* @__PURE__ */ s(
           "input",
           {
             type: "checkbox",
             checked: t.enabled,
-            onChange: (g) => l({ ...t, enabled: g.target.checked })
+            onChange: (h) => a({ ...t, enabled: h.target.checked })
           }
         ),
-        /* @__PURE__ */ d("span", { style: { fontSize: 13, color: i("textSecondary") }, children: "勾选后该服务商参与支付路由" })
+        /* @__PURE__ */ s("span", { style: { fontSize: 13, color: o("textSecondary") }, children: "勾选后该服务商参与支付路由" })
       ] }) }),
-      f == null ? void 0 : f.field_descriptors.map((g) => /* @__PURE__ */ d(qe, { label: g.label, description: g.description, required: g.required, children: g.type === "textarea" ? /* @__PURE__ */ d(
+      f == null ? void 0 : f.field_descriptors.map((h) => /* @__PURE__ */ s(Oe, { label: h.label, description: h.description, required: h.required, children: h.type === "textarea" ? /* @__PURE__ */ s(
         "textarea",
         {
-          value: t.config[g.key] || "",
-          onChange: (p) => l({ ...t, config: { ...t.config, [g.key]: p.target.value } }),
-          placeholder: g.placeholder,
-          style: { ...We, minHeight: 120, fontFamily: i("fontMono"), fontSize: 12 }
+          value: t.config[h.key] || "",
+          onChange: (y) => a({ ...t, config: { ...t.config, [h.key]: y.target.value } }),
+          placeholder: h.placeholder,
+          style: { ...je, minHeight: 120, fontFamily: o("fontMono"), fontSize: 12 }
         }
-      ) : g.type === "bool" ? /* @__PURE__ */ d("label", { style: { display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }, children: /* @__PURE__ */ d(
+      ) : h.type === "bool" ? /* @__PURE__ */ s("label", { style: { display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }, children: /* @__PURE__ */ s(
         "input",
         {
           type: "checkbox",
-          checked: t.config[g.key] === "true",
-          onChange: (p) => l({ ...t, config: { ...t.config, [g.key]: p.target.checked ? "true" : "false" } })
+          checked: t.config[h.key] === "true",
+          onChange: (y) => a({ ...t, config: { ...t.config, [h.key]: y.target.checked ? "true" : "false" } })
         }
-      ) }) : g.type === "method-multi" ? /* @__PURE__ */ d(
-        Nr,
+      ) }) : h.type === "method-multi" ? /* @__PURE__ */ s(
+        Jr,
         {
           candidates: f.supported_methods,
-          value: t.config[g.key] || "",
-          onChange: (p) => l({ ...t, config: { ...t.config, [g.key]: p } })
+          value: t.config[h.key] || "",
+          onChange: (y) => a({ ...t, config: { ...t.config, [h.key]: y } })
         }
-      ) : /* @__PURE__ */ d(
+      ) : /* @__PURE__ */ s(
         "input",
         {
-          type: g.type === "password" ? "password" : g.type === "number" ? "number" : "text",
-          value: t.config[g.key] || "",
-          onChange: (p) => l({ ...t, config: { ...t.config, [g.key]: p.target.value } }),
-          placeholder: g.placeholder,
-          style: We
+          type: h.type === "password" ? "password" : h.type === "number" ? "number" : "text",
+          value: t.config[h.key] || "",
+          onChange: (y) => a({ ...t, config: { ...t.config, [h.key]: y.target.value } }),
+          placeholder: h.placeholder,
+          style: je
         }
-      ) }, g.key))
+      ) }, h.key))
     ] }),
-    /* @__PURE__ */ b("div", { style: Zr, children: [
-      /* @__PURE__ */ d("button", { style: re, onClick: a, disabled: s, children: "取消" }),
-      /* @__PURE__ */ d("button", { style: Jt, onClick: h, disabled: s, children: s ? "保存中..." : "保存" })
+    /* @__PURE__ */ b("div", { style: go, children: [
+      /* @__PURE__ */ s("button", { style: se, onClick: l, disabled: c, children: "取消" }),
+      /* @__PURE__ */ s("button", { style: nn, onClick: p, disabled: c, children: c ? "保存中..." : "保存" })
     ] })
   ] }) });
 }
-function Nr({
+function Jr({
   candidates: e,
-  value: o,
-  onChange: a
+  value: i,
+  onChange: l
 }) {
-  const r = new Set(o.split(",").map((t) => t.trim()).filter(Boolean)), n = (t) => {
+  const r = new Set(i.split(",").map((t) => t.trim()).filter(Boolean)), n = (t) => {
     r.has(t) ? r.delete(t) : r.add(t);
-    const l = e.filter((s) => r.has(s)).join(",");
-    a(l);
+    const a = e.filter((c) => r.has(c)).join(",");
+    l(a);
   };
   return /* @__PURE__ */ b("div", { style: { display: "flex", flexWrap: "wrap", gap: 12 }, children: [
     e.map((t) => {
-      const l = r.has(t);
+      const a = r.has(t);
       return /* @__PURE__ */ b(
         "label",
         {
@@ -2872,168 +3091,158 @@ function Nr({
             alignItems: "center",
             gap: 8,
             padding: "8px 14px",
-            border: `1px solid ${i(l ? "primary" : "glassBorder")}`,
-            borderRadius: i("radiusMd"),
-            background: i(l ? "primarySubtle" : "bg"),
-            color: i(l ? "primary" : "text"),
+            border: `1px solid ${o(a ? "primary" : "glassBorder")}`,
+            borderRadius: o("radiusMd"),
+            background: o(a ? "primarySubtle" : "bg"),
+            color: o(a ? "primary" : "text"),
             cursor: "pointer",
             fontSize: 13,
-            fontWeight: l ? 600 : 400,
+            fontWeight: a ? 600 : 400,
             transition: "all 0.15s"
           },
           children: [
-            /* @__PURE__ */ d(
+            /* @__PURE__ */ s(
               "input",
               {
                 type: "checkbox",
-                checked: l,
+                checked: a,
                 onChange: () => n(t),
                 style: { margin: 0 }
               }
             ),
-            Oe(t)
+            Ve(t)
           ]
         },
         t
       );
     }),
-    e.length === 0 && /* @__PURE__ */ d("span", { style: { fontSize: 12, color: i("textTertiary") }, children: "该协议没有可选的支付方式" })
+    e.length === 0 && /* @__PURE__ */ s("span", { style: { fontSize: 12, color: o("textTertiary") }, children: "该协议没有可选的支付方式" })
   ] });
 }
-function qe({
+function Oe({
   label: e,
-  description: o,
-  required: a,
+  description: i,
+  required: l,
   children: r
 }) {
   return /* @__PURE__ */ b("div", { style: { marginBottom: 16 }, children: [
-    /* @__PURE__ */ b("label", { style: Kr, children: [
+    /* @__PURE__ */ b("label", { style: io, children: [
       e,
-      a && /* @__PURE__ */ d("span", { style: { color: i("danger"), marginLeft: 4 }, children: "*" })
+      l && /* @__PURE__ */ s("span", { style: { color: o("danger"), marginLeft: 4 }, children: "*" })
     ] }),
     r,
-    o && /* @__PURE__ */ d("div", { style: Jr, children: o })
+    i && /* @__PURE__ */ s("div", { style: lo, children: i })
   ] });
 }
-function Oe(e) {
+function Ve(e) {
   return { alipay: "支付宝", wxpay: "微信支付" }[e] || e;
 }
-function zr(e) {
-  const o = {};
-  for (const a of e.field_descriptors)
-    a.type === "bool" ? o[a.key] = "false" : o[a.key] = "";
-  return o;
+function Qr(e) {
+  const i = {};
+  for (const l of e.field_descriptors)
+    l.type === "bool" ? i[l.key] = "false" : i[l.key] = "";
+  return i;
 }
-const Ue = {
+const He = {
   maxWidth: 1280,
   margin: "0 auto",
   padding: "24px 24px 48px",
-  color: i("text")
-}, Dr = {
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  marginBottom: 20
-}, Fr = {
-  margin: 0,
-  fontSize: 22,
-  fontWeight: 600,
-  letterSpacing: "-0.01em"
-}, Rt = {
+  color: o("text")
+}, $t = {
   padding: "40px 0",
   textAlign: "center",
-  color: i("textSecondary")
-}, qr = {
+  color: o("textSecondary")
+}, Xr = {
   margin: "4px 0 16px",
   fontSize: 13,
-  color: i("textSecondary")
-}, At = {
+  color: o("textSecondary")
+}, Dt = {
   margin: "0 0 12px",
   fontSize: 14,
   fontWeight: 600,
-  color: i("text"),
+  color: o("text"),
   textTransform: "uppercase",
   letterSpacing: "0.04em"
-}, Pt = {
-  border: `1px solid ${i("glassBorder")}`,
-  borderRadius: i("radiusLg"),
-  background: i("bgSurface"),
+}, Ft = {
+  border: `1px solid ${o("glassBorder")}`,
+  borderRadius: o("radiusLg"),
+  background: o("bgSurface"),
   padding: 20,
   marginBottom: 20
-}, Ur = {
+}, Zr = {
   display: "grid",
   gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
   gap: 12
-}, Wr = {
-  border: `1px solid ${i("glassBorder")}`,
-  borderRadius: i("radiusMd"),
+}, eo = {
+  border: `1px solid ${o("glassBorder")}`,
+  borderRadius: o("radiusMd"),
   padding: 16,
-  background: i("bg")
-}, Or = {
+  background: o("bgElevated")
+}, to = {
   display: "grid",
   gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
   gap: 12
-}, jr = {
-  border: `1px solid ${i("glassBorder")}`,
-  borderRadius: i("radiusMd"),
+}, no = {
+  border: `1px solid ${o("glassBorder")}`,
+  borderRadius: o("radiusMd"),
   padding: 16,
-  background: i("bg")
-}, Hr = {
-  color: i("textTertiary"),
+  background: o("bgElevated")
+}, ro = {
+  color: o("textTertiary"),
   textAlign: "center",
   padding: "24px 0",
   fontSize: 14
-}, Kt = {
+}, tn = {
   padding: "2px 8px",
   borderRadius: 4,
-  background: i("successSubtle"),
-  color: i("success"),
+  background: o("successSubtle"),
+  color: o("success"),
   fontSize: 11,
   fontWeight: 600
-}, Vr = {
-  ...Kt,
-  background: i("warningSubtle"),
-  color: i("warning")
-}, re = {
+}, oo = {
+  ...tn,
+  background: o("warningSubtle"),
+  color: o("warning")
+}, se = {
   padding: "6px 14px",
-  border: `1px solid ${i("glassBorder")}`,
-  borderRadius: i("radiusMd"),
+  border: `1px solid ${o("glassBorder")}`,
+  borderRadius: o("radiusMd"),
   background: "transparent",
-  color: i("text"),
+  color: o("text"),
   cursor: "pointer",
   fontSize: 13,
   fontWeight: 500
-}, Jt = {
+}, nn = {
   padding: "8px 16px",
   border: "none",
-  borderRadius: i("radiusMd"),
-  background: i("primary"),
-  color: "#fff",
+  borderRadius: o("radiusMd"),
+  background: o("primary"),
+  color: o("textInverse"),
   cursor: "pointer",
   fontSize: 13,
   fontWeight: 600
-}, We = {
+}, je = {
   width: "100%",
   padding: "8px 12px",
-  border: `1px solid ${i("glassBorder")}`,
-  borderRadius: i("radiusMd"),
-  background: i("bg"),
-  color: i("text"),
+  border: `1px solid ${o("glassBorder")}`,
+  borderRadius: o("radiusMd"),
+  background: o("bgElevated"),
+  color: o("text"),
   fontSize: 13,
   boxSizing: "border-box"
-}, Kr = {
+}, io = {
   display: "block",
   fontSize: 12,
   fontWeight: 600,
-  color: i("textSecondary"),
+  color: o("textSecondary"),
   marginBottom: 6,
   textTransform: "uppercase",
   letterSpacing: "0.03em"
-}, Jr = {
+}, lo = {
   marginTop: 6,
   fontSize: 11,
-  color: i("textTertiary")
-}, Gr = {
+  color: o("textTertiary")
+}, ao = {
   position: "fixed",
   top: 0,
   left: 0,
@@ -3044,47 +3253,47 @@ const Ue = {
   alignItems: "center",
   justifyContent: "center",
   zIndex: 1e3
-}, Yr = {
+}, so = {
   width: 600,
   maxWidth: "92vw",
   maxHeight: "90vh",
   display: "flex",
   flexDirection: "column",
-  background: i("bgSurface"),
-  border: `1px solid ${i("glassBorder")}`,
-  borderRadius: i("radiusLg"),
+  background: o("bgSurface"),
+  border: `1px solid ${o("glassBorder")}`,
+  borderRadius: o("radiusLg"),
   overflow: "hidden"
-}, $r = {
+}, co = {
   padding: "16px 20px",
-  borderBottom: `1px solid ${i("glassBorder")}`,
+  borderBottom: `1px solid ${o("glassBorder")}`,
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between"
-}, Qr = {
+}, uo = {
   background: "transparent",
   border: "none",
-  color: i("textSecondary"),
+  color: o("textSecondary"),
   fontSize: 24,
   cursor: "pointer",
   lineHeight: 1
-}, Xr = {
+}, fo = {
   padding: 20,
   overflowY: "auto",
   flex: 1
-}, Zr = {
+}, go = {
   padding: "12px 20px",
-  borderTop: `1px solid ${i("glassBorder")}`,
+  borderTop: `1px solid ${o("glassBorder")}`,
   display: "flex",
   justifyContent: "flex-end",
   gap: 8
-}, no = {
+}, yo = {
   routes: [
-    { path: "/recharge", component: An },
-    { path: "/orders", component: Wn },
-    { path: "/admin/orders", component: er },
-    { path: "/admin/providers", component: _r }
+    { path: "/recharge", component: Dn },
+    { path: "/orders", component: Yn },
+    { path: "/admin/orders", component: ar },
+    { path: "/admin/providers", component: Gr }
   ]
 };
 export {
-  no as default
+  yo as default
 };

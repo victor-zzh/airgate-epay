@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import QRCode from 'qrcode';
 import { cssVar } from '@doudou-start/airgate-theme';
 import { api, type Order, type MethodInfo } from './api';
+import { formatRechargeCredit } from './money';
 
 /**
  * RechargePage 充值页面（用户级独立页面）
@@ -146,7 +147,7 @@ export default function RechargePage() {
           <div style={panelStyle}>
             <p style={{ margin: 0, color: cssVar('text') }}>
               订单 <code style={inlineCodeStyle}>{order.out_trade_no}</code> 已支付，金额{' '}
-              <strong style={{ color: cssVar('success') }}>¥{order.amount.toFixed(2)}</strong> 已入账。
+              <strong style={{ color: cssVar('success') }}>{formatRechargeCredit(order.amount)}</strong> 已入账。
             </p>
             <button style={{ ...primaryBtnStyle, marginTop: 20 }} onClick={handleReset}>再次充值</button>
           </div>
@@ -165,7 +166,7 @@ export default function RechargePage() {
                 生成二维码中...
               </div>
             )}
-            <div style={qrAmountStyle}>¥ {order.amount.toFixed(2)}</div>
+            <div style={qrAmountStyle}>{formatRechargeCredit(order.amount)}</div>
             <div style={{ color: cssVar('textSecondary'), fontSize: 13 }}>
               请使用 {methodLabel(order.method)} 扫码完成付款
             </div>
@@ -208,6 +209,9 @@ export default function RechargePage() {
       <h2 style={titleStyle}>账户充值</h2>
 
       <div style={panelStyle}>
+        <p style={rateHintStyle}>
+          充值比例：<strong style={{ color: cssVar('text') }}>1 CNY = $1</strong>
+        </p>
         <section>
           <h3 style={sectionTitleStyle}>选择金额</h3>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
@@ -218,7 +222,7 @@ export default function RechargePage() {
                 onClick={() => setAmount(v)}
                 style={amount === v ? amountBtnActive : amountBtn}
               >
-                ¥{v}
+                {formatRechargeCredit(v, { compact: true })}
               </button>
             ))}
           </div>
@@ -233,7 +237,7 @@ export default function RechargePage() {
               onChange={(e) => setAmount(Number(e.target.value))}
               style={inputStyle}
             />
-            <span>元</span>
+            <span>$</span>
           </div>
         </section>
 
@@ -323,6 +327,17 @@ const panelStyle: React.CSSProperties = {
 
 const sectionStyle: React.CSSProperties = {
   marginTop: 28,
+};
+
+const rateHintStyle: React.CSSProperties = {
+  margin: '0 0 20px',
+  padding: '10px 12px',
+  border: `1px solid ${cssVar('glassBorder')}`,
+  borderRadius: cssVar('radiusMd'),
+  background: cssVar('bgElevated'),
+  color: cssVar('textSecondary'),
+  fontSize: 13,
+  lineHeight: 1.6,
 };
 
 const sectionTitleStyle: React.CSSProperties = {

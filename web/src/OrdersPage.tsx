@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import QRCode from 'qrcode';
 import { cssVar } from '@doudou-start/airgate-theme';
 import { api, type Order } from './api';
+import { formatRechargeCredit } from './money';
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -83,7 +84,7 @@ export default function OrdersPage() {
                 <h3 style={{ margin: '0 0 12px', color: cssVar('success') }}>支付成功</h3>
                 <p style={{ margin: 0, color: cssVar('text'), fontSize: 14 }}>
                   订单 <code style={codeStyle}>{payingOrder.out_trade_no}</code> 已支付{' '}
-                  <strong>¥{payingOrder.amount.toFixed(2)}</strong>
+                  <strong>{formatRechargeCredit(payingOrder.amount)}</strong>
                 </p>
                 <button style={{ ...btnStyle, marginTop: 16 }} onClick={closePayModal}>关闭</button>
               </>
@@ -97,7 +98,7 @@ export default function OrdersPage() {
                     生成二维码中...
                   </div>
                 )}
-                <div style={{ marginTop: 12, fontWeight: 600, fontSize: 20, color: cssVar('text') }}>¥ {payingOrder.amount.toFixed(2)}</div>
+                <div style={{ marginTop: 12, fontWeight: 600, fontSize: 20, color: cssVar('text') }}>{formatRechargeCredit(payingOrder.amount)}</div>
                 <div style={{ color: cssVar('textSecondary'), fontSize: 13, marginTop: 4 }}>
                   请使用 {methodLabel(payingOrder.method)} 扫码完成付款
                 </div>
@@ -149,7 +150,7 @@ export default function OrdersPage() {
                 {orders.map((o) => (
                   <tr key={o.id}>
                     <td style={tdStyle}><code style={codeStyle}>{o.out_trade_no}</code></td>
-                    <td style={{ ...tdStyle, fontWeight: 600 }}>¥{o.amount.toFixed(2)}</td>
+                    <td style={{ ...tdStyle, fontWeight: 600 }}>{formatRechargeCredit(o.amount)}</td>
                     <td style={tdStyle}>{methodLabel(o.method)}</td>
                     <td style={{ ...tdStyle, color: statusColor(o.status), fontWeight: 600 }}>{statusLabel(o.status)}</td>
                     <td style={{ ...tdStyle, color: cssVar('textSecondary') }}>{formatTime(o.created_at)}</td>

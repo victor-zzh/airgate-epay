@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { cssVar } from '@doudou-start/airgate-theme';
 import { api, type Order, type OrderStats } from './api';
+import { formatRechargeCredit } from './money';
 
 const EMPTY_STATS: OrderStats = {
   total: 0, paid: 0, pending: 0, expired: 0, failed: 0, cancelled: 0, refunded: 0,
@@ -79,8 +80,8 @@ export default function AdminOrdersPage() {
         <StatCard label="已支付" value={stats.paid} accent={cssVar('success')} />
         <StatCard label="待支付" value={stats.pending} accent={cssVar('warning')} />
         <StatCard label="已过期" value={stats.expired} />
-        <StatCard label="累计收款" value={`¥${stats.total_amount_paid.toFixed(2)}`} accent={cssVar('success')} />
-        <StatCard label="今日收款" value={`¥${stats.today_amount_paid.toFixed(2)}`} accent={cssVar('success')} />
+        <StatCard label="累计收款" value={formatRechargeCredit(stats.total_amount_paid)} accent={cssVar('success')} />
+        <StatCard label="今日收款" value={formatRechargeCredit(stats.today_amount_paid)} accent={cssVar('success')} />
       </div>
 
       {/* 筛选 + 表格 + 分页 卡片 */}
@@ -132,7 +133,7 @@ export default function AdminOrdersPage() {
                         ? <span style={{ color: cssVar('text') }}>{o.user_email}</span>
                         : <span style={{ color: cssVar('textTertiary') }}>#{o.user_id}</span>}
                     </td>
-                    <td style={{ ...tdStyle, fontWeight: 600 }}>¥{o.amount.toFixed(2)}</td>
+                    <td style={{ ...tdStyle, fontWeight: 600 }}>{formatRechargeCredit(o.amount)}</td>
                     <td style={tdStyle}>{methodLabel(o.method)}</td>
                     <td style={{ ...tdStyle, color: cssVar('textSecondary') }}>{o.provider_id || '-'}</td>
                     <td style={{ ...tdStyle, color: statusColor(o.status), fontWeight: 600 }}>{statusLabel(o.status)}</td>
