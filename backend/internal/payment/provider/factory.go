@@ -70,9 +70,10 @@ type KindMeta struct {
 // FieldDescriptor admin 配置表单的字段定义。
 //
 // Type 取值：
-//   text / password / textarea / number / bool — 普通输入控件
-//   method-multi — 多选支付方式（前端渲染成 checkbox 组），可选项是该 Kind 的 SupportedMethods，
-//                  存进 ConfigRecord.Config 时是逗号分隔的 method key 字符串（"alipay,wxpay"）
+//
+//	text / password / textarea / number / bool — 普通输入控件
+//	method-multi — 多选支付方式（前端渲染成 checkbox 组），可选项是该 Kind 的 SupportedMethods，
+//	               存进 ConfigRecord.Config 时是逗号分隔的 method key 字符串（"alipay,wxpay"）
 type FieldDescriptor struct {
 	Key         string `json:"key"`         // 字段在 ConfigRecord.Config 里的 key
 	Label       string `json:"label"`       // 显示名

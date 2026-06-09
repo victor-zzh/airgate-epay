@@ -4,7 +4,6 @@ import {
   api,
   type ProviderItem,
   type ProviderKindMeta,
-  type ProviderFieldDescriptor,
 } from './api';
 import { useToast } from './Toast';
 
@@ -19,7 +18,7 @@ function pluginConfirm(message: string, options?: PluginConfirmOptions): Promise
   if (w.airgate?.confirm) {
     return w.airgate.confirm(message, options);
   }
-  // eslint-disable-next-line no-alert
+   
   return Promise.resolve(window.confirm(message));
 }
 

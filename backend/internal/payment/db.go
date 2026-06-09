@@ -13,9 +13,9 @@ import (
 // schemaSQL 包含支付插件自有表的建表语句。
 //
 // 我们刻意不使用 ent 之类的代码生成框架——核心原因：
-//   1. 表结构稳定，手写 DDL 没有维护负担
-//   2. 避免引入 ent 代码生成步骤，让构建链路更短
-//   3. 余额相关查询直接走 raw SQL 与 core 表交互，不需要再生一份 ent client
+//  1. 表结构稳定，手写 DDL 没有维护负担
+//  2. 避免引入 ent 代码生成步骤，让构建链路更短
+//  3. 余额相关查询直接走 raw SQL 与 core 表交互，不需要再生一份 ent client
 //
 // 表名前缀 payment_ 防止与 core 表冲突；金额统一 decimal(20,8) 与 core users.balance 对齐。
 //

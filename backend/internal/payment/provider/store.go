@@ -155,7 +155,8 @@ func (s *Store) Upsert(ctx context.Context, r ConfigRecord) error {
 // NextIDForKind 为某个 kind 生成下一个未占用的实例 ID。
 //
 // 命名规则：{kind}_{N}，N 从 1 开始递增。例如：
-//   epay_xunhu_1, epay_xunhu_2, epay_xunhu_3 ...
+//
+//	epay_xunhu_1, epay_xunhu_2, epay_xunhu_3 ...
 //
 // 实现策略：扫描所有以 "{kind}_" 开头的现有 id，提取尾部数字取最大值 +1。
 // 不依赖 SEQUENCE，避免删除某个实例后再创建出现 id 跳号但找不到漏洞的复杂度。
@@ -194,8 +195,8 @@ func (s *Store) NextIDForKind(ctx context.Context, kind string) (string, error) 
 // Rename 在一个事务里把 Provider 实例 ID 从 oldID 改成 newID。
 //
 // 同步更新两张表：
-//   1. payment_provider_configs.id（PRIMARY KEY）
-//   2. payment_orders.provider_id（历史订单的服务商引用）
+//  1. payment_provider_configs.id（PRIMARY KEY）
+//  2. payment_orders.provider_id（历史订单的服务商引用）
 //
 // 任一失败整体回滚。检查：
 //   - newID 不能与现有任何记录冲突（除了 oldID 自己 — 大小写差异等情况）
