@@ -47,11 +47,11 @@ type Order struct {
 
 // Service 封装支付订单核心业务：创建/查询订单、处理回调、给用户加余额。
 //
-// 关键设计：所有"加余额"路径都收敛在 markPaid，并在同一个 SQL 事务里完成
-// "锁订单 → 锁用户 → 更新余额 → 写流水 → 改订单状态"，保证：
-//   - 重复回调不会重复加余额（先检查 status='paid' 再处理）
-//   - 余额变更与订单状态严格一致
-//   - balance_logs 审计齐全
+// 关键设计：所有"加余额"路径都收敛在 markPaid。加余额经
+// Host.Invoke("users.update_balance") 由 core 完成（余额规则、balance_logs
+// 流水、幂等均在 core 闭环），幂等键 = "epay:<out_trade_no>"，保证：
+//   - 重复回调/崩溃重试不会重复加余额（core 侧幂等键唯一索引兜底）
+//   - 插件自有事务只管 payment_orders，不再直写 core 的 users / balance_logs 表
 //
 // 与旧版的差异：
 //   - 不再持有 channels map，改为持有 *provider.Registry
@@ -60,6 +60,7 @@ type Order struct {
 type Service struct {
 	logger      *slog.Logger
 	db          *sql.DB
+	host        sdk.Host
 	registry    *provider.Registry
 	minAmount   float64
 	maxAmount   float64
@@ -70,10 +71,11 @@ type Service struct {
 }
 
 // NewService 构造 Service
-func NewService(logger *slog.Logger, db *sql.DB, registry *provider.Registry, opts ServiceOptions) *Service {
+func NewService(logger *slog.Logger, db *sql.DB, host sdk.Host, registry *provider.Registry, opts ServiceOptions) *Service {
 	return &Service{
 		logger:      logger,
 		db:          db,
+		host:        host,
 		registry:    registry,
 		minAmount:   opts.MinAmount,
 		maxAmount:   opts.MaxAmount,
@@ -269,21 +271,20 @@ func (s *Service) HandleCallback(ctx context.Context, providerID string, req pro
 	return res, nil
 }
 
-// markPaid 在事务里完成"订单 paid + 用户加余额 + 写流水"。
+// markPaid 完成"用户加余额 + 订单 paid"。
 //
-// 幂等保证：先 SELECT ... FOR UPDATE 锁住订单行，看到 status='paid' 直接返回。
+// 加余额经 Host.Invoke("users.update_balance") 由 core 完成，幂等键
+// "epay:<out_trade_no>"（core 侧 balance_logs 唯一索引）保证同一笔订单只入账一次：
+//   - 重复回调：第 1 步看到 status='paid' 直接返回；
+//   - 入账成功但第 3 步标记订单失败/进程崩溃：订单保持 pending，服务商重试回调
+//     重新走到第 2 步，core 幂等命中（不重复加钱），随后补完订单标记。
+//
 // 金额校验：用回调金额与订单金额比对，防止假回调。
 func (s *Service) markPaid(ctx context.Context, cb *provider.CallbackResult) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	tx, err := s.db.BeginTx(ctx, nil)
-	if err != nil {
-		return fmt.Errorf("开启事务失败: %w", err)
-	}
-	defer func() { _ = tx.Rollback() }()
-
-	// 1) 锁订单
+	// 1) 读订单 + 校验状态/金额
 	var (
 		orderID    int64
 		userID     int64
@@ -292,13 +293,12 @@ func (s *Service) markPaid(ctx context.Context, cb *provider.CallbackResult) err
 		method     string
 		providerID string
 	)
-	err = tx.QueryRowContext(ctx, `
+	err := s.db.QueryRowContext(ctx, `
 		SELECT id, user_id, amount, status, method, provider_id FROM payment_orders
 		WHERE out_trade_no = $1
-		FOR UPDATE
 	`, cb.OutTradeNo).Scan(&orderID, &userID, &amount, &status, &method, &providerID)
 	if err != nil {
-		return fmt.Errorf("锁订单失败: %w", err)
+		return fmt.Errorf("查询订单失败: %w", err)
 	}
 	if status == "paid" {
 		s.logger.Info("payment_callback_idempotent_hit",
@@ -311,58 +311,62 @@ func (s *Service) markPaid(ctx context.Context, cb *provider.CallbackResult) err
 	if status != "pending" {
 		return fmt.Errorf("订单状态不允许标记为 paid: %s", status)
 	}
-
-	// 2) 金额校验（允许 1 分钱误差）
+	// 金额校验（允许 1 分钱误差）
 	if cb.Amount > 0 && absDiff(cb.Amount, amount) > 0.01 {
 		return fmt.Errorf("回调金额 %.2f 与订单金额 %.2f 不匹配", cb.Amount, amount)
 	}
 
-	// 3) 锁用户 + 加余额
-	var beforeBalance float64
-	err = tx.QueryRowContext(ctx, `SELECT balance FROM users WHERE id = $1 FOR UPDATE`, userID).Scan(&beforeBalance)
-	if err != nil {
-		return fmt.Errorf("锁用户失败: %w", err)
+	// 2) 经 core 入账。失败直接返回——余额未变、订单保持 pending，等服务商重试回调
+	if s.host == nil {
+		return errors.New("host service 不可用，无法入账（请确认 core 版本支持 users.update_balance）")
 	}
-	afterBalance := beforeBalance + amount
-	if _, err := tx.ExecContext(ctx, `UPDATE users SET balance = $1, updated_at = NOW() WHERE id = $2`, afterBalance, userID); err != nil {
-		s.logger.Error("payment_balance_update_failed",
-			sdk.LogFieldUserID, userID,
-			"amount", amount,
-			"out_trade_no", cb.OutTradeNo,
-			sdk.LogFieldError, err,
-		)
-		return fmt.Errorf("更新余额失败: %w", err)
-	}
-
-	// 4) 写 balance_logs
 	methodLabel := map[string]string{
 		"wxpay": "微信支付", "alipay": "支付宝", "qqpay": "QQ钱包", "bank": "银行卡",
 	}[method]
 	if methodLabel == "" {
 		methodLabel = method
 	}
-	remark := fmt.Sprintf("在线充值（%s）", methodLabel)
-	if _, err := tx.ExecContext(ctx, `
-		INSERT INTO balance_logs
-			(action, amount, before_balance, after_balance, remark, created_at, user_balance_logs)
-		VALUES ('add', $1, $2, $3, $4, NOW(), $5)
-	`, amount, beforeBalance, afterBalance, remark, userID); err != nil {
-		return fmt.Errorf("写 balance_logs 失败: %w", err)
+	resp, err := s.host.Invoke(ctx, sdk.HostInvokeRequest{
+		Method: "users.update_balance",
+		Payload: map[string]interface{}{
+			"user_id":         userID,
+			"action":          "add",
+			"amount":          amount,
+			"remark":          fmt.Sprintf("在线充值（%s）", methodLabel),
+			"idempotency_key": "epay:" + cb.OutTradeNo,
+		},
+	})
+	if err != nil {
+		s.logger.Error("payment_balance_update_failed",
+			sdk.LogFieldUserID, userID,
+			"amount", amount,
+			"out_trade_no", cb.OutTradeNo,
+			sdk.LogFieldError, err,
+		)
+		return fmt.Errorf("入账失败: %w", err)
+	}
+	if resp != nil && resp.Status == "error" {
+		msg, _ := resp.Payload["message"].(string)
+		return fmt.Errorf("入账失败: %s", msg)
 	}
 
-	// 5) 改订单状态
+	// 3) 标记订单 paid（WHERE status='pending' 防并发重复标记）
 	payload, _ := json.Marshal(cb.Raw)
-	if _, err := tx.ExecContext(ctx, `
+	if _, err := s.db.ExecContext(ctx, `
 		UPDATE payment_orders
 		SET status = 'paid', paid_at = NOW(), notify_payload = $1, updated_at = NOW()
-		WHERE id = $2
+		WHERE id = $2 AND status = 'pending'
 	`, payload, orderID); err != nil {
+		// 余额已入账（幂等键保证重试不重复），仅订单标记失败：返回错误让回调重试补标记
+		s.logger.Error("payment_order_mark_paid_failed",
+			"out_trade_no", cb.OutTradeNo,
+			"order_id", orderID,
+			sdk.LogFieldUserID, userID,
+			sdk.LogFieldError, err,
+		)
 		return fmt.Errorf("更新订单状态失败: %w", err)
 	}
 
-	if err := tx.Commit(); err != nil {
-		return fmt.Errorf("提交事务失败: %w", err)
-	}
 	s.logger.Info("payment_marked_paid",
 		"out_trade_no", cb.OutTradeNo,
 		"order_id", orderID,
@@ -370,8 +374,6 @@ func (s *Service) markPaid(ctx context.Context, cb *provider.CallbackResult) err
 		"amount", amount,
 		"method", method,
 		"provider", providerID,
-		"before_balance", beforeBalance,
-		"after_balance", afterBalance,
 	)
 	return nil
 }

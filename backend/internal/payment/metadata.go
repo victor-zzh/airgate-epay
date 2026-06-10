@@ -40,11 +40,13 @@ func BuildPluginInfo() sdk.PluginInfo {
 		Description: "多渠道支付插件：易支付（虎皮椒/彩虹）/ 支付宝官方 / 微信支付官方",
 		Author:      "AirGate",
 		Type:        sdk.PluginTypeExtension,
-		// epay 不调用 HostService（payment 业务自己闭环），声明空 capabilities 让 core
-		// 进入 0.3.0 capability 模型而非 sdk_version 兼容路径。
+		// 加余额经 users.update_balance 由 core 入账（幂等键防重复），插件不再直写
+		// core 的 users / balance_logs 表。
 		// 注：当前仍读 db_dsn 写 public.payment_*；ADR-0001 Decision 5 的 schema 隔离
-		// 留给"未来 cleanup"——本次只完成 capability 声明这一层。
-		Capabilities: []sdk.Capability{},
+		// 留给"未来 cleanup"。
+		Capabilities: []sdk.Capability{
+			sdk.CapabilityForHostMethod("users.update_balance"),
+		},
 
 		FrontendPages: []sdk.FrontendPage{
 			{

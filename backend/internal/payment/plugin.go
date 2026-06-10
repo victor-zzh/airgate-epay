@@ -25,6 +25,7 @@ type Plugin struct {
 	logger     *slog.Logger
 	ctx        sdk.PluginContext
 	db         *sql.DB
+	host       sdk.Host
 	store      *provider.Store
 	registry   *provider.Registry
 	svc        *Service
@@ -90,6 +91,15 @@ func (p *Plugin) Init(ctx sdk.PluginContext) error {
 	p.db = db
 	p.store = provider.NewStore(db)
 
+	// 经 sdk.HostAware 拿 core 反向调用客户端：加余额改走 users.update_balance，
+	// 不再直写 core 的 users / balance_logs 表
+	if hostAware, ok := ctx.(sdk.HostAware); ok {
+		p.host = hostAware.Host()
+	}
+	if p.host == nil {
+		p.logger.Warn("HostService 不可用（core 版本过旧或 host 未注入），支付回调入账将失败")
+	}
+
 	// 业务参数（带默认值兜底）
 	p.initParams = initParams{
 		expireMinutes: defaultIfZero(cfg.GetInt("order_expire_minutes"), 30),
@@ -99,7 +109,7 @@ func (p *Plugin) Init(ctx sdk.PluginContext) error {
 		callbackURL:   cfg.GetString("callback_base_url"),
 	}
 
-	p.svc = NewService(p.logger, p.db, p.registry, ServiceOptions{
+	p.svc = NewService(p.logger, p.db, p.host, p.registry, ServiceOptions{
 		MinAmount:       p.initParams.minAmount,
 		MaxAmount:       p.initParams.maxAmount,
 		DailyLimit:      p.initParams.dailyLimit,

@@ -8,6 +8,7 @@
 ## 🚫 红线
 
 - 只依赖 `airgate-sdk`，禁止 import core 内部；用 core 能力经 `Host.Invoke`/`InvokeStream`。
+- **加余额一律经 `Host.Invoke("users.update_balance")`**（`idempotency_key` 必填，约定 `epay:<out_trade_no>`），**禁止直写 core 的 `users`/`balance_logs` 表**；`db_dsn` 连接只读写插件自有表 `payment_*`（已知遗留：admin 订单列表只读 JOIN users 取邮箱，勿新增同类访问）。
 - `plugin.yaml` 由 `make manifest` 生成，不可手改。
 - 支付回调/签名校验属敏感逻辑，改动务必配套测试，别绕过校验。
 - 前端单 `index.js` → `web/dist/index.js`，用 `@doudou-start/airgate-theme`。

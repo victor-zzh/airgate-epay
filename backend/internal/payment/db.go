@@ -89,11 +89,14 @@ CREATE TABLE IF NOT EXISTS payment_provider_configs (
 );
 `
 
-// openDB 打开 core 数据库连接，复用 lib/pq 驱动。
+// openDB 打开数据库连接，复用 lib/pq 驱动。
 //
-// 插件与 core 共用同一个 PostgreSQL 实例：core 表 (users / balance_logs) 与
-// 插件自有表 (payment_orders / payment_refunds) 都在这个连接里读写。直接共用
-// 数据库可以让"加余额 + 落账 + 改订单状态"在同一个事务里完成，保证原子性。
+// 插件与 core 共用同一个 PostgreSQL 实例，但此连接只应读写插件自有表
+// (payment_orders / payment_provider_configs)。加余额 + balance_logs 流水已改走
+// Host.Invoke("users.update_balance")（幂等键防重复入账），不再直写 core 表。
+//
+// 已知遗留（只读）：admin 订单列表仍 LEFT JOIN users 取邮箱展示，待 core 提供
+// 批量用户查询后移除；新代码勿再新增对 core 表的直接访问。
 func openDB(dsn string) (*sql.DB, error) {
 	if dsn == "" {
 		return nil, errors.New("db_dsn 未配置")
