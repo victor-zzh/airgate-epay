@@ -28,7 +28,7 @@ var PluginVersion = "0.1.0"
 //   - /admin/providers      管理员配置支付服务商 (audience=admin)
 //
 // ConfigSchema 仅保留通用业务参数 + 回调 BaseURL：
-//   - 各个支付服务商（虎皮椒/彩虹/支付宝/微信）的凭证不再走 ConfigSchema，
+//   - 各个支付服务商（虎皮椒/彩虹/ZPAY/支付宝/微信）的凭证不再走 ConfigSchema，
 //     改为存在插件自有的 payment_provider_configs 表里，由 admin 页面 CRUD。
 //   - 这样配置 modal 不会被几十个字段撑爆，而且支持"同一种 Provider 配多实例"。
 func BuildPluginInfo() sdk.PluginInfo {
@@ -37,8 +37,8 @@ func BuildPluginInfo() sdk.PluginInfo {
 		Name:        PluginName,
 		Version:     PluginVersion,
 		SDKVersion:  sdk.SDKVersion,
-		Description: "多渠道支付插件：易支付（虎皮椒/彩虹）/ 支付宝官方 / 微信支付官方",
-		Author:      "AirGate",
+		Description: "多渠道支付插件：易支付（虎皮椒/彩虹/ZPAY）/ 支付宝官方 / 微信支付官方",
+		Author:      "HopBase",
 		Type:        sdk.PluginTypeExtension,
 		// 加余额经 users.update_balance 由 core 入账（幂等键防重复），插件不再直写
 		// core 的 users / balance_logs 表。
@@ -74,7 +74,7 @@ func BuildPluginInfo() sdk.PluginInfo {
 				Path:        "/admin/providers",
 				Title:       "支付服务商",
 				Icon:        "settings",
-				Description: "管理虎皮椒/彩虹/支付宝官方/微信官方等服务商",
+				Description: "管理虎皮椒/彩虹/ZPAY/支付宝官方/微信官方等服务商",
 				Audience:    "admin",
 			},
 		},

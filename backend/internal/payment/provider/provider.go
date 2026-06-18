@@ -109,6 +109,7 @@ type CallbackResult struct {
 const (
 	KindEpayXunhu      = "epay_xunhu"
 	KindEpayCaihong    = "epay_caihong"
+	KindEpayZpay       = "epay_zpay"
 	KindEpayEasyPay    = "epay_easypay"
 	KindAlipayOfficial = "alipay_official"
 	KindWxpayOfficial  = "wxpay_official"

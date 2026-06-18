@@ -3,8 +3,8 @@
 id: payment-epay
 name: 支付插件
 version: 0.1.0
-description: 多渠道支付插件：易支付（虎皮椒/彩虹）/ 支付宝官方 / 微信支付官方
-author: AirGate
+description: 多渠道支付插件：易支付（虎皮椒/彩虹/ZPAY）/ 支付宝官方 / 微信支付官方
+author: HopBase
 type: extension
 min_core_version: 1.0.0
 dependencies: []
@@ -53,5 +53,5 @@ frontend_pages:
   - path: /admin/providers
     title: 支付服务商
     icon: settings
-    description: 管理虎皮椒/彩虹/支付宝官方/微信官方等服务商
+    description: 管理虎皮椒/彩虹/ZPAY/支付宝官方/微信官方等服务商
     audience: admin

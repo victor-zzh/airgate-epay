@@ -103,7 +103,7 @@ export default function RechargePage() {
     }
     setSubmitting(true);
     try {
-      const o = await api.createOrder({ amount, method, subject: 'AirGate 余额充值' });
+      const o = await api.createOrder({ amount, method, subject: 'HopBase 余额充值' });
       setOrder(o);
       // 不再 window.open 跳转新窗口；二维码会由上面的 useEffect 自动渲染到当前页
     } catch (e) {

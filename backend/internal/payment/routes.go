@@ -138,7 +138,7 @@ func (p *Plugin) handleCreateOrder(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if body.Subject == "" {
-		body.Subject = "AirGate 余额充值"
+		body.Subject = "HopBase 余额充值"
 	}
 	order, err := p.svc.CreateOrder(r.Context(), CreateOrderInput{
 		UserID:   uid,

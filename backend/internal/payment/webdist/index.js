@@ -9,9 +9,9 @@ function cn() {
     return typeof Promise == "function" && Promise.prototype && Promise.prototype.then;
   }), pe;
 }
-var ye = {}, O = {}, Ze;
+var ye = {}, H = {}, Ze;
 function Y() {
-  if (Ze) return O;
+  if (Ze) return H;
   Ze = 1;
   let e;
   const i = [
@@ -58,26 +58,26 @@ function Y() {
     3532,
     3706
   ];
-  return O.getSymbolSize = function(r) {
+  return H.getSymbolSize = function(r) {
     if (!r) throw new Error('"version" cannot be null or undefined');
     if (r < 1 || r > 40) throw new Error('"version" should be in range from 1 to 40');
     return r * 4 + 17;
-  }, O.getSymbolTotalCodewords = function(r) {
+  }, H.getSymbolTotalCodewords = function(r) {
     return i[r];
-  }, O.getBCHDigit = function(l) {
+  }, H.getBCHDigit = function(l) {
     let r = 0;
     for (; l !== 0; )
       r++, l >>>= 1;
     return r;
-  }, O.setToSJISFunction = function(r) {
+  }, H.setToSJISFunction = function(r) {
     if (typeof r != "function")
       throw new Error('"toSJISFunc" is not a valid function.');
     e = r;
-  }, O.isKanjiModeEnabled = function() {
+  }, H.isKanjiModeEnabled = function() {
     return typeof e < "u";
-  }, O.toSJIS = function(r) {
+  }, H.toSJIS = function(r) {
     return e(r);
-  }, O;
+  }, H;
 }
 var me = {}, et;
 function Ke() {
@@ -726,11 +726,11 @@ function mn() {
     return t;
   }, ke = i, ke;
 }
-var Te = {}, Ee = {}, Be = {}, dt;
+var Te = {}, Be = {}, Ee = {}, dt;
 function Ut() {
-  return dt || (dt = 1, Be.isValid = function(i) {
+  return dt || (dt = 1, Ee.isValid = function(i) {
     return !isNaN(i) && i >= 1 && i <= 40;
-  }), Be;
+  }), Ee;
 }
 var N = {}, ut;
 function Wt() {
@@ -811,7 +811,7 @@ function J() {
         return a;
       }
     };
-  })(Ee)), Ee;
+  })(Be)), Be;
 }
 var gt;
 function bn() {
@@ -1189,11 +1189,11 @@ function Tn() {
       for (let x = 0; x < g.length; x++) {
         const T = g[x], R = [];
         for (let w = 0; w < T.length; w++) {
-          const A = T[w], E = "" + x + w;
-          R.push(E), I[E] = { node: A, lastCount: 0 }, m[E] = {};
+          const A = T[w], B = "" + x + w;
+          R.push(B), I[B] = { node: A, lastCount: 0 }, m[B] = {};
           for (let M = 0; M < v.length; M++) {
-            const B = v[M];
-            I[B] && I[B].node.mode === A.mode ? (m[B][E] = y(I[B].lastCount + A.length, A.mode) - y(I[B].lastCount, A.mode), I[B].lastCount += A.length) : (I[B] && (I[B].lastCount = A.length), m[B][E] = y(A.length, A.mode) + 4 + i.getCharCountIndicator(A.mode, C));
+            const E = v[M];
+            I[E] && I[E].node.mode === A.mode ? (m[E][B] = y(I[E].lastCount + A.length, A.mode) - y(I[E].lastCount, A.mode), I[E].lastCount += A.length) : (I[E] && (I[E].lastCount = A.length), m[E][B] = y(A.length, A.mode) + 4 + i.getCharCountIndicator(A.mode, C));
           }
         }
         v = R;
@@ -1236,18 +1236,18 @@ function Tn() {
   })(Me)), Me;
 }
 var wt;
-function En() {
+function Bn() {
   if (wt) return ye;
   wt = 1;
   const e = Y(), i = Ke(), l = dn(), r = un(), n = fn(), t = gn(), a = hn(), c = qt(), d = mn(), f = bn(), p = Sn(), h = J(), y = Tn();
   function S(x, T) {
     const R = x.size, w = t.getPositions(T);
     for (let A = 0; A < w.length; A++) {
-      const E = w[A][0], M = w[A][1];
-      for (let B = -1; B <= 7; B++)
-        if (!(E + B <= -1 || R <= E + B))
+      const B = w[A][0], M = w[A][1];
+      for (let E = -1; E <= 7; E++)
+        if (!(B + E <= -1 || R <= B + E))
           for (let _ = -1; _ <= 7; _++)
-            M + _ <= -1 || R <= M + _ || (B >= 0 && B <= 6 && (_ === 0 || _ === 6) || _ >= 0 && _ <= 6 && (B === 0 || B === 6) || B >= 2 && B <= 4 && _ >= 2 && _ <= 4 ? x.set(E + B, M + _, !0, !0) : x.set(E + B, M + _, !1, !0));
+            M + _ <= -1 || R <= M + _ || (E >= 0 && E <= 6 && (_ === 0 || _ === 6) || _ >= 0 && _ <= 6 && (E === 0 || E === 6) || E >= 2 && E <= 4 && _ >= 2 && _ <= 4 ? x.set(B + E, M + _, !0, !0) : x.set(B + E, M + _, !1, !0));
     }
   }
   function u(x) {
@@ -1260,34 +1260,34 @@ function En() {
   function k(x, T) {
     const R = n.getPositions(T);
     for (let w = 0; w < R.length; w++) {
-      const A = R[w][0], E = R[w][1];
+      const A = R[w][0], B = R[w][1];
       for (let M = -2; M <= 2; M++)
-        for (let B = -2; B <= 2; B++)
-          M === -2 || M === 2 || B === -2 || B === 2 || M === 0 && B === 0 ? x.set(A + M, E + B, !0, !0) : x.set(A + M, E + B, !1, !0);
+        for (let E = -2; E <= 2; E++)
+          M === -2 || M === 2 || E === -2 || E === 2 || M === 0 && E === 0 ? x.set(A + M, B + E, !0, !0) : x.set(A + M, B + E, !1, !0);
     }
   }
   function L(x, T) {
     const R = x.size, w = f.getEncodedBits(T);
-    let A, E, M;
-    for (let B = 0; B < 18; B++)
-      A = Math.floor(B / 3), E = B % 3 + R - 8 - 3, M = (w >> B & 1) === 1, x.set(A, E, M, !0), x.set(E, A, M, !0);
+    let A, B, M;
+    for (let E = 0; E < 18; E++)
+      A = Math.floor(E / 3), B = E % 3 + R - 8 - 3, M = (w >> E & 1) === 1, x.set(A, B, M, !0), x.set(B, A, M, !0);
   }
   function g(x, T, R) {
     const w = x.size, A = p.getEncodedBits(T, R);
-    let E, M;
-    for (E = 0; E < 15; E++)
-      M = (A >> E & 1) === 1, E < 6 ? x.set(E, 8, M, !0) : E < 8 ? x.set(E + 1, 8, M, !0) : x.set(w - 15 + E, 8, M, !0), E < 8 ? x.set(8, w - E - 1, M, !0) : E < 9 ? x.set(8, 15 - E - 1 + 1, M, !0) : x.set(8, 15 - E - 1, M, !0);
+    let B, M;
+    for (B = 0; B < 15; B++)
+      M = (A >> B & 1) === 1, B < 6 ? x.set(B, 8, M, !0) : B < 8 ? x.set(B + 1, 8, M, !0) : x.set(w - 15 + B, 8, M, !0), B < 8 ? x.set(8, w - B - 1, M, !0) : B < 9 ? x.set(8, 15 - B - 1 + 1, M, !0) : x.set(8, 15 - B - 1, M, !0);
     x.set(w - 8, 8, 1, !0);
   }
   function C(x, T) {
     const R = x.size;
-    let w = -1, A = R - 1, E = 7, M = 0;
-    for (let B = R - 1; B > 0; B -= 2)
-      for (B === 6 && B--; ; ) {
+    let w = -1, A = R - 1, B = 7, M = 0;
+    for (let E = R - 1; E > 0; E -= 2)
+      for (E === 6 && E--; ; ) {
         for (let _ = 0; _ < 2; _++)
-          if (!x.isReserved(A, B - _)) {
+          if (!x.isReserved(A, E - _)) {
             let W = !1;
-            M < T.length && (W = (T[M] >>> E & 1) === 1), x.set(A, B - _, W), E--, E === -1 && (M++, E = 7);
+            M < T.length && (W = (T[M] >>> B & 1) === 1), x.set(A, E - _, W), B--, B === -1 && (M++, B = 7);
           }
         if (A += w, A < 0 || R <= A) {
           A -= w, w = -w;
@@ -1300,16 +1300,16 @@ function En() {
     R.forEach(function(_) {
       w.put(_.mode.bit, 4), w.put(_.getLength(), h.getCharCountIndicator(_.mode, x)), _.write(w);
     });
-    const A = e.getSymbolTotalCodewords(x), E = c.getTotalCodewordsCount(x, T), M = (A - E) * 8;
+    const A = e.getSymbolTotalCodewords(x), B = c.getTotalCodewordsCount(x, T), M = (A - B) * 8;
     for (w.getLengthInBits() + 4 <= M && w.put(0, 4); w.getLengthInBits() % 8 !== 0; )
       w.putBit(0);
-    const B = (M - w.getLengthInBits()) / 8;
-    for (let _ = 0; _ < B; _++)
+    const E = (M - w.getLengthInBits()) / 8;
+    for (let _ = 0; _ < E; _++)
       w.put(_ % 2 ? 17 : 236, 8);
     return m(w, x, T);
   }
   function m(x, T, R) {
-    const w = e.getSymbolTotalCodewords(T), A = c.getTotalCodewordsCount(T, R), E = w - A, M = c.getBlocksCount(T, R), B = w % M, _ = M - B, W = Math.floor(w / M), te = Math.floor(E / M), rn = te + 1, Ye = W - te, on = new d(Ye);
+    const w = e.getSymbolTotalCodewords(T), A = c.getTotalCodewordsCount(T, R), B = w - A, M = c.getBlocksCount(T, R), E = w % M, _ = M - E, W = Math.floor(w / M), te = Math.floor(B / M), rn = te + 1, Ye = W - te, on = new d(Ye);
     let ue = 0;
     const re = new Array(M), Je = new Array(M);
     let fe = 0;
@@ -1341,19 +1341,19 @@ function En() {
       A = y.fromString(x, W || 40);
     } else
       throw new Error("Invalid data");
-    const E = f.getBestVersionForData(A, R);
-    if (!E)
+    const B = f.getBestVersionForData(A, R);
+    if (!B)
       throw new Error("The amount of data is too big to be stored in a QR Code");
     if (!T)
-      T = E;
-    else if (T < E)
+      T = B;
+    else if (T < B)
       throw new Error(
         `
 The chosen QR Code version cannot contain this amount of data.
-Minimum version required to store current data is: ` + E + `.
+Minimum version required to store current data is: ` + B + `.
 `
       );
-    const M = I(T, R, A), B = e.getSymbolSize(T), _ = new r(B);
+    const M = I(T, R, A), E = e.getSymbolSize(T), _ = new r(E);
     return S(_, T), u(_), k(_, T), g(_, R, 0), T >= 7 && L(_, T), C(_, M), isNaN(w) && (w = a.getBestMask(
       _,
       g.bind(null, _, R)
@@ -1368,12 +1368,12 @@ Minimum version required to store current data is: ` + E + `.
   return ye.create = function(T, R) {
     if (typeof T > "u" || T === "")
       throw new Error("No input text");
-    let w = i.M, A, E;
-    return typeof R < "u" && (w = i.from(R.errorCorrectionLevel, i.M), A = f.from(R.version), E = a.from(R.maskPattern), R.toSJISFunc && e.setToSJISFunction(R.toSJISFunc)), v(T, A, w, E);
+    let w = i.M, A, B;
+    return typeof R < "u" && (w = i.from(R.errorCorrectionLevel, i.M), A = f.from(R.version), B = a.from(R.maskPattern), R.toSJISFunc && e.setToSJISFunction(R.toSJISFunc)), v(T, A, w, B);
   }, ye;
 }
 var ze = {}, Ne = {}, vt;
-function Ot() {
+function Ht() {
   return vt || (vt = 1, (function(e) {
     function i(l) {
       if (typeof l == "number" && (l = l.toString()), typeof l != "string")
@@ -1427,9 +1427,9 @@ function Ot() {
   })(Ne)), Ne;
 }
 var Ct;
-function Bn() {
+function En() {
   return Ct || (Ct = 1, (function(e) {
-    const i = Ot();
+    const i = Ht();
     function l(n, t, a) {
       n.clearRect(0, 0, t.width, t.height), t.style || (t.style = {}), t.height = a, t.width = a, t.style.height = a + "px", t.style.width = a + "px";
     }
@@ -1457,7 +1457,7 @@ var $e = {}, kt;
 function Rn() {
   if (kt) return $e;
   kt = 1;
-  const e = Ot();
+  const e = Ht();
   function i(n, t) {
     const a = n.a / 255, c = t + '="' + n.hex + '"';
     return a < 1 ? c + " " + t + '-opacity="' + a.toFixed(2).slice(1) + '"' : c;
@@ -1484,7 +1484,7 @@ var Tt;
 function Mn() {
   if (Tt) return X;
   Tt = 1;
-  const e = cn(), i = En(), l = Bn(), r = Rn();
+  const e = cn(), i = Bn(), l = En(), r = Rn();
   function n(t, a, c, d, f) {
     const p = [].slice.call(arguments, 1), h = p.length, y = typeof p[h - 1] == "function";
     if (!y && !e())
@@ -1517,7 +1517,7 @@ function Mn() {
   }), X;
 }
 var In = Mn();
-const Ht = /* @__PURE__ */ sn(In), jt = {
+const Ot = /* @__PURE__ */ sn(In), jt = {
   primary: "oklch(0.9848 0 0)",
   primaryForeground: "oklch(15% 0.0000 0.00)",
   primaryHover: "color-mix(in oklab, oklch(0.9848 0 0) 88%, oklch(15% 0.0000 0.00) 12%)",
@@ -1706,7 +1706,7 @@ function Dn() {
       return;
     }
     let x = !1;
-    return Ht.toDataURL(v, { width: 240, margin: 2, errorCorrectionLevel: "M" }).then((T) => {
+    return Ot.toDataURL(v, { width: 240, margin: 2, errorCorrectionLevel: "M" }).then((T) => {
       x || g(T);
     }).catch(() => {
       x || g(null);
@@ -1725,7 +1725,7 @@ function Dn() {
     }
     h(!0);
     try {
-      const v = await $.createOrder({ amount: a, method: d, subject: "AirGate 余额充值" });
+      const v = await $.createOrder({ amount: a, method: d, subject: "HopBase 余额充值" });
       k(v);
     } catch (v) {
       S(String(v.message || v));
@@ -1735,7 +1735,7 @@ function Dn() {
   }, m = () => {
     k(null), S(null);
   };
-  return l ? /* @__PURE__ */ s("div", { style: V, children: /* @__PURE__ */ s("div", { style: Et, children: "加载中..." }) }) : n ? /* @__PURE__ */ s("div", { style: V, children: /* @__PURE__ */ b("div", { style: { ...Et, color: o("danger") }, children: [
+  return l ? /* @__PURE__ */ s("div", { style: V, children: /* @__PURE__ */ s("div", { style: Bt, children: "加载中..." }) }) : n ? /* @__PURE__ */ s("div", { style: V, children: /* @__PURE__ */ b("div", { style: { ...Bt, color: o("danger") }, children: [
     "加载支付方式失败: ",
     n
   ] }) }) : e.length === 0 ? /* @__PURE__ */ s("div", { style: V, children: /* @__PURE__ */ s("div", { style: le, children: /* @__PURE__ */ s("p", { style: { color: o("textSecondary"), margin: 0, textAlign: "center" }, children: "充值功能暂未开放，请联系管理员。" }) }) }) : u ? u.status === "paid" ? /* @__PURE__ */ b("div", { style: V, children: [
@@ -1793,13 +1793,13 @@ function Dn() {
         /* @__PURE__ */ s("strong", { style: { color: o("text") }, children: "1 CNY = $1" })
       ] }),
       /* @__PURE__ */ b("section", { children: [
-        /* @__PURE__ */ s("h3", { style: Bt, children: "选择金额" }),
+        /* @__PURE__ */ s("h3", { style: Et, children: "选择金额" }),
         /* @__PURE__ */ s("div", { style: { display: "flex", flexWrap: "wrap", gap: 10 }, children: [10, 30, 50, 100, 200, 500].map((v) => /* @__PURE__ */ s(
           "button",
           {
             type: "button",
             onClick: () => c(v),
-            style: a === v ? On : Jt,
+            style: a === v ? Hn : Jt,
             children: U(v, { compact: !0 })
           },
           v
@@ -1822,13 +1822,13 @@ function Dn() {
         ] })
       ] }),
       /* @__PURE__ */ b("section", { style: Un, children: [
-        /* @__PURE__ */ s("h3", { style: Bt, children: "选择支付方式" }),
+        /* @__PURE__ */ s("h3", { style: Et, children: "选择支付方式" }),
         /* @__PURE__ */ s("div", { style: { display: "flex", gap: 12, flexWrap: "wrap" }, children: e.map((v) => /* @__PURE__ */ s(
           "button",
           {
             type: "button",
             onClick: () => f(v.key),
-            style: d === v.key ? Hn : Qt,
+            style: d === v.key ? On : Qt,
             title: v.description,
             children: v.label
           },
@@ -1884,7 +1884,7 @@ const V = {
   fontWeight: 600,
   color: o("text"),
   letterSpacing: "-0.01em"
-}, Et = {
+}, Bt = {
   padding: "40px 0",
   textAlign: "center",
   color: o("textSecondary")
@@ -1904,7 +1904,7 @@ const V = {
   color: o("textSecondary"),
   fontSize: 13,
   lineHeight: 1.6
-}, Bt = {
+}, Et = {
   margin: "0 0 12px",
   fontSize: 13,
   fontWeight: 600,
@@ -1922,7 +1922,7 @@ const V = {
   fontSize: 15,
   fontWeight: 500,
   transition: o("transition")
-}, On = {
+}, Hn = {
   ...Jt,
   borderColor: o("primary"),
   background: o("primarySubtle"),
@@ -1939,7 +1939,7 @@ const V = {
   fontSize: 14,
   fontWeight: 500,
   transition: o("transition")
-}, Hn = {
+}, On = {
   ...Qt,
   borderColor: o("primary"),
   background: o("primarySubtle"),
@@ -2018,7 +2018,7 @@ function Yn() {
       return;
     }
     let k = !1;
-    return Ht.toDataURL(u, { width: 240, margin: 2, errorCorrectionLevel: "M" }).then((L) => {
+    return Ot.toDataURL(u, { width: 240, margin: 2, errorCorrectionLevel: "M" }).then((L) => {
       k || f(L);
     }).catch(() => {
       k || f(null);
@@ -2298,14 +2298,14 @@ function ar() {
         d
       ] }) : a && e.length === 0 ? /* @__PURE__ */ s("p", { style: We, children: "加载中..." }) : e.length === 0 ? /* @__PURE__ */ s("p", { style: We, children: "暂无订单" }) : /* @__PURE__ */ s("div", { style: Ar, children: /* @__PURE__ */ b("table", { style: _r, children: [
         /* @__PURE__ */ s("thead", { children: /* @__PURE__ */ b("tr", { children: [
-          /* @__PURE__ */ s("th", { style: H, children: "订单号" }),
-          /* @__PURE__ */ s("th", { style: H, children: "用户邮箱" }),
-          /* @__PURE__ */ s("th", { style: H, children: "金额" }),
-          /* @__PURE__ */ s("th", { style: H, children: "支付方式" }),
-          /* @__PURE__ */ s("th", { style: H, children: "服务商" }),
-          /* @__PURE__ */ s("th", { style: H, children: "状态" }),
-          /* @__PURE__ */ s("th", { style: H, children: "创建时间" }),
-          /* @__PURE__ */ s("th", { style: H, children: "支付时间" })
+          /* @__PURE__ */ s("th", { style: O, children: "订单号" }),
+          /* @__PURE__ */ s("th", { style: O, children: "用户邮箱" }),
+          /* @__PURE__ */ s("th", { style: O, children: "金额" }),
+          /* @__PURE__ */ s("th", { style: O, children: "支付方式" }),
+          /* @__PURE__ */ s("th", { style: O, children: "服务商" }),
+          /* @__PURE__ */ s("th", { style: O, children: "状态" }),
+          /* @__PURE__ */ s("th", { style: O, children: "创建时间" }),
+          /* @__PURE__ */ s("th", { style: O, children: "支付时间" })
         ] }) }),
         /* @__PURE__ */ s("tbody", { children: e.map((m) => /* @__PURE__ */ b("tr", { children: [
           /* @__PURE__ */ s("td", { style: j, children: /* @__PURE__ */ s("code", { style: Pr, children: m.out_trade_no }) }),
@@ -2450,11 +2450,11 @@ function Xt({
         onClick: () => t((d) => !d),
         children: [
           /* @__PURE__ */ s("span", { style: Tr, children: (c == null ? void 0 : c.label) ?? "" }),
-          /* @__PURE__ */ s("span", { "aria-hidden": "true", style: Er, children: "v" })
+          /* @__PURE__ */ s("span", { "aria-hidden": "true", style: Br, children: "v" })
         ]
       }
     ),
-    n && /* @__PURE__ */ s("div", { role: "listbox", style: Br, children: i.map((d) => {
+    n && /* @__PURE__ */ s("div", { role: "listbox", style: Er, children: i.map((d) => {
       const f = d.value === e;
       return /* @__PURE__ */ s(
         "button",
@@ -2606,12 +2606,12 @@ const hr = {
   overflow: "hidden",
   textOverflow: "ellipsis",
   whiteSpace: "nowrap"
-}, Er = {
+}, Br = {
   flexShrink: 0,
   color: o("textTertiary"),
   fontSize: 10,
   lineHeight: 1
-}, Br = {
+}, Er = {
   position: "absolute",
   left: 0,
   top: "calc(100% + 6px)",
@@ -2665,7 +2665,7 @@ const hr = {
 }, _r = {
   width: "100%",
   borderCollapse: "collapse"
-}, H = {
+}, O = {
   textAlign: "left",
   padding: "10px 16px",
   borderTop: `1px solid ${o("glassBorder")}`,
@@ -2781,7 +2781,7 @@ function Ur({
   from { opacity: 0; transform: translateY(-8px); }
   to   { opacity: 1; transform: translateY(0); }
 }`, document.head.appendChild(r);
-  }, []), e.length === 0 ? null : /* @__PURE__ */ s("div", { style: Or, children: e.map((l) => /* @__PURE__ */ s(Wr, { message: l, onClose: () => i(l.id) }, l.id)) });
+  }, []), e.length === 0 ? null : /* @__PURE__ */ s("div", { style: Hr, children: e.map((l) => /* @__PURE__ */ s(Wr, { message: l, onClose: () => i(l.id) }, l.id)) });
 }
 function Wr({
   message: e,
@@ -2792,7 +2792,7 @@ function Wr({
     "div",
     {
       style: {
-        ...Hr,
+        ...Or,
         borderColor: n
       },
       children: [
@@ -2803,7 +2803,7 @@ function Wr({
     }
   );
 }
-const Or = {
+const Hr = {
   position: "fixed",
   top: 20,
   right: 20,
@@ -2812,7 +2812,7 @@ const Or = {
   flexDirection: "column",
   gap: 10,
   pointerEvents: "none"
-}, Hr = {
+}, Or = {
   pointerEvents: "auto",
   display: "flex",
   alignItems: "center",
@@ -2895,10 +2895,10 @@ function Gr() {
       p.error("操作失败: " + C.message);
     }
   };
-  return n ? /* @__PURE__ */ s("div", { style: He, children: /* @__PURE__ */ s("div", { style: $t, children: "加载中..." }) }) : a ? /* @__PURE__ */ s("div", { style: He, children: /* @__PURE__ */ b("div", { style: { ...$t, color: o("danger") }, children: [
+  return n ? /* @__PURE__ */ s("div", { style: Oe, children: /* @__PURE__ */ s("div", { style: $t, children: "加载中..." }) }) : a ? /* @__PURE__ */ s("div", { style: Oe, children: /* @__PURE__ */ b("div", { style: { ...$t, color: o("danger") }, children: [
     "加载失败: ",
     a
-  ] }) }) : /* @__PURE__ */ b("div", { style: He, children: [
+  ] }) }) : /* @__PURE__ */ b("div", { style: Oe, children: [
     h,
     /* @__PURE__ */ b("div", { style: Ft, children: [
       /* @__PURE__ */ s("h3", { style: Dt, children: "添加服务商" }),
@@ -3004,7 +3004,7 @@ function Yr({
     ] }),
     /* @__PURE__ */ b("div", { style: fo, children: [
       /* @__PURE__ */ s(
-        Oe,
+        He,
         {
           label: "实例 ID",
           description: t.mode === "edit" ? "可修改。改名时后端会在事务里同步更新所有历史订单的 provider_id 引用，回调路径也会立即指向新名字。" : "可选。留空则自动生成 epay_xunhu_1 之类的序号；也可以填一个有意义的名字如 xunhu_main / xunhu_backup 便于多商户号区分。",
@@ -3020,7 +3020,7 @@ function Yr({
           )
         }
       ),
-      /* @__PURE__ */ s(Oe, { label: "启用", children: /* @__PURE__ */ b("label", { style: { display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }, children: [
+      /* @__PURE__ */ s(He, { label: "启用", children: /* @__PURE__ */ b("label", { style: { display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }, children: [
         /* @__PURE__ */ s(
           "input",
           {
@@ -3031,7 +3031,7 @@ function Yr({
         ),
         /* @__PURE__ */ s("span", { style: { fontSize: 13, color: o("textSecondary") }, children: "勾选后该服务商参与支付路由" })
       ] }) }),
-      f == null ? void 0 : f.field_descriptors.map((h) => /* @__PURE__ */ s(Oe, { label: h.label, description: h.description, required: h.required, children: h.type === "textarea" ? /* @__PURE__ */ s(
+      f == null ? void 0 : f.field_descriptors.map((h) => /* @__PURE__ */ s(He, { label: h.label, description: h.description, required: h.required, children: h.type === "textarea" ? /* @__PURE__ */ s(
         "textarea",
         {
           value: t.config[h.key] || "",
@@ -3119,7 +3119,7 @@ function Jr({
     e.length === 0 && /* @__PURE__ */ s("span", { style: { fontSize: 12, color: o("textTertiary") }, children: "该协议没有可选的支付方式" })
   ] });
 }
-function Oe({
+function He({
   label: e,
   description: i,
   required: l,
@@ -3143,7 +3143,7 @@ function Qr(e) {
     l.type === "bool" ? i[l.key] = "false" : i[l.key] = "";
   return i;
 }
-const He = {
+const Oe = {
   maxWidth: 1280,
   margin: "0 auto",
   padding: "24px 24px 48px",
