@@ -183,6 +183,23 @@ CREATE TABLE IF NOT EXISTS payment_provider_configs (
     created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
 )`},
+
+		// 充值套餐（固定档：点选套餐才享赠送，自定义金额无赠送）
+		{"create payment_packages", `
+CREATE TABLE IF NOT EXISTS payment_packages (
+    id            BIGSERIAL PRIMARY KEY,
+    amount        DECIMAL(20,8) NOT NULL,
+    bonus_amount  DECIMAL(20,8) NOT NULL DEFAULT 0,
+    title         VARCHAR(64) NOT NULL DEFAULT '',
+    enabled       BOOLEAN NOT NULL DEFAULT TRUE,
+    sort_order    INT NOT NULL DEFAULT 0,
+    created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
+)`},
+		// 订单表补套餐快照列：下单时固化 package_id + bonus_amount，
+		// 支付完成前套餐被改/删不影响本单赠送
+		{"alter payment_orders add package_id", `ALTER TABLE payment_orders ADD COLUMN IF NOT EXISTS package_id BIGINT`},
+		{"alter payment_orders add bonus_amount", `ALTER TABLE payment_orders ADD COLUMN IF NOT EXISTS bonus_amount DECIMAL(20,8) NOT NULL DEFAULT 0`},
 	}
 
 	for _, s := range statements {

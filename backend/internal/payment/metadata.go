@@ -77,6 +77,13 @@ func BuildPluginInfo() sdk.PluginInfo {
 				Description: "管理虎皮椒/彩虹/ZPAY/支付宝官方/微信官方等服务商",
 				Audience:    "admin",
 			},
+			{
+				Path:        "/admin/packages",
+				Title:       "充值套餐",
+				Icon:        "gift",
+				Description: "配置充值优惠套餐（如充 100 送 15），用户点选套餐档享赠送",
+				Audience:    "admin",
+			},
 		},
 
 		ConfigSchema: []sdk.ConfigField{

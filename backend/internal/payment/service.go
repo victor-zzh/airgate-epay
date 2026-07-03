@@ -34,6 +34,9 @@ type Order struct {
 	ProviderID    string          `json:"provider_id"`
 	Channel       string          `json:"channel,omitempty"` // 兼容老订单
 	Amount        float64         `json:"amount"`
+	// PackageID / BonusAmount 下单时从所选套餐快照；非套餐订单分别为 0。
+	PackageID   int64   `json:"package_id,omitempty"`
+	BonusAmount float64 `json:"bonus_amount,omitempty"`
 	Status        string          `json:"status"`
 	Subject       string          `json:"subject"`
 	PaymentURL    string          `json:"payment_url,omitempty"`
@@ -104,13 +107,28 @@ type CreateOrderInput struct {
 	Amount   float64
 	Subject  string
 	ClientIP string
+	// PackageID >0 表示按套餐下单：支付金额取套餐金额（忽略入参 Amount），
+	// 并把套餐赠送额度快照进订单。
+	PackageID int64
 }
 
-// CreateOrder 创建订单：金额校验 → 日累校验 → Router 选 Provider → 调下单 → 落库
+// CreateOrder 创建订单：套餐解析 → 金额校验 → 日累校验 → Router 选 Provider → 调下单 → 落库
 func (s *Service) CreateOrder(ctx context.Context, in CreateOrderInput) (*Order, error) {
 	if in.UserID <= 0 {
 		return nil, errors.New("缺少用户身份")
 	}
+
+	// 套餐下单：金额/赠送以下单时刻的套餐配置为准（快照），防止支付完成前套餐被改
+	var bonusAmount float64
+	if in.PackageID > 0 {
+		pkg, err := s.getActivePackage(ctx, in.PackageID)
+		if err != nil {
+			return nil, err
+		}
+		in.Amount = pkg.Amount
+		bonusAmount = pkg.BonusAmount
+	}
+
 	if in.Amount < s.minAmount {
 		return nil, fmt.Errorf("金额低于最低限额 %.2f", s.minAmount)
 	}
@@ -178,16 +196,20 @@ func (s *Service) CreateOrder(ctx context.Context, in CreateOrderInput) (*Order,
 		"method", in.Method,
 	)
 
-	// 落库（channel 列保留写入 provider_id 以兼容老数据消费方）
+	// 落库（channel 列保留写入 provider_id 以兼容老数据消费方；package_id 非套餐单为 NULL）
+	var packageIDParam any
+	if in.PackageID > 0 {
+		packageIDParam = in.PackageID
+	}
 	var id int64
 	err = s.db.QueryRowContext(ctx, `
 		INSERT INTO payment_orders
 			(out_trade_no, user_id, channel, method, provider_id, amount, subject, client_ip,
-			 payment_url, qr_code_url, expires_at, created_at, updated_at)
-		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$12)
+			 payment_url, qr_code_url, expires_at, created_at, updated_at, package_id, bonus_amount)
+		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$12,$13,$14)
 		RETURNING id
 	`, outTradeNo, in.UserID, prov.ID(), in.Method, prov.ID(), in.Amount, in.Subject, in.ClientIP,
-		chRes.PaymentURL, chRes.QRCodeContent, expiresAt, now,
+		chRes.PaymentURL, chRes.QRCodeContent, expiresAt, now, packageIDParam, bonusAmount,
 	).Scan(&id)
 	if err != nil {
 		s.logger.Error("payment_record_persist_failed",
@@ -203,6 +225,8 @@ func (s *Service) CreateOrder(ctx context.Context, in CreateOrderInput) (*Order,
 		"order_id", id,
 		"out_trade_no", outTradeNo,
 		"amount", in.Amount,
+		"bonus_amount", bonusAmount,
+		"package_id", in.PackageID,
 		"provider", prov.ID(),
 		"method", in.Method,
 		sdk.LogFieldUserID, in.UserID,
@@ -216,6 +240,8 @@ func (s *Service) CreateOrder(ctx context.Context, in CreateOrderInput) (*Order,
 		ProviderID:    prov.ID(),
 		Channel:       prov.ID(),
 		Amount:        in.Amount,
+		PackageID:     in.PackageID,
+		BonusAmount:   bonusAmount,
 		Status:        "pending",
 		Subject:       in.Subject,
 		PaymentURL:    chRes.PaymentURL,
@@ -286,17 +312,18 @@ func (s *Service) markPaid(ctx context.Context, cb *provider.CallbackResult) err
 
 	// 1) 读订单 + 校验状态/金额
 	var (
-		orderID    int64
-		userID     int64
-		amount     float64
-		status     string
-		method     string
-		providerID string
+		orderID     int64
+		userID      int64
+		amount      float64
+		bonusAmount float64
+		status      string
+		method      string
+		providerID  string
 	)
 	err := s.db.QueryRowContext(ctx, `
-		SELECT id, user_id, amount, status, method, provider_id FROM payment_orders
+		SELECT id, user_id, amount, COALESCE(bonus_amount, 0), status, method, provider_id FROM payment_orders
 		WHERE out_trade_no = $1
-	`, cb.OutTradeNo).Scan(&orderID, &userID, &amount, &status, &method, &providerID)
+	`, cb.OutTradeNo).Scan(&orderID, &userID, &amount, &bonusAmount, &status, &method, &providerID)
 	if err != nil {
 		return fmt.Errorf("查询订单失败: %w", err)
 	}
@@ -316,7 +343,13 @@ func (s *Service) markPaid(ctx context.Context, cb *provider.CallbackResult) err
 		return fmt.Errorf("回调金额 %.2f 与订单金额 %.2f 不匹配", cb.Amount, amount)
 	}
 
-	// 2) 经 core 入账。失败直接返回——余额未变、订单保持 pending，等服务商重试回调
+	// 2) 经 core 入账。本金 + 套餐赠送合并成一次调用，同一幂等键——刻意不拆成两次
+	// Host.Invoke：core 的 AdjustBalance 是"事务外读余额→算新值→绝对值写回"，非原子、
+	// 无行锁；拆成两次会（a）让每笔套餐订单的非原子窗口翻倍，（b）更严重的是，如果本金
+	// 那次成功、赠送那次失败，订单会卡在 pending——用户已经拿到本金，但订单还没被标记
+	// paid，一旦被后台 ExpirePendingOrders 判过期，后续任何回调重试都会在本函数第 1 步
+	// 被 status!=pending 拒绝，赠送额度永久丢失且无对账线索。合并成一次调用后要么全部
+	// 成功要么全部失败，不存在"本金到账但订单未完成"的中间态。
 	if s.host == nil {
 		return errors.New("host service 不可用，无法入账（请确认 core 版本支持 users.update_balance）")
 	}
@@ -326,20 +359,26 @@ func (s *Service) markPaid(ctx context.Context, cb *provider.CallbackResult) err
 	if methodLabel == "" {
 		methodLabel = method
 	}
+	totalCredit := amount
+	remark := fmt.Sprintf("在线充值（%s）", methodLabel)
+	if bonusAmount > 0 {
+		totalCredit += bonusAmount
+		remark = fmt.Sprintf("在线充值（%s，含套餐赠送 %g，充 %g 送 %g）", methodLabel, bonusAmount, amount, bonusAmount)
+	}
 	resp, err := s.host.Invoke(ctx, sdk.HostInvokeRequest{
 		Method: "users.update_balance",
 		Payload: map[string]interface{}{
 			"user_id":         userID,
 			"action":          "add",
-			"amount":          amount,
-			"remark":          fmt.Sprintf("在线充值（%s）", methodLabel),
+			"amount":          totalCredit,
+			"remark":          remark,
 			"idempotency_key": "epay:" + cb.OutTradeNo,
 		},
 	})
 	if err != nil {
 		s.logger.Error("payment_balance_update_failed",
 			sdk.LogFieldUserID, userID,
-			"amount", amount,
+			"amount", totalCredit,
 			"out_trade_no", cb.OutTradeNo,
 			sdk.LogFieldError, err,
 		)
@@ -372,6 +411,7 @@ func (s *Service) markPaid(ctx context.Context, cb *provider.CallbackResult) err
 		"order_id", orderID,
 		sdk.LogFieldUserID, userID,
 		"amount", amount,
+		"bonus_amount", bonusAmount,
 		"method", method,
 		"provider", providerID,
 	)
@@ -381,7 +421,8 @@ func (s *Service) markPaid(ctx context.Context, cb *provider.CallbackResult) err
 // orderColumns SELECT 列清单（用于 ListUserOrders / GetOrder 共享）
 const orderColumns = `
 	id, out_trade_no, user_id, method, provider_id, channel, amount, status, subject,
-	payment_url, qr_code_url, notify_payload, paid_at, expires_at, created_at, updated_at
+	payment_url, qr_code_url, notify_payload, paid_at, expires_at, created_at, updated_at,
+	package_id, COALESCE(bonus_amount, 0)
 `
 
 // GetOrder 用户级查询单个订单（带 user 归属校验）
@@ -504,7 +545,8 @@ func (s *Service) ListAllOrders(ctx context.Context, params AdminListParams) (*A
 		SELECT po.id, po.out_trade_no, po.user_id, COALESCE(u.email, ''),
 		       po.method, po.provider_id, po.channel, po.amount, po.status, po.subject,
 		       po.payment_url, po.qr_code_url, po.notify_payload,
-		       po.paid_at, po.expires_at, po.created_at, po.updated_at
+		       po.paid_at, po.expires_at, po.created_at, po.updated_at,
+		       po.package_id, COALESCE(po.bonus_amount, 0)
 		FROM payment_orders po
 		LEFT JOIN users u ON u.id = po.user_id
 		WHERE ($1::text IS NULL OR u.email ILIKE $1)
@@ -605,16 +647,19 @@ func scanOrder(r rowScanner) (*Order, error) {
 		qrCodeURL  sql.NullString
 		subject    sql.NullString
 		channel    sql.NullString
+		packageID  sql.NullInt64
 	)
 	err := r.Scan(
 		&o.ID, &o.OutTradeNo, &o.UserID, &o.Method, &o.ProviderID, &channel,
 		&o.Amount, &o.Status, &subject,
 		&paymentURL, &qrCodeURL, &notifyPL,
 		&paidAt, &o.ExpiresAt, &o.CreatedAt, &o.UpdatedAt,
+		&packageID, &o.BonusAmount,
 	)
 	if err != nil {
 		return nil, err
 	}
+	o.PackageID = packageID.Int64
 	o.Channel = channel.String
 	o.Subject = subject.String
 	o.PaymentURL = paymentURL.String
@@ -639,16 +684,19 @@ func scanOrderWithEmail(r rowScanner) (*Order, error) {
 		qrCodeURL  sql.NullString
 		subject    sql.NullString
 		channel    sql.NullString
+		packageID  sql.NullInt64
 	)
 	err := r.Scan(
 		&o.ID, &o.OutTradeNo, &o.UserID, &o.UserEmail,
 		&o.Method, &o.ProviderID, &channel, &o.Amount, &o.Status, &subject,
 		&paymentURL, &qrCodeURL, &notifyPL,
 		&paidAt, &o.ExpiresAt, &o.CreatedAt, &o.UpdatedAt,
+		&packageID, &o.BonusAmount,
 	)
 	if err != nil {
 		return nil, err
 	}
+	o.PackageID = packageID.Int64
 	o.Channel = channel.String
 	o.Subject = subject.String
 	o.PaymentURL = paymentURL.String

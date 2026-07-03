@@ -89,6 +89,9 @@ export interface Order {
   /** 兼容老订单的字段，新订单等同 provider_id */
   channel?: string;
   amount: number;
+  /** 下单时的套餐快照；非套餐订单为 0 / 缺省 */
+  package_id?: number;
+  bonus_amount?: number;
   status: 'pending' | 'paid' | 'failed' | 'expired' | 'cancelled' | 'refunded';
   subject: string;
   payment_url?: string;
@@ -96,6 +99,19 @@ export interface Order {
   qr_code_content?: string;
   paid_at?: string;
   expires_at: string;
+  created_at: string;
+  updated_at: string;
+}
+
+// ============ 充值套餐 ============
+
+export interface PackageItem {
+  id: number;
+  amount: number;
+  bonus_amount: number;
+  title: string;
+  enabled: boolean;
+  sort_order: number;
   created_at: string;
   updated_at: string;
 }
@@ -143,8 +159,12 @@ export const api = {
       'GET', '/user/methods',
     ),
 
-  createOrder: (input: { amount: number; method: string; subject?: string }) =>
+  createOrder: (input: { amount: number; method: string; subject?: string; package_id?: number }) =>
     request<Order>('POST', '/user/orders', input),
+
+  /** 启用中的充值套餐（"充100送15"按钮数据源）；未配置套餐时返回空列表 */
+  packages: () =>
+    request<{ list: PackageItem[] }>('GET', '/user/packages'),
 
   listOrders: (limit = 50) =>
     request<{ list: Order[] }>('GET', `/user/orders?limit=${limit}`),
@@ -184,6 +204,25 @@ export const api = {
 
   adminReloadProviders: () =>
     request<{ ok: boolean }>('POST', '/admin/providers/reload', {}, { admin: true }),
+
+  // ============ Admin: 充值套餐 ============
+
+  adminListPackages: () =>
+    request<{ list: PackageItem[] }>('GET', '/admin/packages', undefined, { admin: true }),
+
+  /** id=0 表示新增，>0 表示编辑 */
+  adminUpsertPackage: (input: {
+    id: number;
+    amount: number;
+    bonus_amount: number;
+    title: string;
+    enabled: boolean;
+    sort_order: number;
+  }) =>
+    request<PackageItem>('POST', '/admin/packages', input, { admin: true }),
+
+  adminDeletePackage: (id: number) =>
+    request<{ ok: boolean }>('DELETE', `/admin/packages/${id}`, undefined, { admin: true }),
 };
 
 export interface OrderStats {

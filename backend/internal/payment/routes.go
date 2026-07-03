@@ -47,9 +47,16 @@ func (p *Plugin) registerRoutes(r sdk.RouteRegistrar) {
 	r.Handle(http.MethodGet, "/user/orders/", p.requireUser(p.requireConfigured(p.handleGetOrder)))
 	// methods 接口即使未配置也允许返回（返回空数组），让前端能展示"暂无可用支付方式"而非 503
 	r.Handle(http.MethodGet, "/user/methods", p.requireUser(p.handleListMethods))
+	// 充值套餐（用户端只见启用档）
+	r.Handle(http.MethodGet, "/user/packages", p.requireUser(p.requireConfigured(p.handleListUserPackages)))
 
 	// 管理员级 - 订单
 	r.Handle(http.MethodGet, "/admin/orders", p.requireAdmin(p.requireConfigured(p.handleAdminListOrders)))
+
+	// 管理员级 - 充值套餐 CRUD
+	r.Handle(http.MethodGet, "/admin/packages", p.requireAdmin(p.requireConfigured(p.handleAdminListPackages)))
+	r.Handle(http.MethodPost, "/admin/packages", p.requireAdmin(p.requireConfigured(p.handleAdminUpsertPackage)))
+	r.Handle(http.MethodDelete, "/admin/packages/", p.requireAdmin(p.requireConfigured(p.handleAdminDeletePackage)))
 
 	// 管理员级 - Provider 配置 CRUD
 	r.Handle(http.MethodGet, "/admin/providers", p.requireAdmin(p.requireConfigured(p.handleAdminListProviders)))
@@ -124,6 +131,8 @@ type createOrderReq struct {
 	Amount  float64 `json:"amount"`
 	Method  string  `json:"method"`
 	Subject string  `json:"subject"`
+	// PackageID >0 表示按套餐充值（金额/赠送以后端套餐配置为准）
+	PackageID int64 `json:"package_id"`
 }
 
 func (p *Plugin) handleCreateOrder(w http.ResponseWriter, r *http.Request) {
@@ -141,11 +150,12 @@ func (p *Plugin) handleCreateOrder(w http.ResponseWriter, r *http.Request) {
 		body.Subject = "HopBase 余额充值"
 	}
 	order, err := p.svc.CreateOrder(r.Context(), CreateOrderInput{
-		UserID:   uid,
-		Method:   body.Method,
-		Amount:   body.Amount,
-		Subject:  body.Subject,
-		ClientIP: clientIPFromHeader(r),
+		UserID:    uid,
+		Method:    body.Method,
+		Amount:    body.Amount,
+		Subject:   body.Subject,
+		ClientIP:  clientIPFromHeader(r),
+		PackageID: body.PackageID,
 	})
 	if err != nil {
 		writeJSONErr(w, http.StatusBadRequest, err.Error())
@@ -205,6 +215,57 @@ func (p *Plugin) handleListMethods(w http.ResponseWriter, _ *http.Request) {
 		"methods":    p.svc.AvailableMethods(),
 		"configured": true,
 	})
+}
+
+// handleListUserPackages 用户端拉取启用中的充值套餐（渲染"充100送15"按钮）
+func (p *Plugin) handleListUserPackages(w http.ResponseWriter, r *http.Request) {
+	packages, err := p.svc.ListActivePackages(r.Context())
+	if err != nil {
+		writeJSONErr(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+	writeJSON(w, http.StatusOK, map[string]any{"list": packages})
+}
+
+// ============================================================================
+// 管理员级 handler - 充值套餐 CRUD
+// ============================================================================
+
+func (p *Plugin) handleAdminListPackages(w http.ResponseWriter, r *http.Request) {
+	packages, err := p.svc.ListAllPackages(r.Context())
+	if err != nil {
+		writeJSONErr(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+	writeJSON(w, http.StatusOK, map[string]any{"list": packages})
+}
+
+func (p *Plugin) handleAdminUpsertPackage(w http.ResponseWriter, r *http.Request) {
+	var body UpsertPackageInput
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		writeJSONErr(w, http.StatusBadRequest, "请求体解析失败: "+err.Error())
+		return
+	}
+	pkg, err := p.svc.UpsertPackage(r.Context(), body)
+	if err != nil {
+		writeJSONErr(w, http.StatusBadRequest, err.Error())
+		return
+	}
+	writeJSON(w, http.StatusOK, pkg)
+}
+
+func (p *Plugin) handleAdminDeletePackage(w http.ResponseWriter, r *http.Request) {
+	idStr := strings.TrimSpace(strings.TrimPrefix(r.URL.Path, "/admin/packages/"))
+	id, err := strconv.ParseInt(idStr, 10, 64)
+	if err != nil || id <= 0 {
+		writeJSONErr(w, http.StatusBadRequest, "无效的套餐 ID")
+		return
+	}
+	if err := p.svc.DeletePackage(r.Context(), id); err != nil {
+		writeJSONErr(w, http.StatusBadRequest, err.Error())
+		return
+	}
+	writeJSON(w, http.StatusOK, map[string]any{"ok": true})
 }
 
 // ============================================================================

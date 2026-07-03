@@ -11,6 +11,7 @@ import RechargePage from './RechargePage';
 import OrdersPage from './OrdersPage';
 import AdminOrdersPage from './AdminOrdersPage';
 import AdminProvidersPage from './AdminProvidersPage';
+import AdminPackagesPage from './AdminPackagesPage';
 import type { ComponentType } from 'react';
 
 interface PluginFrontendModule {
@@ -23,6 +24,7 @@ const plugin: PluginFrontendModule = {
     { path: '/orders', component: OrdersPage },
     { path: '/admin/orders', component: AdminOrdersPage },
     { path: '/admin/providers', component: AdminProvidersPage },
+    { path: '/admin/packages', component: AdminPackagesPage },
   ],
 };
 

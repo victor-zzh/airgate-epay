@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import QRCode from 'qrcode';
 import { cssVar } from '@doudou-start/airgate-theme';
-import { api, type Order, type MethodInfo } from './api';
+import { api, type Order, type MethodInfo, type PackageItem } from './api';
 import { formatRechargeCredit } from './money';
 
 /**
@@ -25,11 +25,18 @@ export default function RechargePage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // 后台配置的充值套餐；选中套餐才享赠送，自定义金额无赠送
+  const [packages, setPackages] = useState<PackageItem[]>([]);
+  const [selectedPackageId, setSelectedPackageId] = useState<number | null>(null);
+  // methodsLoading 只等 api.methods()；api.packages() 可能更慢地在表单已可交互后才返回。
+  // 用户若在这个窗口内已经点了金额/套餐或输入了自定义金额，套餐拉取回来时不应覆盖掉。
+  const userChoseAmountRef = useRef(false);
+
   const [order, setOrder] = useState<Order | null>(null);
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
   const pollRef = useRef<number | null>(null);
 
-  // 1) 拉可用支付方式
+  // 1) 拉可用支付方式 + 充值套餐（套餐失败静默回退到预设金额档）
   useEffect(() => {
     api.methods()
       .then((res) => {
@@ -38,6 +45,16 @@ export default function RechargePage() {
       })
       .catch((e) => setMethodsErr(String(e?.message || e)))
       .finally(() => setMethodsLoading(false));
+    api.packages()
+      .then((res) => {
+        const list = res.list || [];
+        setPackages(list);
+        if (list.length && !userChoseAmountRef.current) {
+          setSelectedPackageId(list[0].id);
+          setAmount(list[0].amount);
+        }
+      })
+      .catch(() => setPackages([]));
   }, []);
 
   // 2) 订单状态轮询
@@ -103,7 +120,12 @@ export default function RechargePage() {
     }
     setSubmitting(true);
     try {
-      const o = await api.createOrder({ amount, method, subject: 'HopBase 余额充值' });
+      const o = await api.createOrder({
+        amount,
+        method,
+        subject: 'HopBase 余额充值',
+        ...(selectedPackageId !== null ? { package_id: selectedPackageId } : {}),
+      });
       setOrder(o);
       // 不再 window.open 跳转新窗口；二维码会由上面的 useEffect 自动渲染到当前页
     } catch (e) {
@@ -147,7 +169,10 @@ export default function RechargePage() {
           <div style={panelStyle}>
             <p style={{ margin: 0, color: cssVar('text') }}>
               订单 <code style={inlineCodeStyle}>{order.out_trade_no}</code> 已支付，金额{' '}
-              <strong style={{ color: cssVar('success') }}>{formatRechargeCredit(order.amount)}</strong> 已入账。
+              <strong style={{ color: cssVar('success') }}>{formatRechargeCredit(order.amount)}</strong> 已入账
+              {(order.bonus_amount ?? 0) > 0 && (
+                <>，套餐赠送 <strong style={{ color: cssVar('success') }}>{formatRechargeCredit(order.bonus_amount!)}</strong> 已同步到账</>
+              )}。
             </p>
             <button style={{ ...primaryBtnStyle, marginTop: 20 }} onClick={handleReset}>再次充值</button>
           </div>
@@ -167,6 +192,11 @@ export default function RechargePage() {
               </div>
             )}
             <div style={qrAmountStyle}>{formatRechargeCredit(order.amount)}</div>
+            {(order.bonus_amount ?? 0) > 0 && (
+              <div style={{ color: cssVar('success'), fontSize: 13, marginTop: 2 }}>
+                支付成功后另赠 {formatRechargeCredit(order.bonus_amount!)}
+              </div>
+            )}
             <div style={{ color: cssVar('textSecondary'), fontSize: 13 }}>
               请使用 {methodLabel(order.method)} 扫码完成付款
             </div>
@@ -213,28 +243,45 @@ export default function RechargePage() {
           充值比例：<strong style={{ color: cssVar('text') }}>1 CNY = $1</strong>
         </p>
         <section>
-          <h3 style={sectionTitleStyle}>选择金额</h3>
+          <h3 style={sectionTitleStyle}>{packages.length ? '选择套餐' : '选择金额'}</h3>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
-            {[10, 30, 50, 100, 200, 500].map((v) => (
-              <button
-                key={v}
-                type="button"
-                onClick={() => setAmount(v)}
-                style={amount === v ? amountBtnActive : amountBtn}
-              >
-                {formatRechargeCredit(v, { compact: true })}
-              </button>
-            ))}
+            {packages.length
+              ? packages.map((p) => (
+                <button
+                  key={p.id}
+                  type="button"
+                  onClick={() => { userChoseAmountRef.current = true; setSelectedPackageId(p.id); setAmount(p.amount); }}
+                  style={selectedPackageId === p.id ? packageBtnActive : packageBtn}
+                  title={p.title || undefined}
+                >
+                  <span style={{ fontSize: 16, fontWeight: 600 }}>{formatRechargeCredit(p.amount, { compact: true })}</span>
+                  {p.bonus_amount > 0 && (
+                    <span style={selectedPackageId === p.id ? bonusBadgeActive : bonusBadge}>
+                      送 {formatRechargeCredit(p.bonus_amount, { compact: true })}
+                    </span>
+                  )}
+                </button>
+              ))
+              : [10, 30, 50, 100, 200, 500].map((v) => (
+                <button
+                  key={v}
+                  type="button"
+                  onClick={() => { userChoseAmountRef.current = true; setAmount(v); }}
+                  style={amount === v ? amountBtnActive : amountBtn}
+                >
+                  {formatRechargeCredit(v, { compact: true })}
+                </button>
+              ))}
           </div>
           <div style={{ marginTop: 16, display: 'flex', alignItems: 'center', gap: 8, color: cssVar('textSecondary'), fontSize: 13 }}>
-            <span>自定义金额</span>
+            <span>自定义金额{packages.length ? '（不参与套餐赠送）' : ''}</span>
             <input
               type="number"
               min={1}
               max={10000}
               step={1}
               value={amount}
-              onChange={(e) => setAmount(Number(e.target.value))}
+              onChange={(e) => { userChoseAmountRef.current = true; setSelectedPackageId(null); setAmount(Number(e.target.value)); }}
               style={inputStyle}
             />
             <span>$</span>
@@ -368,6 +415,39 @@ const amountBtnActive: React.CSSProperties = {
   background: cssVar('primarySubtle'),
   color: cssVar('primary'),
   fontWeight: 600,
+};
+
+const packageBtn: React.CSSProperties = {
+  ...amountBtn,
+  minWidth: 104,
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: 4,
+};
+
+const packageBtnActive: React.CSSProperties = {
+  ...packageBtn,
+  borderColor: cssVar('primary'),
+  background: cssVar('primarySubtle'),
+  color: cssVar('primary'),
+};
+
+const bonusBadge: React.CSSProperties = {
+  fontSize: 11,
+  fontWeight: 600,
+  padding: '1px 8px',
+  borderRadius: 999,
+  background: cssVar('bgElevated'),
+  color: cssVar('success'),
+  border: `1px solid ${cssVar('glassBorder')}`,
+};
+
+const bonusBadgeActive: React.CSSProperties = {
+  ...bonusBadge,
+  background: cssVar('primary'),
+  color: cssVar('textInverse'),
+  border: 'none',
 };
 
 const channelCard: React.CSSProperties = {

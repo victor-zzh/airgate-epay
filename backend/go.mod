@@ -3,6 +3,7 @@ module github.com/DouDOU-start/airgate-epay/backend
 go 1.25.7
 
 require (
+	github.com/DATA-DOG/go-sqlmock v1.5.0
 	github.com/DouDOU-start/airgate-sdk v0.2.1
 	github.com/lib/pq v1.10.9
 	github.com/smartwalle/alipay/v3 v3.2.29
