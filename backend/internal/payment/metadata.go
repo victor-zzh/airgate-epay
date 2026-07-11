@@ -51,21 +51,21 @@ func BuildPluginInfo() sdk.PluginInfo {
 		FrontendPages: []sdk.FrontendPage{
 			{
 				Path:        "/recharge",
-				Title:       "充值",
+				Title:       "nav.recharge",
 				Icon:        "wallet",
 				Description: "账户余额充值",
 				Audience:    "user",
 			},
 			{
 				Path:        "/orders",
-				Title:       "充值记录",
+				Title:       "nav.recharge_records",
 				Icon:        "history",
 				Description: "我的充值订单",
 				Audience:    "user",
 			},
 			{
 				Path:        "/admin/orders",
-				Title:       "支付订单",
+				Title:       "nav.payment_orders",
 				Icon:        "receipt",
 				Description: "全量订单监控",
 				Audience:    "admin",
