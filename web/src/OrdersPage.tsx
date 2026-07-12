@@ -3,6 +3,7 @@ import QRCode from 'qrcode';
 import { cssVar } from '@doudou-start/airgate-theme';
 import { api, type Order } from './api';
 import { formatRechargeCredit } from './money';
+import { t } from './i18n';
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -70,8 +71,8 @@ export default function OrdersPage() {
     setQrDataUrl(null);
   };
 
-  if (loading) return <div style={containerStyle}><div style={hintStyle}>加载中...</div></div>;
-  if (err) return <div style={containerStyle}><div style={{ ...hintStyle, color: cssVar('danger') }}>加载失败: {err}</div></div>;
+  if (loading) return <div style={containerStyle}><div style={hintStyle}>{t('加载中...')}</div></div>;
+  if (err) return <div style={containerStyle}><div style={{ ...hintStyle, color: cssVar('danger') }}>{t('加载失败: ')}{err}</div></div>;
 
   return (
     <div style={containerStyle}>
@@ -81,48 +82,48 @@ export default function OrdersPage() {
           <div style={modalStyle} onClick={(e) => e.stopPropagation()}>
             {payingOrder.status === 'paid' ? (
               <>
-                <h3 style={{ margin: '0 0 12px', color: cssVar('success') }}>支付成功</h3>
+                <h3 style={{ margin: '0 0 12px', color: cssVar('success') }}>{t('支付成功')}</h3>
                 <p style={{ margin: 0, color: cssVar('text'), fontSize: 14 }}>
-                  订单 <code style={codeStyle}>{payingOrder.out_trade_no}</code> 已支付{' '}
+                  {t('订单')} <code style={codeStyle}>{payingOrder.out_trade_no}</code> {t('已支付')}{' '}
                   <strong>{formatRechargeCredit(payingOrder.amount)}</strong>
                 </p>
-                <button style={{ ...btnStyle, marginTop: 16 }} onClick={closePayModal}>关闭</button>
+                <button style={{ ...btnStyle, marginTop: 16 }} onClick={closePayModal}>{t('关闭')}</button>
               </>
             ) : payingOrder.status === 'pending' ? (
               <>
-                <h3 style={{ margin: '0 0 12px', color: cssVar('text') }}>扫码付款</h3>
+                <h3 style={{ margin: '0 0 12px', color: cssVar('text') }}>{t('扫码付款')}</h3>
                 {qrDataUrl ? (
-                  <img src={qrDataUrl} alt="付款二维码" style={{ width: 240, height: 240, borderRadius: 8 }} />
+                  <img src={qrDataUrl} alt={t('付款二维码')} style={{ width: 240, height: 240, borderRadius: 8 }} />
                 ) : (
                   <div style={{ width: 240, height: 240, display: 'flex', alignItems: 'center', justifyContent: 'center', color: cssVar('textTertiary'), border: `1px solid ${cssVar('glassBorder')}`, borderRadius: 8 }}>
-                    生成二维码中...
+                    {t('生成二维码中...')}
                   </div>
                 )}
                 <div style={{ marginTop: 12, fontWeight: 600, fontSize: 20, color: cssVar('text') }}>{formatRechargeCredit(payingOrder.amount)}</div>
                 <div style={{ color: cssVar('textSecondary'), fontSize: 13, marginTop: 4 }}>
-                  请使用 {methodLabel(payingOrder.method)} 扫码完成付款
+                  {t('请使用')} {methodLabel(payingOrder.method)} {t('扫码完成付款')}
                 </div>
                 <div style={{ marginTop: 6, color: cssVar('textTertiary'), fontSize: 12 }}>
-                  订单号：<code style={codeStyle}>{payingOrder.out_trade_no}</code>
+                  {t('订单号：')}<code style={codeStyle}>{payingOrder.out_trade_no}</code>
                 </div>
                 <p style={{ color: cssVar('textTertiary'), fontSize: 12, marginTop: 12, marginBottom: 0 }}>
-                  支付完成后将自动刷新（每 3 秒检查一次）
+                  {t('支付完成后将自动刷新（每 3 秒检查一次）')}
                 </p>
                 {payingOrder.payment_url && (
                   <p style={{ fontSize: 12, marginTop: 6, marginBottom: 0 }}>
-                    扫码不便？{' '}
+                    {t('扫码不便？')}{' '}
                     <a href={payingOrder.payment_url} target="_blank" rel="noreferrer" style={{ color: cssVar('primary'), textDecoration: 'none' }}>
-                      点此在新窗口打开付款页 →
+                      {t('点此在新窗口打开付款页 →')}
                     </a>
                   </p>
                 )}
-                <button style={{ ...btnSecondaryStyle, marginTop: 16 }} onClick={closePayModal}>取消</button>
+                <button style={{ ...btnSecondaryStyle, marginTop: 16 }} onClick={closePayModal}>{t('取消')}</button>
               </>
             ) : (
               <>
-                <h3 style={{ margin: '0 0 12px', color: cssVar('textSecondary') }}>订单已{statusLabel(payingOrder.status)}</h3>
-                <p style={{ margin: 0, color: cssVar('textSecondary'), fontSize: 14 }}>该订单无法继续支付，请重新发起充值。</p>
-                <button style={{ ...btnStyle, marginTop: 16 }} onClick={closePayModal}>关闭</button>
+                <h3 style={{ margin: '0 0 12px', color: cssVar('textSecondary') }}>{t('订单已')}{statusLabel(payingOrder.status)}</h3>
+                <p style={{ margin: 0, color: cssVar('textSecondary'), fontSize: 14 }}>{t('该订单无法继续支付，请重新发起充值。')}</p>
+                <button style={{ ...btnStyle, marginTop: 16 }} onClick={closePayModal}>{t('关闭')}</button>
               </>
             )}
           </div>
@@ -131,19 +132,19 @@ export default function OrdersPage() {
 
       <div style={panelStyle}>
         {orders.length === 0 ? (
-          <p style={emptyStyle}>暂无充值记录</p>
+          <p style={emptyStyle}>{t('暂无充值记录')}</p>
         ) : (
           <div style={tableWrapStyle}>
             <table style={tableStyle}>
               <thead>
                 <tr>
-                  <th style={thStyle}>订单号</th>
-                  <th style={thStyle}>金额</th>
-                  <th style={thStyle}>支付方式</th>
-                  <th style={thStyle}>状态</th>
-                  <th style={thStyle}>创建时间</th>
-                  <th style={thStyle}>支付时间</th>
-                  <th style={thStyle}>操作</th>
+                  <th style={thStyle}>{t('订单号')}</th>
+                  <th style={thStyle}>{t('金额')}</th>
+                  <th style={thStyle}>{t('支付方式')}</th>
+                  <th style={thStyle}>{t('状态')}</th>
+                  <th style={thStyle}>{t('创建时间')}</th>
+                  <th style={thStyle}>{t('支付时间')}</th>
+                  <th style={thStyle}>{t('操作')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -158,7 +159,7 @@ export default function OrdersPage() {
                     <td style={tdStyle}>
                       {o.status === 'pending' && (o.qr_code_content || o.payment_url) ? (
                         <button style={continuePayBtnStyle} onClick={() => handleContinuePay(o)}>
-                          继续支付
+                          {t('继续支付')}
                         </button>
                       ) : null}
                     </td>
@@ -174,16 +175,16 @@ export default function OrdersPage() {
 }
 
 function methodLabel(m: string): string {
-  return ({ alipay: '支付宝', wxpay: '微信支付' } as Record<string, string>)[m] || m || '-';
+  return ({ alipay: t('支付宝'), wxpay: t('微信支付') } as Record<string, string>)[m] || m || '-';
 }
 function statusLabel(s: string): string {
   return ({
-    pending: '待支付',
-    paid: '已支付',
-    expired: '已过期',
-    failed: '失败',
-    cancelled: '已取消',
-    refunded: '已退款',
+    pending: t('待支付'),
+    paid: t('已支付'),
+    expired: t('已过期'),
+    failed: t('失败'),
+    cancelled: t('已取消'),
+    refunded: t('已退款'),
   } as Record<string, string>)[s] || s;
 }
 function statusColor(s: string): string {

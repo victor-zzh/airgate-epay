@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { cssVar } from '@doudou-start/airgate-theme';
+import { t } from './i18n';
 
 /**
  * 插件本地的 toast 实现，视觉风格对齐 core 的 ToastProvider：
@@ -112,7 +113,7 @@ function ToastItem({
     >
       <span style={{ ...iconStyle, color: accent }}>{isSuccess ? '✓' : '✕'}</span>
       <span style={{ ...textStyle, color: cssVar('text') }}>{message.text}</span>
-      <button onClick={onClose} style={closeBtnStyle} aria-label="关闭">×</button>
+      <button onClick={onClose} style={closeBtnStyle} aria-label={t('关闭')}>×</button>
     </div>
   );
 }

@@ -3,6 +3,7 @@ import QRCode from 'qrcode';
 import { cssVar } from '@doudou-start/airgate-theme';
 import { api, type Order, type MethodInfo, type PackageItem } from './api';
 import { formatRechargeCredit } from './money';
+import { t } from './i18n';
 
 /**
  * RechargePage 充值页面（用户级独立页面）
@@ -111,11 +112,11 @@ export default function RechargePage() {
   const handleSubmit = async () => {
     setError(null);
     if (!method) {
-      setError('请选择支付方式');
+      setError(t('请选择支付方式'));
       return;
     }
     if (!amount || amount <= 0) {
-      setError('请输入有效金额');
+      setError(t('请输入有效金额'));
       return;
     }
     setSubmitting(true);
@@ -143,17 +144,17 @@ export default function RechargePage() {
   // ========== 渲染 ==========
 
   if (methodsLoading) {
-    return <div style={containerStyle}><div style={hintStyle}>加载中...</div></div>;
+    return <div style={containerStyle}><div style={hintStyle}>{t('加载中...')}</div></div>;
   }
   if (methodsErr) {
-    return <div style={containerStyle}><div style={{ ...hintStyle, color: cssVar('danger') }}>加载支付方式失败: {methodsErr}</div></div>;
+    return <div style={containerStyle}><div style={{ ...hintStyle, color: cssVar('danger') }}>{t('加载支付方式失败: ')}{methodsErr}</div></div>;
   }
   if (methods.length === 0) {
     return (
       <div style={containerStyle}>
         <div style={panelStyle}>
           <p style={{ color: cssVar('textSecondary'), margin: 0, textAlign: 'center' }}>
-            充值功能暂未开放，请联系管理员。
+            {t('充值功能暂未开放，请联系管理员。')}
           </p>
         </div>
       </div>
@@ -165,16 +166,16 @@ export default function RechargePage() {
     if (order.status === 'paid') {
       return (
         <div style={containerStyle}>
-          <h2 style={titleStyle}>充值成功</h2>
+          <h2 style={titleStyle}>{t('充值成功')}</h2>
           <div style={panelStyle}>
             <p style={{ margin: 0, color: cssVar('text') }}>
-              订单 <code style={inlineCodeStyle}>{order.out_trade_no}</code> 已支付，金额{' '}
-              <strong style={{ color: cssVar('success') }}>{formatRechargeCredit(order.amount)}</strong> 已入账
+              {t('订单')} <code style={inlineCodeStyle}>{order.out_trade_no}</code> {t('已支付，金额')}{' '}
+              <strong style={{ color: cssVar('success') }}>{formatRechargeCredit(order.amount)}</strong> {t('已入账')}
               {(order.bonus_amount ?? 0) > 0 && (
-                <>，套餐赠送 <strong style={{ color: cssVar('success') }}>{formatRechargeCredit(order.bonus_amount!)}</strong> 已同步到账</>
-              )}。
+                <>{t('，套餐赠送')} <strong style={{ color: cssVar('success') }}>{formatRechargeCredit(order.bonus_amount!)}</strong> {t('已同步到账')}</>
+              )}{t('。')}
             </p>
-            <button style={{ ...primaryBtnStyle, marginTop: 20 }} onClick={handleReset}>再次充值</button>
+            <button style={{ ...primaryBtnStyle, marginTop: 20 }} onClick={handleReset}>{t('再次充值')}</button>
           </div>
         </div>
       );
@@ -182,39 +183,39 @@ export default function RechargePage() {
     if (order.status === 'pending') {
       return (
         <div style={containerStyle}>
-          <h2 style={titleStyle}>扫码付款</h2>
+          <h2 style={titleStyle}>{t('扫码付款')}</h2>
           <div style={qrPanelStyle}>
             {qrDataUrl ? (
-              <img src={qrDataUrl} alt="付款二维码" style={qrImageStyle} />
+              <img src={qrDataUrl} alt={t('付款二维码')} style={qrImageStyle} />
             ) : (
               <div style={{ ...qrImageStyle, display: 'flex', alignItems: 'center', justifyContent: 'center', color: cssVar('textTertiary') }}>
-                生成二维码中...
+                {t('生成二维码中...')}
               </div>
             )}
             <div style={qrAmountStyle}>{formatRechargeCredit(order.amount)}</div>
             {(order.bonus_amount ?? 0) > 0 && (
               <div style={{ color: cssVar('success'), fontSize: 13, marginTop: 2 }}>
-                支付成功后另赠 {formatRechargeCredit(order.bonus_amount!)}
+                {t('支付成功后另赠')} {formatRechargeCredit(order.bonus_amount!)}
               </div>
             )}
             <div style={{ color: cssVar('textSecondary'), fontSize: 13 }}>
-              请使用 {methodLabel(order.method)} 扫码完成付款
+              {t('请使用')} {methodLabel(order.method)} {t('扫码完成付款')}
             </div>
             <div style={{ marginTop: 8, color: cssVar('textTertiary'), fontSize: 12 }}>
-              订单号：<code style={inlineCodeStyle}>{order.out_trade_no}</code>
+              {t('订单号：')}<code style={inlineCodeStyle}>{order.out_trade_no}</code>
             </div>
             <p style={{ textAlign: 'center', color: cssVar('textTertiary'), fontSize: 13, marginTop: 20, marginBottom: 0 }}>
-              支付完成后本页将自动跳转到结果页（每 3 秒检查一次）
+              {t('支付完成后本页将自动跳转到结果页（每 3 秒检查一次）')}
             </p>
             {order.payment_url && (
               <p style={{ textAlign: 'center', fontSize: 12, marginTop: 8, marginBottom: 0 }}>
-                扫码不便？{' '}
+                {t('扫码不便？')}{' '}
                 <a href={order.payment_url} target="_blank" rel="noreferrer" style={{ color: cssVar('primary'), textDecoration: 'none' }}>
-                  点此在新窗口打开付款页 →
+                  {t('点此在新窗口打开付款页 →')}
                 </a>
               </p>
             )}
-            <button style={{ ...secondaryBtnStyle, marginTop: 20 }} onClick={handleReset}>取消</button>
+            <button style={{ ...secondaryBtnStyle, marginTop: 20 }} onClick={handleReset}>{t('取消')}</button>
           </div>
         </div>
       );
@@ -222,12 +223,12 @@ export default function RechargePage() {
     // expired / failed / cancelled
     return (
       <div style={containerStyle}>
-        <h2 style={titleStyle}>订单已{statusLabel(order.status)}</h2>
+        <h2 style={titleStyle}>{closedOrderTitle(order.status)}</h2>
         <div style={panelStyle}>
           <p style={{ margin: 0, color: cssVar('textSecondary') }}>
-            订单号：<code style={inlineCodeStyle}>{order.out_trade_no}</code>
+            {t('订单号：')}<code style={inlineCodeStyle}>{order.out_trade_no}</code>
           </p>
-          <button style={{ ...primaryBtnStyle, marginTop: 20 }} onClick={handleReset}>重新发起</button>
+          <button style={{ ...primaryBtnStyle, marginTop: 20 }} onClick={handleReset}>{t('重新发起')}</button>
         </div>
       </div>
     );
@@ -236,14 +237,14 @@ export default function RechargePage() {
   // 默认态：金额 + 渠道选择 + 提交
   return (
     <div style={containerStyle}>
-      <h2 style={titleStyle}>账户充值</h2>
+      <h2 style={titleStyle}>{t('账户充值')}</h2>
 
       <div style={panelStyle}>
         <p style={rateHintStyle}>
-          充值比例：<strong style={{ color: cssVar('text') }}>1 CNY = $1</strong>
+          {t('充值比例：')}<strong style={{ color: cssVar('text') }}>1 CNY = $1</strong>
         </p>
         <section>
-          <h3 style={sectionTitleStyle}>{packages.length ? '选择套餐' : '选择金额'}</h3>
+          <h3 style={sectionTitleStyle}>{packages.length ? t('选择套餐') : t('选择金额')}</h3>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
             {packages.length
               ? packages.map((p) => (
@@ -257,7 +258,7 @@ export default function RechargePage() {
                   <span style={{ fontSize: 16, fontWeight: 600 }}>{formatRechargeCredit(p.amount, { compact: true })}</span>
                   {p.bonus_amount > 0 && (
                     <span style={selectedPackageId === p.id ? bonusBadgeActive : bonusBadge}>
-                      送 {formatRechargeCredit(p.bonus_amount, { compact: true })}
+                      {t('送')} {formatRechargeCredit(p.bonus_amount, { compact: true })}
                     </span>
                   )}
                 </button>
@@ -274,7 +275,7 @@ export default function RechargePage() {
               ))}
           </div>
           <div style={{ marginTop: 16, display: 'flex', alignItems: 'center', gap: 8, color: cssVar('textSecondary'), fontSize: 13 }}>
-            <span>自定义金额{packages.length ? '（不参与套餐赠送）' : ''}</span>
+            <span>{t('自定义金额')}{packages.length ? t('（不参与套餐赠送）') : ''}</span>
             <input
               type="number"
               min={1}
@@ -289,7 +290,7 @@ export default function RechargePage() {
         </section>
 
         <section style={sectionStyle}>
-          <h3 style={sectionTitleStyle}>选择支付方式</h3>
+          <h3 style={sectionTitleStyle}>{t('选择支付方式')}</h3>
           <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
             {methods.map((m) => (
               <button
@@ -313,7 +314,7 @@ export default function RechargePage() {
           disabled={submitting}
           style={{ ...primaryBtnStyle, marginTop: 24, width: '100%', opacity: submitting ? 0.6 : 1 }}
         >
-          {submitting ? '处理中...' : '立即支付'}
+          {submitting ? t('处理中...') : t('立即支付')}
         </button>
       </div>
     </div>
@@ -322,19 +323,21 @@ export default function RechargePage() {
 
 function methodLabel(m: string): string {
   switch (m) {
-    case 'alipay': return '支付宝';
-    case 'wxpay': return '微信支付';
+    case 'alipay': return t('支付宝');
+    case 'wxpay': return t('微信支付');
     default: return m;
   }
 }
 
-function statusLabel(s: string): string {
+// 终态订单标题。zh 输出与原「订单已 + 状态」拼接完全一致；
+// 用整句作 key 是为了避开「取消」（按钮 Cancel）与「已取消」（状态 Cancelled）的译文冲突。
+function closedOrderTitle(s: string): string {
   switch (s) {
-    case 'expired': return '过期';
-    case 'failed': return '失败';
-    case 'cancelled': return '取消';
-    case 'refunded': return '退款';
-    default: return s;
+    case 'expired': return t('订单已过期');
+    case 'failed': return t('订单已失败');
+    case 'cancelled': return t('订单已取消');
+    case 'refunded': return t('订单已退款');
+    default: return t('订单已') + s;
   }
 }
 
