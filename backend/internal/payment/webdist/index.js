@@ -2116,7 +2116,7 @@ function rr() {
             onClick: () => u(m.key),
             style: d === m.key ? ur : dn,
             title: m.description,
-            children: m.label
+            children: x(m.label)
           },
           m.key
         )) })

@@ -300,7 +300,8 @@ export default function RechargePage() {
                 style={method === m.key ? channelCardActive : channelCard}
                 title={m.description}
               >
-                {m.label}
+                {/* label 来自后端支付方式配置(多为简体),已知名称经 t() 本地化,未知原样展示 */}
+                {t(m.label)}
               </button>
             ))}
           </div>
