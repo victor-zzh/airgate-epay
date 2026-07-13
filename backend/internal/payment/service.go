@@ -26,17 +26,17 @@ import (
 // Method 是用户面向的支付方式（alipay/wxpay/qqpay 等），ProviderID 是实际承载这笔订单的
 // Provider 实例 ID。两个字段一起记录"用户选了什么 + 实际走了哪家服务商"，便于运营分析。
 type Order struct {
-	ID            int64           `json:"id"`
-	OutTradeNo    string          `json:"out_trade_no"`
-	UserID        int64           `json:"user_id"`
-	UserEmail     string          `json:"user_email,omitempty"`
-	Method        string          `json:"method"`
-	ProviderID    string          `json:"provider_id"`
-	Channel       string          `json:"channel,omitempty"` // 兼容老订单
-	Amount        float64         `json:"amount"`
+	ID         int64   `json:"id"`
+	OutTradeNo string  `json:"out_trade_no"`
+	UserID     int64   `json:"user_id"`
+	UserEmail  string  `json:"user_email,omitempty"`
+	Method     string  `json:"method"`
+	ProviderID string  `json:"provider_id"`
+	Channel    string  `json:"channel,omitempty"` // 兼容老订单
+	Amount     float64 `json:"amount"`
 	// PackageID / BonusAmount 下单时从所选套餐快照；非套餐订单分别为 0。
-	PackageID   int64   `json:"package_id,omitempty"`
-	BonusAmount float64 `json:"bonus_amount,omitempty"`
+	PackageID     int64           `json:"package_id,omitempty"`
+	BonusAmount   float64         `json:"bonus_amount,omitempty"`
 	Status        string          `json:"status"`
 	Subject       string          `json:"subject"`
 	PaymentURL    string          `json:"payment_url,omitempty"`
@@ -389,6 +389,14 @@ func (s *Service) markPaid(ctx context.Context, cb *provider.CallbackResult) err
 		return fmt.Errorf("入账失败: %s", msg)
 	}
 
+	// 2.5) 通知 core「一笔充值已入账」（分销返利等入账后动作在 core 侧闭环）。
+	// 刻意放在标记 paid 之前：通知失败 → 订单保持 pending → 服务商重试回调 →
+	// update_balance 幂等命中（不重复加钱）→ 通知重试，与本金入账共用同一套
+	// 重试一致性；core 侧靠幂等键保证事件动作不重不漏。
+	if err := s.notifyTopup(ctx, userID, cb.OutTradeNo, amount, bonusAmount); err != nil {
+		return err
+	}
+
 	// 3) 标记订单 paid（WHERE status='pending' 防并发重复标记）
 	payload, _ := json.Marshal(cb.Raw)
 	if _, err := s.db.ExecContext(ctx, `
@@ -416,6 +424,68 @@ func (s *Service) markPaid(ctx context.Context, cb *provider.CallbackResult) err
 		"provider", providerID,
 	)
 	return nil
+}
+
+// notifyTopup 调 users.notify_topup 通知 core 一笔充值已入账（分销返利等由 core 决定）。
+//
+// first_topup 按「当前已 paid 订单数 == 0」判定——本单此刻尚未标记 paid，
+// 回调重试期间计数稳定，判定结果幂等。
+//
+// 老 core 不认识该 method（Unimplemented / capability 缺失）时降级告警放行：
+// 充值事件是增值动作，不能把支付卡死在旧版本 core 上。
+func (s *Service) notifyTopup(ctx context.Context, userID int64, outTradeNo string, amount, bonusAmount float64) error {
+	var paidCount int64
+	if err := s.db.QueryRowContext(ctx, `
+		SELECT COUNT(*) FROM payment_orders WHERE user_id = $1 AND status = 'paid'
+	`, userID).Scan(&paidCount); err != nil {
+		s.logger.Error("payment_notify_topup_count_failed",
+			sdk.LogFieldUserID, userID,
+			"out_trade_no", outTradeNo,
+			sdk.LogFieldError, err,
+		)
+		return fmt.Errorf("查询用户已支付订单数失败: %w", err)
+	}
+	resp, err := s.host.Invoke(ctx, sdk.HostInvokeRequest{
+		Method: "users.notify_topup",
+		Payload: map[string]interface{}{
+			"user_id":      userID,
+			"out_trade_no": outTradeNo,
+			"paid_amount":  amount,
+			"bonus_amount": bonusAmount,
+			"first_topup":  paidCount == 0,
+		},
+	})
+	if err != nil {
+		if isHostMethodUnsupported(err) {
+			s.logger.Warn("payment_notify_topup_unsupported",
+				"out_trade_no", outTradeNo,
+				"hint", "core 版本不支持 users.notify_topup，跳过充值事件通知",
+				sdk.LogFieldError, err,
+			)
+			return nil
+		}
+		s.logger.Error("payment_notify_topup_failed",
+			sdk.LogFieldUserID, userID,
+			"out_trade_no", outTradeNo,
+			sdk.LogFieldError, err,
+		)
+		return fmt.Errorf("充值事件通知失败: %w", err)
+	}
+	if resp != nil && resp.Status == "error" {
+		msg, _ := resp.Payload["message"].(string)
+		return fmt.Errorf("充值事件通知失败: %s", msg)
+	}
+	return nil
+}
+
+// isHostMethodUnsupported 判断错误是否属于「core 不支持该 host method」：
+// 旧 core 的 unknown host method（Unimplemented），或 manifest 能力未随包更新时的
+// capability 拒绝。这两类都是版本/配置错位，重试不可恢复，按不支持降级。
+func isHostMethodUnsupported(err error) bool {
+	msg := err.Error()
+	return strings.Contains(msg, "unknown host method") ||
+		strings.Contains(msg, "Unimplemented") ||
+		strings.Contains(msg, "lacks host invoke capability")
 }
 
 // orderColumns SELECT 列清单（用于 ListUserOrders / GetOrder 共享）

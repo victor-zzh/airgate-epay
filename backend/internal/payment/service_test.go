@@ -10,6 +10,7 @@ import (
 	"testing"
 
 	sqlmock "github.com/DATA-DOG/go-sqlmock"
+
 	sdk "github.com/DouDOU-start/airgate-sdk/sdkgo"
 
 	"github.com/DouDOU-start/airgate-epay/backend/internal/payment/provider"
@@ -51,6 +52,24 @@ func expectMarkPaidUpdate(mock sqlmock.Sqlmock) {
 		WillReturnResult(sqlmock.NewResult(0, 1))
 }
 
+// expectPaidCountSelect 预置 notifyTopup 的"已支付订单数"查询（first_topup 判定）。
+func expectPaidCountSelect(mock sqlmock.Sqlmock, paidCount int64) {
+	mock.ExpectQuery(regexp.QuoteMeta(`SELECT COUNT(*) FROM payment_orders WHERE user_id = $1 AND status = 'paid'`)).
+		WithArgs(int64(42)).
+		WillReturnRows(sqlmock.NewRows([]string{"count"}).AddRow(paidCount))
+}
+
+// callsByMethod 按 method 过滤 host 调用。
+func callsByMethod(host *fakeHost, method string) []sdk.HostInvokeRequest {
+	var out []sdk.HostInvokeRequest
+	for _, call := range host.calls {
+		if call.Method == method {
+			out = append(out, call)
+		}
+	}
+	return out
+}
+
 func paidCallback() *provider.CallbackResult {
 	return &provider.CallbackResult{
 		OutTradeNo: "AG_TEST_NO",
@@ -71,25 +90,38 @@ func TestMarkPaidWithBonusCreditsCombinedAmountInOneCall(t *testing.T) {
 	svc := &Service{logger: testLogger(), db: db, host: host}
 
 	expectMarkPaidSelect(mock, 100, 15, "pending")
+	expectPaidCountSelect(mock, 0)
 	expectMarkPaidUpdate(mock)
 
 	if err := svc.markPaid(context.Background(), paidCallback()); err != nil {
 		t.Fatalf("markPaid: %v", err)
 	}
-	// 本金+赠送必须合并成一次 Invoke：拆成两次会在两次调用之间出现"本金已到账、
+	// 本金+赠送必须合并成一次 update_balance：拆成两次会在两次调用之间出现"本金已到账、
 	// 订单仍 pending"的中间态，一旦被 ExpirePendingOrders 判过期，赠送额度就永久丢失
 	// 且无法通过回调重试恢复（见 markPaid 里的注释）。
-	if len(host.calls) != 1 {
-		t.Fatalf("invoke calls = %d, want 1（本金+赠送必须合并为一次调用，不能拆成两次）", len(host.calls))
+	credits := callsByMethod(host, "users.update_balance")
+	if len(credits) != 1 {
+		t.Fatalf("update_balance calls = %d, want 1（本金+赠送必须合并为一次调用，不能拆成两次）", len(credits))
 	}
-	if key := host.calls[0].Payload["idempotency_key"]; key != "epay:AG_TEST_NO" {
+	if key := credits[0].Payload["idempotency_key"]; key != "epay:AG_TEST_NO" {
 		t.Fatalf("idempotency_key = %v, want epay:AG_TEST_NO", key)
 	}
-	if amt := host.calls[0].Payload["amount"]; amt != 115.0 {
+	if amt := credits[0].Payload["amount"]; amt != 115.0 {
 		t.Fatalf("amount = %v, want 115 (100 本金 + 15 赠送)", amt)
 	}
-	if remark, _ := host.calls[0].Payload["remark"].(string); !strings.Contains(remark, "赠送") {
+	if remark, _ := credits[0].Payload["remark"].(string); !strings.Contains(remark, "赠送") {
 		t.Fatalf("remark = %q, want 包含「赠送」", remark)
+	}
+	// 入账成功后应通知充值事件：返利基数是实付本金（100），不含赠送；首单 first_topup=true
+	notifies := callsByMethod(host, "users.notify_topup")
+	if len(notifies) != 1 {
+		t.Fatalf("notify_topup calls = %d, want 1", len(notifies))
+	}
+	if amt := notifies[0].Payload["paid_amount"]; amt != 100.0 {
+		t.Fatalf("notify paid_amount = %v, want 100（实付本金，不含赠送）", amt)
+	}
+	if first := notifies[0].Payload["first_topup"]; first != true {
+		t.Fatalf("notify first_topup = %v, want true", first)
 	}
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Fatalf("sql expectations: %v", err)
@@ -107,13 +139,19 @@ func TestMarkPaidWithoutBonusSingleEntry(t *testing.T) {
 	svc := &Service{logger: testLogger(), db: db, host: host}
 
 	expectMarkPaidSelect(mock, 100, 0, "pending")
+	expectPaidCountSelect(mock, 3)
 	expectMarkPaidUpdate(mock)
 
 	if err := svc.markPaid(context.Background(), paidCallback()); err != nil {
 		t.Fatalf("markPaid: %v", err)
 	}
-	if len(host.calls) != 1 {
-		t.Fatalf("invoke calls = %d, want 1（无赠送不应产生第二条流水）", len(host.calls))
+	if credits := callsByMethod(host, "users.update_balance"); len(credits) != 1 {
+		t.Fatalf("update_balance calls = %d, want 1（无赠送不应产生第二条流水）", len(credits))
+	}
+	// 已有 3 笔 paid 订单：first_topup 必须为 false
+	notifies := callsByMethod(host, "users.notify_topup")
+	if len(notifies) != 1 || notifies[0].Payload["first_topup"] != false {
+		t.Fatalf("notify_topup = %+v, want 1 次且 first_topup=false", notifies)
 	}
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Fatalf("sql expectations: %v", err)
@@ -145,6 +183,63 @@ func TestMarkPaidInvokeFailureKeepsOrderPendingWithNoPartialCredit(t *testing.T)
 	}
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Fatalf("sql expectations（入账失败不应标记 paid）: %v", err)
+	}
+}
+
+// 充值事件通知失败：订单保持 pending 等回调重试（update_balance 幂等键保证重试不重复加钱）。
+func TestMarkPaidNotifyTopupFailureKeepsOrderPending(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	if err != nil {
+		t.Fatalf("sqlmock: %v", err)
+	}
+	defer func() { _ = db.Close() }()
+
+	host := &fakeHost{invokeFn: func(call int, req sdk.HostInvokeRequest) (*sdk.HostInvokeResponse, error) {
+		if req.Method == "users.notify_topup" {
+			return nil, errors.New("core internal error")
+		}
+		return &sdk.HostInvokeResponse{Status: "ok"}, nil
+	}}
+	svc := &Service{logger: testLogger(), db: db, host: host}
+
+	// 预置 SELECT + COUNT，不预置 UPDATE——通知失败后不应标记 paid
+	expectMarkPaidSelect(mock, 100, 0, "pending")
+	expectPaidCountSelect(mock, 0)
+
+	err = svc.markPaid(context.Background(), paidCallback())
+	if err == nil || !strings.Contains(err.Error(), "充值事件通知失败") {
+		t.Fatalf("markPaid err = %v, want 充值事件通知失败", err)
+	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Fatalf("sql expectations（通知失败不应标记 paid）: %v", err)
+	}
+}
+
+// 老 core 不支持 users.notify_topup：降级放行，支付照常完成。
+func TestMarkPaidNotifyTopupUnsupportedDegrades(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	if err != nil {
+		t.Fatalf("sqlmock: %v", err)
+	}
+	defer func() { _ = db.Close() }()
+
+	host := &fakeHost{invokeFn: func(call int, req sdk.HostInvokeRequest) (*sdk.HostInvokeResponse, error) {
+		if req.Method == "users.notify_topup" {
+			return nil, errors.New("rpc error: code = Unimplemented desc = unknown host method: users.notify_topup")
+		}
+		return &sdk.HostInvokeResponse{Status: "ok"}, nil
+	}}
+	svc := &Service{logger: testLogger(), db: db, host: host}
+
+	expectMarkPaidSelect(mock, 100, 0, "pending")
+	expectPaidCountSelect(mock, 0)
+	expectMarkPaidUpdate(mock)
+
+	if err := svc.markPaid(context.Background(), paidCallback()); err != nil {
+		t.Fatalf("markPaid: %v（老 core 应降级放行，不能阻塞支付）", err)
+	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Fatalf("sql expectations: %v", err)
 	}
 }
 

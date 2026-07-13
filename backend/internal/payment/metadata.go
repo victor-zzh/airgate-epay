@@ -46,6 +46,8 @@ func BuildPluginInfo() sdk.PluginInfo {
 		// 留给"未来 cleanup"。
 		Capabilities: []sdk.Capability{
 			sdk.CapabilityForHostMethod("users.update_balance"),
+			// 充值入账事件通知（分销返利等入账后动作由 core 侧决定）
+			sdk.CapabilityForHostMethod("users.notify_topup"),
 		},
 
 		FrontendPages: []sdk.FrontendPage{
