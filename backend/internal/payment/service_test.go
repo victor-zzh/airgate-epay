@@ -215,6 +215,89 @@ func TestMarkPaidNotifyTopupFailureKeepsOrderPending(t *testing.T) {
 	}
 }
 
+// first_topup 计数查询失败：订单保持 pending 等重试，不带着未知的首充判定继续。
+func TestMarkPaidNotifyCountQueryFailureKeepsOrderPending(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	if err != nil {
+		t.Fatalf("sqlmock: %v", err)
+	}
+	defer func() { _ = db.Close() }()
+
+	host := &fakeHost{}
+	svc := &Service{logger: testLogger(), db: db, host: host}
+
+	expectMarkPaidSelect(mock, 100, 0, "pending")
+	mock.ExpectQuery(regexp.QuoteMeta(`SELECT COUNT(*) FROM payment_orders`)).
+		WillReturnError(errors.New("db down"))
+
+	err = svc.markPaid(context.Background(), paidCallback())
+	if err == nil || !strings.Contains(err.Error(), "已支付订单数") {
+		t.Fatalf("markPaid err = %v, want 计数失败", err)
+	}
+	if notifies := callsByMethod(host, "users.notify_topup"); len(notifies) != 0 {
+		t.Fatal("计数失败不应发通知")
+	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Fatalf("sql expectations（计数失败不应标记 paid）: %v", err)
+	}
+}
+
+// core 返回业务 error 响应体（resp.Status=error）：与传输错误同样保持 pending 重试。
+func TestMarkPaidNotifyRespErrorKeepsOrderPending(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	if err != nil {
+		t.Fatalf("sqlmock: %v", err)
+	}
+	defer func() { _ = db.Close() }()
+
+	host := &fakeHost{invokeFn: func(call int, req sdk.HostInvokeRequest) (*sdk.HostInvokeResponse, error) {
+		if req.Method == "users.notify_topup" {
+			return &sdk.HostInvokeResponse{Status: "error", Payload: map[string]interface{}{"message": "boom"}}, nil
+		}
+		return &sdk.HostInvokeResponse{Status: "ok"}, nil
+	}}
+	svc := &Service{logger: testLogger(), db: db, host: host}
+
+	expectMarkPaidSelect(mock, 100, 0, "pending")
+	expectPaidCountSelect(mock, 0)
+
+	err = svc.markPaid(context.Background(), paidCallback())
+	if err == nil || !strings.Contains(err.Error(), "充值事件通知失败") {
+		t.Fatalf("markPaid err = %v, want 通知失败", err)
+	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Fatalf("sql expectations: %v", err)
+	}
+}
+
+// capability 未随包更新（manifest 错位）：与老 core 同样降级放行，不阻塞支付。
+func TestMarkPaidNotifyCapabilityDeniedDegrades(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	if err != nil {
+		t.Fatalf("sqlmock: %v", err)
+	}
+	defer func() { _ = db.Close() }()
+
+	host := &fakeHost{invokeFn: func(call int, req sdk.HostInvokeRequest) (*sdk.HostInvokeResponse, error) {
+		if req.Method == "users.notify_topup" {
+			return nil, errors.New(`rpc error: code = PermissionDenied desc = plugin "payment-epay" lacks host invoke capability for method "users.notify_topup"`)
+		}
+		return &sdk.HostInvokeResponse{Status: "ok"}, nil
+	}}
+	svc := &Service{logger: testLogger(), db: db, host: host}
+
+	expectMarkPaidSelect(mock, 100, 0, "pending")
+	expectPaidCountSelect(mock, 0)
+	expectMarkPaidUpdate(mock)
+
+	if err := svc.markPaid(context.Background(), paidCallback()); err != nil {
+		t.Fatalf("markPaid: %v（capability 拒绝应降级放行）", err)
+	}
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Fatalf("sql expectations: %v", err)
+	}
+}
+
 // 老 core 不支持 users.notify_topup：降级放行，支付照常完成。
 func TestMarkPaidNotifyTopupUnsupportedDegrades(t *testing.T) {
 	db, mock, err := sqlmock.New()
