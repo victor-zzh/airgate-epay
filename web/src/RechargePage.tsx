@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import QRCode from 'qrcode';
 import { cssVar } from '@doudou-start/airgate-theme';
-import { api, type Order, type MethodInfo, type PackageItem } from './api';
+import { api, getSiteName, type Order, type MethodInfo, type PackageItem } from './api';
 import { formatRechargeCredit } from './money';
 import { t } from './i18n';
 
@@ -121,10 +121,12 @@ export default function RechargePage() {
     }
     setSubmitting(true);
     try {
+      // subject 展示在支付平台商户账单上，固定用简体、动态带站点名（ToB/ToC 品牌不同）
+      const siteName = await getSiteName();
       const o = await api.createOrder({
         amount,
         method,
-        subject: 'HopBase 余额充值',
+        subject: siteName ? `${siteName} 余额充值` : '余额充值',
         ...(selectedPackageId !== null ? { package_id: selectedPackageId } : {}),
       });
       setOrder(o);

@@ -1,18 +1,18 @@
 import { jsx as l, jsxs as y, Fragment as le } from "react/jsx-runtime";
-import { useState as z, useRef as se, useEffect as F, useCallback as ne, useMemo as Sn } from "react";
-function xn(e) {
+import { useState as z, useRef as se, useEffect as F, useCallback as ne, useMemo as xn } from "react";
+function wn(e) {
   return e && e.__esModule && Object.prototype.hasOwnProperty.call(e, "default") ? e.default : e;
 }
-var ee = {}, xe, it;
-function wn() {
-  return it || (it = 1, xe = function() {
+var ee = {}, we, at;
+function vn() {
+  return at || (at = 1, we = function() {
     return typeof Promise == "function" && Promise.prototype && Promise.prototype.then;
-  }), xe;
+  }), we;
 }
-var we = {}, H = {}, at;
+var ve = {}, j = {}, lt;
 function Q() {
-  if (at) return H;
-  at = 1;
+  if (lt) return j;
+  lt = 1;
   let e;
   const i = [
     0,
@@ -58,30 +58,30 @@ function Q() {
     3532,
     3706
   ];
-  return H.getSymbolSize = function(o) {
+  return j.getSymbolSize = function(o) {
     if (!o) throw new Error('"version" cannot be null or undefined');
     if (o < 1 || o > 40) throw new Error('"version" should be in range from 1 to 40');
     return o * 4 + 17;
-  }, H.getSymbolTotalCodewords = function(o) {
+  }, j.getSymbolTotalCodewords = function(o) {
     return i[o];
-  }, H.getBCHDigit = function(a) {
+  }, j.getBCHDigit = function(a) {
     let o = 0;
     for (; a !== 0; )
       o++, a >>>= 1;
     return o;
-  }, H.setToSJISFunction = function(o) {
+  }, j.setToSJISFunction = function(o) {
     if (typeof o != "function")
       throw new Error('"toSJISFunc" is not a valid function.');
     e = o;
-  }, H.isKanjiModeEnabled = function() {
+  }, j.isKanjiModeEnabled = function() {
     return typeof e < "u";
-  }, H.toSJIS = function(o) {
+  }, j.toSJIS = function(o) {
     return e(o);
-  }, H;
+  }, j;
 }
-var ve = {}, lt;
-function Ze() {
-  return lt || (lt = 1, (function(e) {
+var ke = {}, st;
+function et() {
+  return st || (st = 1, (function(e) {
     e.L = { bit: 1 }, e.M = { bit: 0 }, e.Q = { bit: 3 }, e.H = { bit: 2 };
     function i(a) {
       if (typeof a != "string")
@@ -114,12 +114,12 @@ function Ze() {
         return r;
       }
     };
-  })(ve)), ve;
+  })(ke)), ke;
 }
-var ke, st;
-function vn() {
-  if (st) return ke;
-  st = 1;
+var Ce, ct;
+function kn() {
+  if (ct) return Ce;
+  ct = 1;
   function e() {
     this.buffer = [], this.length = 0;
   }
@@ -139,11 +139,11 @@ function vn() {
       const a = Math.floor(this.length / 8);
       this.buffer.length <= a && this.buffer.push(0), i && (this.buffer[a] |= 128 >>> this.length % 8), this.length++;
     }
-  }, ke = e, ke;
+  }, Ce = e, Ce;
 }
-var Ce, dt;
-function kn() {
-  if (dt) return Ce;
+var Te, dt;
+function Cn() {
+  if (dt) return Te;
   dt = 1;
   function e(i) {
     if (!i || i < 1)
@@ -159,35 +159,35 @@ function kn() {
     this.data[i * this.size + a] ^= o;
   }, e.prototype.isReserved = function(i, a) {
     return this.reservedBit[i * this.size + a];
-  }, Ce = e, Ce;
-}
-var Te = {}, ct;
-function Cn() {
-  return ct || (ct = 1, (function(e) {
-    const i = Q().getSymbolSize;
-    e.getRowColCoords = function(o) {
-      if (o === 1) return [];
-      const r = Math.floor(o / 7) + 2, n = i(o), s = n === 145 ? 26 : Math.ceil((n - 13) / (2 * r - 2)) * 2, c = [n - 7];
-      for (let d = 1; d < r - 1; d++)
-        c[d] = c[d - 1] - s;
-      return c.push(6), c.reverse();
-    }, e.getPositions = function(o) {
-      const r = [], n = e.getRowColCoords(o), s = n.length;
-      for (let c = 0; c < s; c++)
-        for (let d = 0; d < s; d++)
-          c === 0 && d === 0 || // top-left
-          c === 0 && d === s - 1 || // bottom-left
-          c === s - 1 && d === 0 || r.push([n[c], n[d]]);
-      return r;
-    };
-  })(Te)), Te;
+  }, Te = e, Te;
 }
 var Be = {}, ut;
 function Tn() {
-  if (ut) return Be;
-  ut = 1;
+  return ut || (ut = 1, (function(e) {
+    const i = Q().getSymbolSize;
+    e.getRowColCoords = function(o) {
+      if (o === 1) return [];
+      const r = Math.floor(o / 7) + 2, n = i(o), s = n === 145 ? 26 : Math.ceil((n - 13) / (2 * r - 2)) * 2, d = [n - 7];
+      for (let c = 1; c < r - 1; c++)
+        d[c] = d[c - 1] - s;
+      return d.push(6), d.reverse();
+    }, e.getPositions = function(o) {
+      const r = [], n = e.getRowColCoords(o), s = n.length;
+      for (let d = 0; d < s; d++)
+        for (let c = 0; c < s; c++)
+          d === 0 && c === 0 || // top-left
+          d === 0 && c === s - 1 || // bottom-left
+          d === s - 1 && c === 0 || r.push([n[d], n[c]]);
+      return r;
+    };
+  })(Be)), Be;
+}
+var Ee = {}, gt;
+function Bn() {
+  if (gt) return Ee;
+  gt = 1;
   const e = Q().getSymbolSize, i = 7;
-  return Be.getPositions = function(o) {
+  return Ee.getPositions = function(o) {
     const r = e(o);
     return [
       // top-left
@@ -197,11 +197,11 @@ function Tn() {
       // bottom-left
       [0, r - i]
     ];
-  }, Be;
+  }, Ee;
 }
-var Ee = {}, gt;
-function Bn() {
-  return gt || (gt = 1, (function(e) {
+var Re = {}, ht;
+function En() {
+  return ht || (ht = 1, (function(e) {
     e.Patterns = {
       PATTERN000: 0,
       PATTERN001: 1,
@@ -224,38 +224,38 @@ function Bn() {
       return e.isValid(r) ? parseInt(r, 10) : void 0;
     }, e.getPenaltyN1 = function(r) {
       const n = r.size;
-      let s = 0, c = 0, d = 0, u = null, f = null;
+      let s = 0, d = 0, c = 0, u = null, f = null;
       for (let h = 0; h < n; h++) {
-        c = d = 0, u = f = null;
+        d = c = 0, u = f = null;
         for (let S = 0; S < n; S++) {
           let v = r.get(h, S);
-          v === u ? c++ : (c >= 5 && (s += i.N1 + (c - 5)), u = v, c = 1), v = r.get(S, h), v === f ? d++ : (d >= 5 && (s += i.N1 + (d - 5)), f = v, d = 1);
+          v === u ? d++ : (d >= 5 && (s += i.N1 + (d - 5)), u = v, d = 1), v = r.get(S, h), v === f ? c++ : (c >= 5 && (s += i.N1 + (c - 5)), f = v, c = 1);
         }
-        c >= 5 && (s += i.N1 + (c - 5)), d >= 5 && (s += i.N1 + (d - 5));
+        d >= 5 && (s += i.N1 + (d - 5)), c >= 5 && (s += i.N1 + (c - 5));
       }
       return s;
     }, e.getPenaltyN2 = function(r) {
       const n = r.size;
       let s = 0;
-      for (let c = 0; c < n - 1; c++)
-        for (let d = 0; d < n - 1; d++) {
-          const u = r.get(c, d) + r.get(c, d + 1) + r.get(c + 1, d) + r.get(c + 1, d + 1);
+      for (let d = 0; d < n - 1; d++)
+        for (let c = 0; c < n - 1; c++) {
+          const u = r.get(d, c) + r.get(d, c + 1) + r.get(d + 1, c) + r.get(d + 1, c + 1);
           (u === 4 || u === 0) && s++;
         }
       return s * i.N2;
     }, e.getPenaltyN3 = function(r) {
       const n = r.size;
-      let s = 0, c = 0, d = 0;
+      let s = 0, d = 0, c = 0;
       for (let u = 0; u < n; u++) {
-        c = d = 0;
+        d = c = 0;
         for (let f = 0; f < n; f++)
-          c = c << 1 & 2047 | r.get(u, f), f >= 10 && (c === 1488 || c === 93) && s++, d = d << 1 & 2047 | r.get(f, u), f >= 10 && (d === 1488 || d === 93) && s++;
+          d = d << 1 & 2047 | r.get(u, f), f >= 10 && (d === 1488 || d === 93) && s++, c = c << 1 & 2047 | r.get(f, u), f >= 10 && (c === 1488 || c === 93) && s++;
       }
       return s * i.N3;
     }, e.getPenaltyN4 = function(r) {
       let n = 0;
       const s = r.data.length;
-      for (let d = 0; d < s; d++) n += r.data[d];
+      for (let c = 0; c < s; c++) n += r.data[c];
       return Math.abs(Math.ceil(n * 100 / s / 5) - 10) * i.N4;
     };
     function a(o, r, n) {
@@ -282,26 +282,26 @@ function Bn() {
     }
     e.applyMask = function(r, n) {
       const s = n.size;
-      for (let c = 0; c < s; c++)
-        for (let d = 0; d < s; d++)
-          n.isReserved(d, c) || n.xor(d, c, a(r, d, c));
+      for (let d = 0; d < s; d++)
+        for (let c = 0; c < s; c++)
+          n.isReserved(c, d) || n.xor(c, d, a(r, c, d));
     }, e.getBestMask = function(r, n) {
       const s = Object.keys(e.Patterns).length;
-      let c = 0, d = 1 / 0;
+      let d = 0, c = 1 / 0;
       for (let u = 0; u < s; u++) {
         n(u), e.applyMask(u, r);
         const f = e.getPenaltyN1(r) + e.getPenaltyN2(r) + e.getPenaltyN3(r) + e.getPenaltyN4(r);
-        e.applyMask(u, r), f < d && (d = f, c = u);
+        e.applyMask(u, r), f < c && (c = f, d = u);
       }
-      return c;
+      return d;
     };
-  })(Ee)), Ee;
+  })(Re)), Re;
 }
-var ce = {}, ht;
-function Jt() {
-  if (ht) return ce;
-  ht = 1;
-  const e = Ze(), i = [
+var de = {}, ft;
+function Qt() {
+  if (ft) return de;
+  ft = 1;
+  const e = et(), i = [
     // L  M  Q  H
     1,
     1,
@@ -626,7 +626,7 @@ function Jt() {
     2040,
     2430
   ];
-  return ce.getBlocksCount = function(r, n) {
+  return de.getBlocksCount = function(r, n) {
     switch (n) {
       case e.L:
         return i[(r - 1) * 4 + 0];
@@ -639,7 +639,7 @@ function Jt() {
       default:
         return;
     }
-  }, ce.getTotalCodewordsCount = function(r, n) {
+  }, de.getTotalCodewordsCount = function(r, n) {
     switch (n) {
       case e.L:
         return a[(r - 1) * 4 + 0];
@@ -652,12 +652,12 @@ function Jt() {
       default:
         return;
     }
-  }, ce;
+  }, de;
 }
-var Re = {}, oe = {}, ft;
-function En() {
-  if (ft) return oe;
-  ft = 1;
+var Ie = {}, oe = {}, pt;
+function Rn() {
+  if (pt) return oe;
+  pt = 1;
   const e = new Uint8Array(512), i = new Uint8Array(256);
   return (function() {
     let o = 1;
@@ -674,25 +674,25 @@ function En() {
     return o === 0 || r === 0 ? 0 : e[i[o] + i[r]];
   }, oe;
 }
-var pt;
-function Rn() {
-  return pt || (pt = 1, (function(e) {
-    const i = En();
+var yt;
+function In() {
+  return yt || (yt = 1, (function(e) {
+    const i = Rn();
     e.mul = function(o, r) {
       const n = new Uint8Array(o.length + r.length - 1);
       for (let s = 0; s < o.length; s++)
-        for (let c = 0; c < r.length; c++)
-          n[s + c] ^= i.mul(o[s], r[c]);
+        for (let d = 0; d < r.length; d++)
+          n[s + d] ^= i.mul(o[s], r[d]);
       return n;
     }, e.mod = function(o, r) {
       let n = new Uint8Array(o);
       for (; n.length - r.length >= 0; ) {
         const s = n[0];
-        for (let d = 0; d < r.length; d++)
-          n[d] ^= i.mul(r[d], s);
-        let c = 0;
-        for (; c < n.length && n[c] === 0; ) c++;
-        n = n.slice(c);
+        for (let c = 0; c < r.length; c++)
+          n[c] ^= i.mul(r[c], s);
+        let d = 0;
+        for (; d < n.length && n[d] === 0; ) d++;
+        n = n.slice(d);
       }
       return n;
     }, e.generateECPolynomial = function(o) {
@@ -701,13 +701,13 @@ function Rn() {
         r = e.mul(r, new Uint8Array([1, i.exp(n)]));
       return r;
     };
-  })(Re)), Re;
+  })(Ie)), Ie;
 }
-var Ie, yt;
-function In() {
-  if (yt) return Ie;
-  yt = 1;
-  const e = Rn();
+var Pe, mt;
+function Pn() {
+  if (mt) return Pe;
+  mt = 1;
+  const e = In();
   function i(a) {
     this.genPoly = void 0, this.degree = a, this.degree && this.initialize(this.degree);
   }
@@ -720,22 +720,22 @@ function In() {
     r.set(o);
     const n = e.mod(r, this.genPoly), s = this.degree - n.length;
     if (s > 0) {
-      const c = new Uint8Array(this.degree);
-      return c.set(n, s), c;
+      const d = new Uint8Array(this.degree);
+      return d.set(n, s), d;
     }
     return n;
-  }, Ie = i, Ie;
+  }, Pe = i, Pe;
 }
-var Pe = {}, Me = {}, Ae = {}, mt;
-function Qt() {
-  return mt || (mt = 1, Ae.isValid = function(i) {
+var _e = {}, Me = {}, Ae = {}, bt;
+function Xt() {
+  return bt || (bt = 1, Ae.isValid = function(i) {
     return !isNaN(i) && i >= 1 && i <= 40;
   }), Ae;
 }
-var U = {}, bt;
-function Xt() {
-  if (bt) return U;
-  bt = 1;
+var U = {}, St;
+function Zt() {
+  if (St) return U;
+  St = 1;
   const e = "[0-9]+", i = "[A-Z $%*+\\-./:]+";
   let a = "(?:[u3000-u303F]|[u3040-u309F]|[u30A0-u30FF]|[uFF00-uFFEF]|[u4E00-u9FAF]|[u2605-u2606]|[u2190-u2195]|u203B|[u2010u2015u2018u2019u2025u2026u201Cu201Du2225u2260]|[u0391-u0451]|[u00A7u00A8u00B1u00B4u00D7u00F7])+";
   a = a.replace(/u/g, "\\u");
@@ -743,18 +743,18 @@ function Xt() {
 ]))+`;
   U.KANJI = new RegExp(a, "g"), U.BYTE_KANJI = new RegExp("[^A-Z0-9 $%*+\\-./:]+", "g"), U.BYTE = new RegExp(o, "g"), U.NUMERIC = new RegExp(e, "g"), U.ALPHANUMERIC = new RegExp(i, "g");
   const r = new RegExp("^" + a + "$"), n = new RegExp("^" + e + "$"), s = new RegExp("^[A-Z0-9 $%*+\\-./:]+$");
-  return U.testKanji = function(d) {
-    return r.test(d);
-  }, U.testNumeric = function(d) {
-    return n.test(d);
-  }, U.testAlphanumeric = function(d) {
-    return s.test(d);
+  return U.testKanji = function(c) {
+    return r.test(c);
+  }, U.testNumeric = function(c) {
+    return n.test(c);
+  }, U.testAlphanumeric = function(c) {
+    return s.test(c);
   }, U;
 }
-var St;
+var xt;
 function X() {
-  return St || (St = 1, (function(e) {
-    const i = Qt(), a = Xt();
+  return xt || (xt = 1, (function(e) {
+    const i = Xt(), a = Zt();
     e.NUMERIC = {
       id: "Numeric",
       bit: 1,
@@ -813,11 +813,11 @@ function X() {
     };
   })(Me)), Me;
 }
-var xt;
-function Pn() {
-  return xt || (xt = 1, (function(e) {
-    const i = Q(), a = Jt(), o = Ze(), r = X(), n = Qt(), s = 7973, c = i.getBCHDigit(s);
-    function d(S, v, b) {
+var wt;
+function _n() {
+  return wt || (wt = 1, (function(e) {
+    const i = Q(), a = Qt(), o = et(), r = X(), n = Xt(), s = 7973, d = i.getBCHDigit(s);
+    function c(S, v, b) {
       for (let R = 1; R <= 40; R++)
         if (v <= e.getCapacity(R, b, S))
           return R;
@@ -868,34 +868,34 @@ function Pn() {
         R = v[0];
       } else
         R = v;
-      return d(R.mode, R.getLength(), p);
+      return c(R.mode, R.getLength(), p);
     }, e.getEncodedBits = function(v) {
       if (!n.isValid(v) || v < 7)
         throw new Error("Invalid QR Code version");
       let b = v << 12;
-      for (; i.getBCHDigit(b) - c >= 0; )
-        b ^= s << i.getBCHDigit(b) - c;
+      for (; i.getBCHDigit(b) - d >= 0; )
+        b ^= s << i.getBCHDigit(b) - d;
       return v << 12 | b;
     };
-  })(Pe)), Pe;
+  })(_e)), _e;
 }
-var _e = {}, wt;
+var ze = {}, vt;
 function Mn() {
-  if (wt) return _e;
-  wt = 1;
-  const e = Q(), i = 1335, a = 21522, o = e.getBCHDigit(i);
-  return _e.getEncodedBits = function(n, s) {
-    const c = n.bit << 3 | s;
-    let d = c << 10;
-    for (; e.getBCHDigit(d) - o >= 0; )
-      d ^= i << e.getBCHDigit(d) - o;
-    return (c << 10 | d) ^ a;
-  }, _e;
-}
-var ze = {}, Le, vt;
-function An() {
-  if (vt) return Le;
+  if (vt) return ze;
   vt = 1;
+  const e = Q(), i = 1335, a = 21522, o = e.getBCHDigit(i);
+  return ze.getEncodedBits = function(n, s) {
+    const d = n.bit << 3 | s;
+    let c = d << 10;
+    for (; e.getBCHDigit(c) - o >= 0; )
+      c ^= i << e.getBCHDigit(c) - o;
+    return (d << 10 | c) ^ a;
+  }, ze;
+}
+var Le = {}, Ne, kt;
+function An() {
+  if (kt) return Ne;
+  kt = 1;
   const e = X();
   function i(a) {
     this.mode = e.NUMERIC, this.data = a.toString();
@@ -910,14 +910,14 @@ function An() {
     let r, n, s;
     for (r = 0; r + 3 <= this.data.length; r += 3)
       n = this.data.substr(r, 3), s = parseInt(n, 10), o.put(s, 10);
-    const c = this.data.length - r;
-    c > 0 && (n = this.data.substr(r), s = parseInt(n, 10), o.put(s, c * 3 + 1));
-  }, Le = i, Le;
+    const d = this.data.length - r;
+    d > 0 && (n = this.data.substr(r), s = parseInt(n, 10), o.put(s, d * 3 + 1));
+  }, Ne = i, Ne;
 }
-var Ne, kt;
-function _n() {
-  if (kt) return Ne;
-  kt = 1;
+var $e, Ct;
+function zn() {
+  if (Ct) return $e;
+  Ct = 1;
   const e = X(), i = [
     "0",
     "1",
@@ -981,12 +981,12 @@ function _n() {
       s += i.indexOf(this.data[n + 1]), r.put(s, 11);
     }
     this.data.length % 2 && r.put(i.indexOf(this.data[n]), 6);
-  }, Ne = a, Ne;
+  }, $e = a, $e;
 }
-var $e, Ct;
-function zn() {
-  if (Ct) return $e;
-  Ct = 1;
+var De, Tt;
+function Ln() {
+  if (Tt) return De;
+  Tt = 1;
   const e = X();
   function i(a) {
     this.mode = e.BYTE, typeof a == "string" ? this.data = new TextEncoder().encode(a) : this.data = new Uint8Array(a);
@@ -1000,12 +1000,12 @@ function zn() {
   }, i.prototype.write = function(a) {
     for (let o = 0, r = this.data.length; o < r; o++)
       a.put(this.data[o], 8);
-  }, $e = i, $e;
+  }, De = i, De;
 }
-var De, Tt;
-function Ln() {
-  if (Tt) return De;
-  Tt = 1;
+var Fe, Bt;
+function Nn() {
+  if (Bt) return Fe;
+  Bt = 1;
   const e = X(), i = Q();
   function a(o) {
     this.mode = e.KANJI, this.data = o;
@@ -1031,21 +1031,21 @@ Make sure your charset is UTF-8`
         );
       n = (n >>> 8 & 255) * 192 + (n & 255), o.put(n, 13);
     }
-  }, De = a, De;
+  }, Fe = a, Fe;
 }
-var Fe = { exports: {} }, Bt;
-function Nn() {
-  return Bt || (Bt = 1, (function(e) {
+var Ue = { exports: {} }, Et;
+function $n() {
+  return Et || (Et = 1, (function(e) {
     var i = {
       single_source_shortest_paths: function(a, o, r) {
         var n = {}, s = {};
         s[o] = 0;
-        var c = i.PriorityQueue.make();
-        c.push(o, 0);
-        for (var d, u, f, h, S, v, b, R, p; !c.empty(); ) {
-          d = c.pop(), u = d.value, h = d.cost, S = a[u] || {};
+        var d = i.PriorityQueue.make();
+        d.push(o, 0);
+        for (var c, u, f, h, S, v, b, R, p; !d.empty(); ) {
+          c = d.pop(), u = c.value, h = c.cost, S = a[u] || {};
           for (f in S)
-            S.hasOwnProperty(f) && (v = S[f], b = h + v, R = s[f], p = typeof s[f] > "u", (p || R > b) && (s[f] = b, c.push(f, b), n[f] = u));
+            S.hasOwnProperty(f) && (v = S[f], b = h + v, R = s[f], p = typeof s[f] > "u", (p || R > b) && (s[f] = b, d.push(f, b), n[f] = u));
         }
         if (typeof r < "u" && typeof s[r] > "u") {
           var g = ["Could not find a path from ", o, " to ", r, "."].join("");
@@ -1099,12 +1099,12 @@ function Nn() {
       }
     };
     e.exports = i;
-  })(Fe)), Fe.exports;
+  })(Ue)), Ue.exports;
 }
-var Et;
-function $n() {
-  return Et || (Et = 1, (function(e) {
-    const i = X(), a = An(), o = _n(), r = zn(), n = Ln(), s = Xt(), c = Q(), d = Nn();
+var Rt;
+function Dn() {
+  return Rt || (Rt = 1, (function(e) {
+    const i = X(), a = An(), o = zn(), r = Ln(), n = Nn(), s = Zt(), d = Q(), c = $n();
     function u(g) {
       return unescape(encodeURIComponent(g)).length;
     }
@@ -1123,7 +1123,7 @@ function $n() {
     function h(g) {
       const I = f(s.NUMERIC, i.NUMERIC, g), w = f(s.ALPHANUMERIC, i.ALPHANUMERIC, g);
       let k, L;
-      return c.isKanjiModeEnabled() ? (k = f(s.BYTE, i.BYTE, g), L = f(s.KANJI, i.KANJI, g)) : (k = f(s.BYTE_KANJI, i.BYTE, g), L = []), I.concat(w, k, L).sort(function(E, P) {
+      return d.isKanjiModeEnabled() ? (k = f(s.BYTE, i.BYTE, g), L = f(s.KANJI, i.KANJI, g)) : (k = f(s.BYTE_KANJI, i.BYTE, g), L = []), I.concat(w, k, L).sort(function(E, P) {
         return E.index - P.index;
       }).map(function(E) {
         return {
@@ -1191,9 +1191,9 @@ function $n() {
         for (let T = 0; T < E.length; T++) {
           const m = E[T], C = "" + B + T;
           P.push(C), w[C] = { node: m, lastCount: 0 }, k[C] = {};
-          for (let M = 0; M < L.length; M++) {
-            const A = L[M];
-            w[A] && w[A].node.mode === m.mode ? (k[A][C] = S(w[A].lastCount + m.length, m.mode) - S(w[A].lastCount, m.mode), w[A].lastCount += m.length) : (w[A] && (w[A].lastCount = m.length), k[A][C] = S(m.length, m.mode) + 4 + i.getCharCountIndicator(m.mode, I));
+          for (let _ = 0; _ < L.length; _++) {
+            const M = L[_];
+            w[M] && w[M].node.mode === m.mode ? (k[M][C] = S(w[M].lastCount + m.length, m.mode) - S(w[M].lastCount, m.mode), w[M].lastCount += m.length) : (w[M] && (w[M].lastCount = m.length), k[M][C] = S(m.length, m.mode) + 4 + i.getCharCountIndicator(m.mode, I));
           }
         }
         L = P;
@@ -1208,7 +1208,7 @@ function $n() {
       if (w = i.from(I, k), w !== i.BYTE && w.bit < k.bit)
         throw new Error('"' + g + '" cannot be encoded with mode ' + i.toString(w) + `.
  Suggested mode is: ` + i.toString(k));
-      switch (w === i.KANJI && !c.isKanjiModeEnabled() && (w = i.BYTE), w) {
+      switch (w === i.KANJI && !d.isKanjiModeEnabled() && (w = i.BYTE), w) {
         case i.NUMERIC:
           return new a(g);
         case i.ALPHANUMERIC:
@@ -1224,30 +1224,30 @@ function $n() {
         return typeof k == "string" ? w.push(p(k, null)) : k.data && w.push(p(k.data, k.mode)), w;
       }, []);
     }, e.fromString = function(I, w) {
-      const k = h(I, c.isKanjiModeEnabled()), L = b(k), B = R(L, w), E = d.find_path(B.map, "start", "end"), P = [];
+      const k = h(I, d.isKanjiModeEnabled()), L = b(k), B = R(L, w), E = c.find_path(B.map, "start", "end"), P = [];
       for (let T = 1; T < E.length - 1; T++)
         P.push(B.table[E[T]].node);
       return e.fromArray(v(P));
     }, e.rawSplit = function(I) {
       return e.fromArray(
-        h(I, c.isKanjiModeEnabled())
+        h(I, d.isKanjiModeEnabled())
       );
     };
-  })(ze)), ze;
+  })(Le)), Le;
 }
-var Rt;
-function Dn() {
-  if (Rt) return we;
-  Rt = 1;
-  const e = Q(), i = Ze(), a = vn(), o = kn(), r = Cn(), n = Tn(), s = Bn(), c = Jt(), d = In(), u = Pn(), f = Mn(), h = X(), S = $n();
+var It;
+function Fn() {
+  if (It) return ve;
+  It = 1;
+  const e = Q(), i = et(), a = kn(), o = Cn(), r = Tn(), n = Bn(), s = En(), d = Qt(), c = Pn(), u = _n(), f = Mn(), h = X(), S = Dn();
   function v(B, E) {
     const P = B.size, T = n.getPositions(E);
     for (let m = 0; m < T.length; m++) {
-      const C = T[m][0], M = T[m][1];
-      for (let A = -1; A <= 7; A++)
-        if (!(C + A <= -1 || P <= C + A))
-          for (let _ = -1; _ <= 7; _++)
-            M + _ <= -1 || P <= M + _ || (A >= 0 && A <= 6 && (_ === 0 || _ === 6) || _ >= 0 && _ <= 6 && (A === 0 || A === 6) || A >= 2 && A <= 4 && _ >= 2 && _ <= 4 ? B.set(C + A, M + _, !0, !0) : B.set(C + A, M + _, !1, !0));
+      const C = T[m][0], _ = T[m][1];
+      for (let M = -1; M <= 7; M++)
+        if (!(C + M <= -1 || P <= C + M))
+          for (let A = -1; A <= 7; A++)
+            _ + A <= -1 || P <= _ + A || (M >= 0 && M <= 6 && (A === 0 || A === 6) || A >= 0 && A <= 6 && (M === 0 || M === 6) || M >= 2 && M <= 4 && A >= 2 && A <= 4 ? B.set(C + M, _ + A, !0, !0) : B.set(C + M, _ + A, !1, !0));
     }
   }
   function b(B) {
@@ -1261,33 +1261,33 @@ function Dn() {
     const P = r.getPositions(E);
     for (let T = 0; T < P.length; T++) {
       const m = P[T][0], C = P[T][1];
-      for (let M = -2; M <= 2; M++)
-        for (let A = -2; A <= 2; A++)
-          M === -2 || M === 2 || A === -2 || A === 2 || M === 0 && A === 0 ? B.set(m + M, C + A, !0, !0) : B.set(m + M, C + A, !1, !0);
+      for (let _ = -2; _ <= 2; _++)
+        for (let M = -2; M <= 2; M++)
+          _ === -2 || _ === 2 || M === -2 || M === 2 || _ === 0 && M === 0 ? B.set(m + _, C + M, !0, !0) : B.set(m + _, C + M, !1, !0);
     }
   }
   function p(B, E) {
     const P = B.size, T = u.getEncodedBits(E);
-    let m, C, M;
-    for (let A = 0; A < 18; A++)
-      m = Math.floor(A / 3), C = A % 3 + P - 8 - 3, M = (T >> A & 1) === 1, B.set(m, C, M, !0), B.set(C, m, M, !0);
+    let m, C, _;
+    for (let M = 0; M < 18; M++)
+      m = Math.floor(M / 3), C = M % 3 + P - 8 - 3, _ = (T >> M & 1) === 1, B.set(m, C, _, !0), B.set(C, m, _, !0);
   }
   function g(B, E, P) {
     const T = B.size, m = f.getEncodedBits(E, P);
-    let C, M;
+    let C, _;
     for (C = 0; C < 15; C++)
-      M = (m >> C & 1) === 1, C < 6 ? B.set(C, 8, M, !0) : C < 8 ? B.set(C + 1, 8, M, !0) : B.set(T - 15 + C, 8, M, !0), C < 8 ? B.set(8, T - C - 1, M, !0) : C < 9 ? B.set(8, 15 - C - 1 + 1, M, !0) : B.set(8, 15 - C - 1, M, !0);
+      _ = (m >> C & 1) === 1, C < 6 ? B.set(C, 8, _, !0) : C < 8 ? B.set(C + 1, 8, _, !0) : B.set(T - 15 + C, 8, _, !0), C < 8 ? B.set(8, T - C - 1, _, !0) : C < 9 ? B.set(8, 15 - C - 1 + 1, _, !0) : B.set(8, 15 - C - 1, _, !0);
     B.set(T - 8, 8, 1, !0);
   }
   function I(B, E) {
     const P = B.size;
-    let T = -1, m = P - 1, C = 7, M = 0;
-    for (let A = P - 1; A > 0; A -= 2)
-      for (A === 6 && A--; ; ) {
-        for (let _ = 0; _ < 2; _++)
-          if (!B.isReserved(m, A - _)) {
+    let T = -1, m = P - 1, C = 7, _ = 0;
+    for (let M = P - 1; M > 0; M -= 2)
+      for (M === 6 && M--; ; ) {
+        for (let A = 0; A < 2; A++)
+          if (!B.isReserved(m, M - A)) {
             let O = !1;
-            M < E.length && (O = (E[M] >>> C & 1) === 1), B.set(m, A - _, O), C--, C === -1 && (M++, C = 7);
+            _ < E.length && (O = (E[_] >>> C & 1) === 1), B.set(m, M - A, O), C--, C === -1 && (_++, C = 7);
           }
         if (m += T, m < 0 || P <= m) {
           m -= T, T = -T;
@@ -1297,36 +1297,36 @@ function Dn() {
   }
   function w(B, E, P) {
     const T = new a();
-    P.forEach(function(_) {
-      T.put(_.mode.bit, 4), T.put(_.getLength(), h.getCharCountIndicator(_.mode, B)), _.write(T);
+    P.forEach(function(A) {
+      T.put(A.mode.bit, 4), T.put(A.getLength(), h.getCharCountIndicator(A.mode, B)), A.write(T);
     });
-    const m = e.getSymbolTotalCodewords(B), C = c.getTotalCodewordsCount(B, E), M = (m - C) * 8;
-    for (T.getLengthInBits() + 4 <= M && T.put(0, 4); T.getLengthInBits() % 8 !== 0; )
+    const m = e.getSymbolTotalCodewords(B), C = d.getTotalCodewordsCount(B, E), _ = (m - C) * 8;
+    for (T.getLengthInBits() + 4 <= _ && T.put(0, 4); T.getLengthInBits() % 8 !== 0; )
       T.putBit(0);
-    const A = (M - T.getLengthInBits()) / 8;
-    for (let _ = 0; _ < A; _++)
-      T.put(_ % 2 ? 17 : 236, 8);
+    const M = (_ - T.getLengthInBits()) / 8;
+    for (let A = 0; A < M; A++)
+      T.put(A % 2 ? 17 : 236, 8);
     return k(T, B, E);
   }
   function k(B, E, P) {
-    const T = e.getSymbolTotalCodewords(E), m = c.getTotalCodewordsCount(E, P), C = T - m, M = c.getBlocksCount(E, P), A = T % M, _ = M - A, O = Math.floor(T / M), re = Math.floor(C / M), yn = re + 1, nt = O - re, mn = new d(nt);
-    let ye = 0;
-    const de = new Array(M), rt = new Array(M);
+    const T = e.getSymbolTotalCodewords(E), m = d.getTotalCodewordsCount(E, P), C = T - m, _ = d.getBlocksCount(E, P), M = T % _, A = _ - M, O = Math.floor(T / _), re = Math.floor(C / _), mn = re + 1, rt = O - re, bn = new c(rt);
     let me = 0;
-    const bn = new Uint8Array(B.buffer);
-    for (let Z = 0; Z < M; Z++) {
-      const Se = Z < _ ? re : yn;
-      de[Z] = bn.slice(ye, ye + Se), rt[Z] = mn.encode(de[Z]), ye += Se, me = Math.max(me, Se);
+    const ce = new Array(_), ot = new Array(_);
+    let be = 0;
+    const Sn = new Uint8Array(B.buffer);
+    for (let Z = 0; Z < _; Z++) {
+      const xe = Z < A ? re : mn;
+      ce[Z] = Sn.slice(me, me + xe), ot[Z] = bn.encode(ce[Z]), me += xe, be = Math.max(be, xe);
     }
-    const be = new Uint8Array(T);
-    let ot = 0, q, W;
-    for (q = 0; q < me; q++)
-      for (W = 0; W < M; W++)
-        q < de[W].length && (be[ot++] = de[W][q]);
-    for (q = 0; q < nt; q++)
-      for (W = 0; W < M; W++)
-        be[ot++] = rt[W][q];
-    return be;
+    const Se = new Uint8Array(T);
+    let it = 0, q, W;
+    for (q = 0; q < be; q++)
+      for (W = 0; W < _; W++)
+        q < ce[W].length && (Se[it++] = ce[W][q]);
+    for (q = 0; q < rt; q++)
+      for (W = 0; W < _; W++)
+        Se[it++] = ot[W][q];
+    return Se;
   }
   function L(B, E, P, T) {
     let m;
@@ -1353,28 +1353,28 @@ The chosen QR Code version cannot contain this amount of data.
 Minimum version required to store current data is: ` + C + `.
 `
       );
-    const M = w(E, P, m), A = e.getSymbolSize(E), _ = new o(A);
-    return v(_, E), b(_), R(_, E), g(_, P, 0), E >= 7 && p(_, E), I(_, M), isNaN(T) && (T = s.getBestMask(
-      _,
-      g.bind(null, _, P)
-    )), s.applyMask(T, _), g(_, P, T), {
-      modules: _,
+    const _ = w(E, P, m), M = e.getSymbolSize(E), A = new o(M);
+    return v(A, E), b(A), R(A, E), g(A, P, 0), E >= 7 && p(A, E), I(A, _), isNaN(T) && (T = s.getBestMask(
+      A,
+      g.bind(null, A, P)
+    )), s.applyMask(T, A), g(A, P, T), {
+      modules: A,
       version: E,
       errorCorrectionLevel: P,
       maskPattern: T,
       segments: m
     };
   }
-  return we.create = function(E, P) {
+  return ve.create = function(E, P) {
     if (typeof E > "u" || E === "")
       throw new Error("No input text");
     let T = i.M, m, C;
     return typeof P < "u" && (T = i.from(P.errorCorrectionLevel, i.M), m = u.from(P.version), C = s.from(P.maskPattern), P.toSJISFunc && e.setToSJISFunction(P.toSJISFunc)), L(E, m, T, C);
-  }, we;
+  }, ve;
 }
-var Ue = {}, qe = {}, It;
-function Zt() {
-  return It || (It = 1, (function(e) {
+var qe = {}, We = {}, Pt;
+function en() {
+  return Pt || (Pt = 1, (function(e) {
     function i(a) {
       if (typeof a == "number" && (a = a.toString()), typeof a != "string")
         throw new Error("Color should be defined as hex string");
@@ -1413,23 +1413,23 @@ function Zt() {
       const n = e.getScale(o, r);
       return Math.floor((o + r.margin * 2) * n);
     }, e.qrToImageData = function(o, r, n) {
-      const s = r.modules.size, c = r.modules.data, d = e.getScale(s, n), u = Math.floor((s + n.margin * 2) * d), f = n.margin * d, h = [n.color.light, n.color.dark];
+      const s = r.modules.size, d = r.modules.data, c = e.getScale(s, n), u = Math.floor((s + n.margin * 2) * c), f = n.margin * c, h = [n.color.light, n.color.dark];
       for (let S = 0; S < u; S++)
         for (let v = 0; v < u; v++) {
           let b = (S * u + v) * 4, R = n.color.light;
           if (S >= f && v >= f && S < u - f && v < u - f) {
-            const p = Math.floor((S - f) / d), g = Math.floor((v - f) / d);
-            R = h[c[p * s + g] ? 1 : 0];
+            const p = Math.floor((S - f) / c), g = Math.floor((v - f) / c);
+            R = h[d[p * s + g] ? 1 : 0];
           }
           o[b++] = R.r, o[b++] = R.g, o[b++] = R.b, o[b] = R.a;
         }
     };
-  })(qe)), qe;
+  })(We)), We;
 }
-var Pt;
-function Fn() {
-  return Pt || (Pt = 1, (function(e) {
-    const i = Zt();
+var _t;
+function Un() {
+  return _t || (_t = 1, (function(e) {
+    const i = en();
     function a(r, n, s) {
       r.clearRect(0, 0, n.width, n.height), n.style || (n.style = {}), n.height = s, n.width = s, n.style.height = s + "px", n.style.width = s + "px";
     }
@@ -1440,84 +1440,84 @@ function Fn() {
         throw new Error("You need to specify a canvas element");
       }
     }
-    e.render = function(n, s, c) {
-      let d = c, u = s;
-      typeof d > "u" && (!s || !s.getContext) && (d = s, s = void 0), s || (u = o()), d = i.getOptions(d);
-      const f = i.getImageWidth(n.modules.size, d), h = u.getContext("2d"), S = h.createImageData(f, f);
-      return i.qrToImageData(S.data, n, d), a(h, u, f), h.putImageData(S, 0, 0), u;
-    }, e.renderToDataURL = function(n, s, c) {
-      let d = c;
-      typeof d > "u" && (!s || !s.getContext) && (d = s, s = void 0), d || (d = {});
-      const u = e.render(n, s, d), f = d.type || "image/png", h = d.rendererOpts || {};
+    e.render = function(n, s, d) {
+      let c = d, u = s;
+      typeof c > "u" && (!s || !s.getContext) && (c = s, s = void 0), s || (u = o()), c = i.getOptions(c);
+      const f = i.getImageWidth(n.modules.size, c), h = u.getContext("2d"), S = h.createImageData(f, f);
+      return i.qrToImageData(S.data, n, c), a(h, u, f), h.putImageData(S, 0, 0), u;
+    }, e.renderToDataURL = function(n, s, d) {
+      let c = d;
+      typeof c > "u" && (!s || !s.getContext) && (c = s, s = void 0), c || (c = {});
+      const u = e.render(n, s, c), f = c.type || "image/png", h = c.rendererOpts || {};
       return u.toDataURL(f, h.quality);
     };
-  })(Ue)), Ue;
+  })(qe)), qe;
 }
-var We = {}, Mt;
-function Un() {
-  if (Mt) return We;
+var Oe = {}, Mt;
+function qn() {
+  if (Mt) return Oe;
   Mt = 1;
-  const e = Zt();
+  const e = en();
   function i(r, n) {
-    const s = r.a / 255, c = n + '="' + r.hex + '"';
-    return s < 1 ? c + " " + n + '-opacity="' + s.toFixed(2).slice(1) + '"' : c;
+    const s = r.a / 255, d = n + '="' + r.hex + '"';
+    return s < 1 ? d + " " + n + '-opacity="' + s.toFixed(2).slice(1) + '"' : d;
   }
   function a(r, n, s) {
-    let c = r + n;
-    return typeof s < "u" && (c += " " + s), c;
+    let d = r + n;
+    return typeof s < "u" && (d += " " + s), d;
   }
   function o(r, n, s) {
-    let c = "", d = 0, u = !1, f = 0;
+    let d = "", c = 0, u = !1, f = 0;
     for (let h = 0; h < r.length; h++) {
       const S = Math.floor(h % n), v = Math.floor(h / n);
-      !S && !u && (u = !0), r[h] ? (f++, h > 0 && S > 0 && r[h - 1] || (c += u ? a("M", S + s, 0.5 + v + s) : a("m", d, 0), d = 0, u = !1), S + 1 < n && r[h + 1] || (c += a("h", f), f = 0)) : d++;
+      !S && !u && (u = !0), r[h] ? (f++, h > 0 && S > 0 && r[h - 1] || (d += u ? a("M", S + s, 0.5 + v + s) : a("m", c, 0), c = 0, u = !1), S + 1 < n && r[h + 1] || (d += a("h", f), f = 0)) : c++;
     }
-    return c;
+    return d;
   }
-  return We.render = function(n, s, c) {
-    const d = e.getOptions(s), u = n.modules.size, f = n.modules.data, h = u + d.margin * 2, S = d.color.light.a ? "<path " + i(d.color.light, "fill") + ' d="M0 0h' + h + "v" + h + 'H0z"/>' : "", v = "<path " + i(d.color.dark, "stroke") + ' d="' + o(f, u, d.margin) + '"/>', b = 'viewBox="0 0 ' + h + " " + h + '"', p = '<svg xmlns="http://www.w3.org/2000/svg" ' + (d.width ? 'width="' + d.width + '" height="' + d.width + '" ' : "") + b + ' shape-rendering="crispEdges">' + S + v + `</svg>
+  return Oe.render = function(n, s, d) {
+    const c = e.getOptions(s), u = n.modules.size, f = n.modules.data, h = u + c.margin * 2, S = c.color.light.a ? "<path " + i(c.color.light, "fill") + ' d="M0 0h' + h + "v" + h + 'H0z"/>' : "", v = "<path " + i(c.color.dark, "stroke") + ' d="' + o(f, u, c.margin) + '"/>', b = 'viewBox="0 0 ' + h + " " + h + '"', p = '<svg xmlns="http://www.w3.org/2000/svg" ' + (c.width ? 'width="' + c.width + '" height="' + c.width + '" ' : "") + b + ' shape-rendering="crispEdges">' + S + v + `</svg>
 `;
-    return typeof c == "function" && c(null, p), p;
-  }, We;
+    return typeof d == "function" && d(null, p), p;
+  }, Oe;
 }
 var At;
-function qn() {
+function Wn() {
   if (At) return ee;
   At = 1;
-  const e = wn(), i = Dn(), a = Fn(), o = Un();
-  function r(n, s, c, d, u) {
+  const e = vn(), i = Fn(), a = Un(), o = qn();
+  function r(n, s, d, c, u) {
     const f = [].slice.call(arguments, 1), h = f.length, S = typeof f[h - 1] == "function";
     if (!S && !e())
       throw new Error("Callback required as last argument");
     if (S) {
       if (h < 2)
         throw new Error("Too few arguments provided");
-      h === 2 ? (u = c, c = s, s = d = void 0) : h === 3 && (s.getContext && typeof u > "u" ? (u = d, d = void 0) : (u = d, d = c, c = s, s = void 0));
+      h === 2 ? (u = d, d = s, s = c = void 0) : h === 3 && (s.getContext && typeof u > "u" ? (u = c, c = void 0) : (u = c, c = d, d = s, s = void 0));
     } else {
       if (h < 1)
         throw new Error("Too few arguments provided");
-      return h === 1 ? (c = s, s = d = void 0) : h === 2 && !s.getContext && (d = c, c = s, s = void 0), new Promise(function(v, b) {
+      return h === 1 ? (d = s, s = c = void 0) : h === 2 && !s.getContext && (c = d, d = s, s = void 0), new Promise(function(v, b) {
         try {
-          const R = i.create(c, d);
-          v(n(R, s, d));
+          const R = i.create(d, c);
+          v(n(R, s, c));
         } catch (R) {
           b(R);
         }
       });
     }
     try {
-      const v = i.create(c, d);
-      u(null, n(v, s, d));
+      const v = i.create(d, c);
+      u(null, n(v, s, c));
     } catch (v) {
       u(v);
     }
   }
-  return ee.create = i.create, ee.toCanvas = r.bind(null, a.render), ee.toDataURL = r.bind(null, a.renderToDataURL), ee.toString = r.bind(null, function(n, s, c) {
-    return o.render(n, c);
+  return ee.create = i.create, ee.toCanvas = r.bind(null, a.render), ee.toDataURL = r.bind(null, a.renderToDataURL), ee.toString = r.bind(null, function(n, s, d) {
+    return o.render(n, d);
   }), ee;
 }
-var Wn = qn();
-const en = /* @__PURE__ */ xn(Wn), tn = {
+var On = Wn();
+const tn = /* @__PURE__ */ wn(On), nn = {
   primary: "oklch(0.9848 0 0)",
   primaryForeground: "oklch(15% 0.0000 0.00)",
   primaryHover: "color-mix(in oklab, oklch(0.9848 0 0) 88%, oklch(15% 0.0000 0.00) 12%)",
@@ -1570,7 +1570,7 @@ const en = /* @__PURE__ */ xn(Wn), tn = {
   shadowMd: "0 0 0 0 transparent inset",
   shadowLg: "0 0 1px 0 #ffffff4d inset",
   shadowGlow: "0 0 0 1px color-mix(in oklab, oklch(0.9848 0 0) 18%, transparent)"
-}, On = {
+}, jn = {
   radiusSm: "0.25rem",
   radiusMd: "0.25rem",
   radiusLg: "0.25rem",
@@ -1584,60 +1584,60 @@ const en = /* @__PURE__ */ xn(Wn), tn = {
   sidebarWidth: "260px",
   sidebarCollapsed: "72px",
   topbarHeight: "64px"
-}, et = {
-  ...On,
+}, tt = {
+  ...jn,
   ...Hn
-}, nn = {
-  dark: tn
+}, rn = {
+  dark: nn
 };
-function jn(e) {
+function Vn(e) {
   return e.replace(/[A-Z]/g, (i) => "-" + i.toLowerCase());
 }
-function rn(e = "ag") {
+function on(e = "ag") {
   return e.trim() || "ag";
 }
-function pe(e, i) {
-  return `--${e}-${jn(i)}`;
+function ye(e, i) {
+  return `--${e}-${Vn(i)}`;
 }
-Object.keys(nn.dark).reduce((e, i) => (e[i] = pe("ag", i), e), {});
-Object.keys(et).reduce((e, i) => (e[i] = pe("ag", i), e), {});
-function on(e = {}) {
-  const i = rn(e.prefix);
-  return Object.keys(nn.dark).reduce((a, o) => (a[o] = pe(i, o), a), {});
-}
+Object.keys(rn.dark).reduce((e, i) => (e[i] = ye("ag", i), e), {});
+Object.keys(tt).reduce((e, i) => (e[i] = ye("ag", i), e), {});
 function an(e = {}) {
-  const i = rn(e.prefix);
-  return Object.keys(et).reduce((a, o) => (a[o] = pe(i, o), a), {});
+  const i = on(e.prefix);
+  return Object.keys(rn.dark).reduce((a, o) => (a[o] = ye(i, o), a), {});
 }
-const Vn = on(), Kn = an();
+function ln(e = {}) {
+  const i = on(e.prefix);
+  return Object.keys(tt).reduce((a, o) => (a[o] = ye(i, o), a), {});
+}
+const Kn = an(), Gn = ln();
 function t(e, i = {}) {
-  const a = i.prefix ? on(i) : Vn, o = i.prefix ? an(i) : Kn;
+  const a = i.prefix ? an(i) : Kn, o = i.prefix ? ln(i) : Gn;
   if (e in a) {
     const n = e;
-    return `var(${a[n]}, ${tn[n]})`;
+    return `var(${a[n]}, ${nn[n]})`;
   }
   const r = e;
-  return `var(${o[r]}, ${et[r]})`;
+  return `var(${o[r]}, ${tt[r]})`;
 }
-const Gn = "/api/v1/ext-user/payment-epay", Yn = "/api/v1/ext/payment-epay";
+const Jn = "/api/v1/ext-user/payment-epay", Yn = "/api/v1/ext/payment-epay";
 async function D(e, i, a, o) {
   const r = {};
   a !== void 0 && (r["Content-Type"] = "application/json");
   const n = localStorage.getItem("token");
   n && (r.Authorization = `Bearer ${n}`);
-  const s = o != null && o.admin ? Yn : Gn, c = await fetch(s + i, {
+  const s = o != null && o.admin ? Yn : Jn, d = await fetch(s + i, {
     method: e,
     headers: r,
     body: a ? JSON.stringify(a) : void 0
-  }), d = await c.text();
+  }), c = await d.text();
   let u = null;
   try {
-    u = d ? JSON.parse(d) : null;
+    u = c ? JSON.parse(c) : null;
   } catch {
   }
-  if (!c.ok) {
-    const h = u, S = (h == null ? void 0 : h.message) || (u == null ? void 0 : u.error) || `HTTP ${c.status}`;
-    throw c.status === 401 && (localStorage.removeItem("token"), window.location.href = "/login"), new Error(S);
+  if (!d.ok) {
+    const h = u, S = (h == null ? void 0 : h.message) || (u == null ? void 0 : u.error) || `HTTP ${d.status}`;
+    throw d.status === 401 && (localStorage.removeItem("token"), window.location.href = "/login"), new Error(S);
   }
   const f = u;
   if (f && typeof f == "object" && "code" in f && "data" in f) {
@@ -1676,15 +1676,32 @@ const $ = {
   adminUpsertPackage: (e) => D("POST", "/admin/packages", e, { admin: !0 }),
   adminDeletePackage: (e) => D("DELETE", `/admin/packages/${e}`, void 0, { admin: !0 })
 };
+let ue = null;
+function Qn() {
+  return ue || (ue = (async () => {
+    var r;
+    const i = await (await fetch("/api/v1/settings/public")).json(), a = (i == null ? void 0 : i.data) || {};
+    let o = "";
+    try {
+      const n = window.localStorage.getItem("ag_origin_site") || "";
+      if (n && a.sites_branding) {
+        const s = JSON.parse(a.sites_branding);
+        o = ((r = s == null ? void 0 : s[n]) == null ? void 0 : r.name) || "";
+      }
+    } catch {
+    }
+    return o || a.site_name || "";
+  })().catch(() => (ue = null, ""))), ue;
+}
 function N(e, i = {}) {
   const a = e.toFixed(2);
   return i.compact ? `$${e}` : `$${a}`;
 }
-const Jn = /* @__PURE__ */ new Set(["zh", "zh-HK", "en", "ja"]);
-function _t(e) {
-  return e && Jn.has(e) ? e : null;
+const Xn = /* @__PURE__ */ new Set(["zh", "zh-HK", "en", "ja"]);
+function zt(e) {
+  return e && Xn.has(e) ? e : null;
 }
-function Qn() {
+function Zn() {
   if (typeof navigator > "u") return "en";
   const e = Array.isArray(navigator.languages) && navigator.languages.length ? navigator.languages : [navigator.language];
   for (const i of e) {
@@ -1698,19 +1715,19 @@ function Qn() {
   }
   return "en";
 }
-function Xn() {
+function er() {
   if (typeof document < "u") {
-    const e = document.cookie.match(/(?:^|;\s*)lang=([^;]+)/), i = e ? _t(decodeURIComponent(e[1] ?? "")) : null;
+    const e = document.cookie.match(/(?:^|;\s*)lang=([^;]+)/), i = e ? zt(decodeURIComponent(e[1] ?? "")) : null;
     if (i) return i;
   }
   try {
-    const e = _t(window.localStorage.getItem("lang"));
+    const e = zt(window.localStorage.getItem("lang"));
     if (e) return e;
   } catch {
   }
-  return Qn();
+  return Zn();
 }
-const Zn = {
+const tr = {
   "加载中...": "載入中...",
   "加载失败: ": "載入失敗: ",
   "加载支付方式失败: ": "載入支付方式失敗: ",
@@ -1773,7 +1790,7 @@ const Zn = {
   失败: "失敗",
   已取消: "已取消",
   已退款: "已退款"
-}, er = {
+}, nr = {
   "加载中...": "Loading...",
   "加载失败: ": "Failed to load: ",
   "加载支付方式失败: ": "Failed to load payment methods: ",
@@ -1836,7 +1853,7 @@ const Zn = {
   失败: "Failed",
   已取消: "Cancelled",
   已退款: "Refunded"
-}, tr = {
+}, rr = {
   "加载中...": "読み込み中...",
   "加载失败: ": "読み込みに失敗しました: ",
   "加载支付方式失败: ": "支払い方法の読み込みに失敗しました: ",
@@ -1899,26 +1916,26 @@ const Zn = {
   失败: "失敗",
   已取消: "キャンセル済み",
   已退款: "返金済み"
-}, nr = {
-  "zh-HK": Zn,
-  en: er,
-  ja: tr
+}, or = {
+  "zh-HK": tr,
+  en: nr,
+  ja: rr
 };
 function x(e) {
-  const i = Xn();
+  const i = er();
   if (i === "zh") return e;
-  const a = nr[i];
+  const a = or[i];
   return a && a[e] || e;
 }
-function rr() {
-  const [e, i] = z([]), [a, o] = z(!0), [r, n] = z(null), [s, c] = z(30), [d, u] = z(""), [f, h] = z(!1), [S, v] = z(null), [b, R] = z([]), [p, g] = z(null), I = se(!1), [w, k] = z(null), [L, B] = z(null), E = se(null);
+function ir() {
+  const [e, i] = z([]), [a, o] = z(!0), [r, n] = z(null), [s, d] = z(30), [c, u] = z(""), [f, h] = z(!1), [S, v] = z(null), [b, R] = z([]), [p, g] = z(null), I = se(!1), [w, k] = z(null), [L, B] = z(null), E = se(null);
   F(() => {
     $.methods().then((m) => {
       var C;
       i(m.methods || []), (C = m.methods) != null && C.length && u(m.methods[0].key);
     }).catch((m) => n(String((m == null ? void 0 : m.message) || m))).finally(() => o(!1)), $.packages().then((m) => {
       const C = m.list || [];
-      R(C), C.length && !I.current && (g(C[0].id), c(C[0].amount));
+      R(C), C.length && !I.current && (g(C[0].id), d(C[0].amount));
     }).catch(() => R([]));
   }, []), F(() => {
     if (!w || w.status !== "pending") {
@@ -1946,8 +1963,8 @@ function rr() {
       return;
     }
     let C = !1;
-    return en.toDataURL(m, { width: 240, margin: 2, errorCorrectionLevel: "M" }).then((M) => {
-      C || B(M);
+    return tn.toDataURL(m, { width: 240, margin: 2, errorCorrectionLevel: "M" }).then((_) => {
+      C || B(_);
     }).catch(() => {
       C || B(null);
     }), () => {
@@ -1955,7 +1972,7 @@ function rr() {
     };
   }, [w == null ? void 0 : w.payment_url, w == null ? void 0 : w.qr_code_content]);
   const P = async () => {
-    if (v(null), !d) {
+    if (v(null), !c) {
       v(x("请选择支付方式"));
       return;
     }
@@ -1965,13 +1982,13 @@ function rr() {
     }
     h(!0);
     try {
-      const m = await $.createOrder({
+      const m = await Qn(), C = await $.createOrder({
         amount: s,
-        method: d,
-        subject: "HopBase 余额充值",
+        method: c,
+        subject: m ? `${m} 余额充值` : "余额充值",
         ...p !== null ? { package_id: p } : {}
       });
-      k(m);
+      k(C);
     } catch (m) {
       v(String(m.message || m));
     } finally {
@@ -1980,12 +1997,12 @@ function rr() {
   }, T = () => {
     k(null), v(null);
   };
-  return a ? /* @__PURE__ */ l("div", { style: G, children: /* @__PURE__ */ l("div", { style: zt, children: x("加载中...") }) }) : r ? /* @__PURE__ */ l("div", { style: G, children: /* @__PURE__ */ y("div", { style: { ...zt, color: t("danger") }, children: [
+  return a ? /* @__PURE__ */ l("div", { style: G, children: /* @__PURE__ */ l("div", { style: Lt, children: x("加载中...") }) }) : r ? /* @__PURE__ */ l("div", { style: G, children: /* @__PURE__ */ y("div", { style: { ...Lt, color: t("danger") }, children: [
     x("加载支付方式失败: "),
     r
-  ] }) }) : e.length === 0 ? /* @__PURE__ */ l("div", { style: G, children: /* @__PURE__ */ l("div", { style: ge, children: /* @__PURE__ */ l("p", { style: { color: t("textSecondary"), margin: 0, textAlign: "center" }, children: x("充值功能暂未开放，请联系管理员。") }) }) }) : w ? w.status === "paid" ? /* @__PURE__ */ y("div", { style: G, children: [
-    /* @__PURE__ */ l("h2", { style: ue, children: x("充值成功") }),
-    /* @__PURE__ */ y("div", { style: ge, children: [
+  ] }) }) : e.length === 0 ? /* @__PURE__ */ l("div", { style: G, children: /* @__PURE__ */ l("div", { style: he, children: /* @__PURE__ */ l("p", { style: { color: t("textSecondary"), margin: 0, textAlign: "center" }, children: x("充值功能暂未开放，请联系管理员。") }) }) }) : w ? w.status === "paid" ? /* @__PURE__ */ y("div", { style: G, children: [
+    /* @__PURE__ */ l("h2", { style: ge, children: x("充值成功") }),
+    /* @__PURE__ */ y("div", { style: he, children: [
       /* @__PURE__ */ y("p", { style: { margin: 0, color: t("text") }, children: [
         x("订单"),
         " ",
@@ -2005,13 +2022,13 @@ function rr() {
         ] }),
         x("。")
       ] }),
-      /* @__PURE__ */ l("button", { style: { ...Oe, marginTop: 20 }, onClick: T, children: x("再次充值") })
+      /* @__PURE__ */ l("button", { style: { ...je, marginTop: 20 }, onClick: T, children: x("再次充值") })
     ] })
   ] }) : w.status === "pending" ? /* @__PURE__ */ y("div", { style: G, children: [
-    /* @__PURE__ */ l("h2", { style: ue, children: x("扫码付款") }),
-    /* @__PURE__ */ y("div", { style: fr, children: [
-      L ? /* @__PURE__ */ l("img", { src: L, alt: x("付款二维码"), style: Nt }) : /* @__PURE__ */ l("div", { style: { ...Nt, display: "flex", alignItems: "center", justifyContent: "center", color: t("textTertiary") }, children: x("生成二维码中...") }),
-      /* @__PURE__ */ l("div", { style: pr, children: N(w.amount) }),
+    /* @__PURE__ */ l("h2", { style: ge, children: x("扫码付款") }),
+    /* @__PURE__ */ y("div", { style: yr, children: [
+      L ? /* @__PURE__ */ l("img", { src: L, alt: x("付款二维码"), style: $t }) : /* @__PURE__ */ l("div", { style: { ...$t, display: "flex", alignItems: "center", justifyContent: "center", color: t("textTertiary") }, children: x("生成二维码中...") }),
+      /* @__PURE__ */ l("div", { style: mr, children: N(w.amount) }),
       (w.bonus_amount ?? 0) > 0 && /* @__PURE__ */ y("div", { style: { color: t("success"), fontSize: 13, marginTop: 2 }, children: [
         x("支付成功后另赠"),
         " ",
@@ -2020,7 +2037,7 @@ function rr() {
       /* @__PURE__ */ y("div", { style: { color: t("textSecondary"), fontSize: 13 }, children: [
         x("请使用"),
         " ",
-        or(w.method),
+        ar(w.method),
         " ",
         x("扫码完成付款")
       ] }),
@@ -2034,38 +2051,38 @@ function rr() {
         " ",
         /* @__PURE__ */ l("a", { href: w.payment_url, target: "_blank", rel: "noreferrer", style: { color: t("primary"), textDecoration: "none" }, children: x("点此在新窗口打开付款页 →") })
       ] }),
-      /* @__PURE__ */ l("button", { style: { ...hr, marginTop: 20 }, onClick: T, children: x("取消") })
+      /* @__PURE__ */ l("button", { style: { ...pr, marginTop: 20 }, onClick: T, children: x("取消") })
     ] })
   ] }) : /* @__PURE__ */ y("div", { style: G, children: [
-    /* @__PURE__ */ l("h2", { style: ue, children: ir(w.status) }),
-    /* @__PURE__ */ y("div", { style: ge, children: [
+    /* @__PURE__ */ l("h2", { style: ge, children: lr(w.status) }),
+    /* @__PURE__ */ y("div", { style: he, children: [
       /* @__PURE__ */ y("p", { style: { margin: 0, color: t("textSecondary") }, children: [
         x("订单号："),
         /* @__PURE__ */ l("code", { style: He, children: w.out_trade_no })
       ] }),
-      /* @__PURE__ */ l("button", { style: { ...Oe, marginTop: 20 }, onClick: T, children: x("重新发起") })
+      /* @__PURE__ */ l("button", { style: { ...je, marginTop: 20 }, onClick: T, children: x("重新发起") })
     ] })
   ] }) : /* @__PURE__ */ y("div", { style: G, children: [
-    /* @__PURE__ */ l("h2", { style: ue, children: x("账户充值") }),
-    /* @__PURE__ */ y("div", { style: ge, children: [
-      /* @__PURE__ */ y("p", { style: lr, children: [
+    /* @__PURE__ */ l("h2", { style: ge, children: x("账户充值") }),
+    /* @__PURE__ */ y("div", { style: he, children: [
+      /* @__PURE__ */ y("p", { style: cr, children: [
         x("充值比例："),
         /* @__PURE__ */ l("strong", { style: { color: t("text") }, children: "1 CNY = $1" })
       ] }),
       /* @__PURE__ */ y("section", { children: [
-        /* @__PURE__ */ l("h3", { style: Lt, children: b.length ? x("选择套餐") : x("选择金额") }),
+        /* @__PURE__ */ l("h3", { style: Nt, children: b.length ? x("选择套餐") : x("选择金额") }),
         /* @__PURE__ */ l("div", { style: { display: "flex", flexWrap: "wrap", gap: 10 }, children: b.length ? b.map((m) => /* @__PURE__ */ y(
           "button",
           {
             type: "button",
             onClick: () => {
-              I.current = !0, g(m.id), c(m.amount);
+              I.current = !0, g(m.id), d(m.amount);
             },
-            style: p === m.id ? dr : ln,
+            style: p === m.id ? ur : sn,
             title: m.title || void 0,
             children: [
               /* @__PURE__ */ l("span", { style: { fontSize: 16, fontWeight: 600 }, children: N(m.amount, { compact: !0 }) }),
-              m.bonus_amount > 0 && /* @__PURE__ */ y("span", { style: p === m.id ? cr : sn, children: [
+              m.bonus_amount > 0 && /* @__PURE__ */ y("span", { style: p === m.id ? gr : cn, children: [
                 x("送"),
                 " ",
                 N(m.bonus_amount, { compact: !0 })
@@ -2078,9 +2095,9 @@ function rr() {
           {
             type: "button",
             onClick: () => {
-              I.current = !0, c(m);
+              I.current = !0, d(m);
             },
-            style: s === m ? sr : tt,
+            style: s === m ? dr : nt,
             children: N(m, { compact: !0 })
           },
           m
@@ -2099,22 +2116,22 @@ function rr() {
               step: 1,
               value: s,
               onChange: (m) => {
-                I.current = !0, g(null), c(Number(m.target.value));
+                I.current = !0, g(null), d(Number(m.target.value));
               },
-              style: gr
+              style: fr
             }
           ),
           /* @__PURE__ */ l("span", { children: "$" })
         ] })
       ] }),
-      /* @__PURE__ */ y("section", { style: ar, children: [
-        /* @__PURE__ */ l("h3", { style: Lt, children: x("选择支付方式") }),
+      /* @__PURE__ */ y("section", { style: sr, children: [
+        /* @__PURE__ */ l("h3", { style: Nt, children: x("选择支付方式") }),
         /* @__PURE__ */ l("div", { style: { display: "flex", gap: 12, flexWrap: "wrap" }, children: e.map((m) => /* @__PURE__ */ l(
           "button",
           {
             type: "button",
             onClick: () => u(m.key),
-            style: d === m.key ? ur : dn,
+            style: c === m.key ? hr : dn,
             title: m.description,
             children: x(m.label)
           },
@@ -2128,14 +2145,14 @@ function rr() {
           type: "button",
           onClick: P,
           disabled: f,
-          style: { ...Oe, marginTop: 24, width: "100%", opacity: f ? 0.6 : 1 },
+          style: { ...je, marginTop: 24, width: "100%", opacity: f ? 0.6 : 1 },
           children: x(f ? "处理中..." : "立即支付")
         }
       )
     ] })
   ] });
 }
-function or(e) {
+function ar(e) {
   switch (e) {
     case "alipay":
       return x("支付宝");
@@ -2145,7 +2162,7 @@ function or(e) {
       return e;
   }
 }
-function ir(e) {
+function lr(e) {
   switch (e) {
     case "expired":
       return x("订单已过期");
@@ -2164,24 +2181,24 @@ const G = {
   margin: "0 auto",
   padding: "24px 24px 48px",
   color: t("text")
-}, ue = {
+}, ge = {
   margin: "0 0 20px",
   fontSize: 22,
   fontWeight: 600,
   color: t("text"),
   letterSpacing: "-0.01em"
-}, zt = {
+}, Lt = {
   padding: "40px 0",
   textAlign: "center",
   color: t("textSecondary")
-}, ge = {
+}, he = {
   border: `1px solid ${t("glassBorder")}`,
   borderRadius: t("radiusLg"),
   background: t("bgSurface"),
   padding: "24px"
-}, ar = {
+}, sr = {
   marginTop: 28
-}, lr = {
+}, cr = {
   margin: "0 0 20px",
   padding: "10px 12px",
   border: `1px solid ${t("glassBorder")}`,
@@ -2190,14 +2207,14 @@ const G = {
   color: t("textSecondary"),
   fontSize: 13,
   lineHeight: 1.6
-}, Lt = {
+}, Nt = {
   margin: "0 0 12px",
   fontSize: 13,
   fontWeight: 600,
   color: t("textSecondary"),
   textTransform: "uppercase",
   letterSpacing: "0.04em"
-}, tt = {
+}, nt = {
   minWidth: 88,
   padding: "12px 18px",
   border: `1px solid ${t("glassBorder")}`,
@@ -2208,25 +2225,25 @@ const G = {
   fontSize: 15,
   fontWeight: 500,
   transition: t("transition")
-}, sr = {
-  ...tt,
+}, dr = {
+  ...nt,
   borderColor: t("primary"),
   background: t("primarySubtle"),
   color: t("primary"),
   fontWeight: 600
-}, ln = {
-  ...tt,
+}, sn = {
+  ...nt,
   minWidth: 104,
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
   gap: 4
-}, dr = {
-  ...ln,
+}, ur = {
+  ...sn,
   borderColor: t("primary"),
   background: t("primarySubtle"),
   color: t("primary")
-}, sn = {
+}, cn = {
   fontSize: 11,
   fontWeight: 600,
   padding: "1px 8px",
@@ -2234,8 +2251,8 @@ const G = {
   background: t("bgElevated"),
   color: t("success"),
   border: `1px solid ${t("glassBorder")}`
-}, cr = {
-  ...sn,
+}, gr = {
+  ...cn,
   background: t("primary"),
   color: t("textInverse"),
   border: "none"
@@ -2250,13 +2267,13 @@ const G = {
   fontSize: 14,
   fontWeight: 500,
   transition: t("transition")
-}, ur = {
+}, hr = {
   ...dn,
   borderColor: t("primary"),
   background: t("primarySubtle"),
   color: t("primary"),
   fontWeight: 600
-}, gr = {
+}, fr = {
   padding: "8px 12px",
   width: 140,
   border: `1px solid ${t("glassBorder")}`,
@@ -2265,7 +2282,7 @@ const G = {
   color: t("text"),
   fontSize: 14,
   outline: "none"
-}, Oe = {
+}, je = {
   padding: "12px 28px",
   border: "none",
   borderRadius: t("radiusMd"),
@@ -2275,7 +2292,7 @@ const G = {
   fontWeight: 600,
   cursor: "pointer",
   transition: t("transition")
-}, hr = {
+}, pr = {
   padding: "10px 24px",
   border: `1px solid ${t("glassBorder")}`,
   borderRadius: t("radiusMd"),
@@ -2285,7 +2302,7 @@ const G = {
   fontWeight: 500,
   cursor: "pointer",
   transition: t("transition")
-}, fr = {
+}, yr = {
   padding: "28px 24px",
   border: `1px solid ${t("glassBorder")}`,
   borderRadius: t("radiusLg"),
@@ -2293,13 +2310,13 @@ const G = {
   flexDirection: "column",
   alignItems: "center",
   background: t("bgSurface")
-}, Nt = {
+}, $t = {
   width: 240,
   height: 240,
   background: t("bgElevated"),
   padding: 8,
   borderRadius: t("radiusMd")
-}, pr = {
+}, mr = {
   marginTop: 20,
   fontSize: 32,
   fontWeight: 700,
@@ -2314,8 +2331,8 @@ const G = {
   background: t("bg"),
   color: t("textSecondary")
 };
-function yr() {
-  const [e, i] = z([]), [a, o] = z(!0), [r, n] = z(null), [s, c] = z(null), [d, u] = z(null), f = se(null), h = () => {
+function br() {
+  const [e, i] = z([]), [a, o] = z(!0), [r, n] = z(null), [s, d] = z(null), [c, u] = z(null), f = se(null), h = () => {
     o(!0), $.listOrders(100).then((b) => i(b.list || [])).catch((b) => n(String((b == null ? void 0 : b.message) || b))).finally(() => o(!1));
   };
   F(h, []), F(() => {
@@ -2329,7 +2346,7 @@ function yr() {
       return;
     }
     let R = !1;
-    return en.toDataURL(b, { width: 240, margin: 2, errorCorrectionLevel: "M" }).then((p) => {
+    return tn.toDataURL(b, { width: 240, margin: 2, errorCorrectionLevel: "M" }).then((p) => {
       R || u(p);
     }).catch(() => {
       R || u(null);
@@ -2344,7 +2361,7 @@ function yr() {
     return f.current = window.setInterval(async () => {
       try {
         const b = await $.getOrder(s.out_trade_no);
-        c(b), b.status !== "pending" && h();
+        d(b), b.status !== "pending" && h();
       } catch {
       }
     }, 3e3), () => {
@@ -2352,40 +2369,40 @@ function yr() {
     };
   }, [s == null ? void 0 : s.out_trade_no, s == null ? void 0 : s.status]);
   const S = (b) => {
-    c(b);
+    d(b);
   }, v = () => {
-    c(null), u(null);
+    d(null), u(null);
   };
-  return a ? /* @__PURE__ */ l("div", { style: je, children: /* @__PURE__ */ l("div", { style: Ut, children: x("加载中...") }) }) : r ? /* @__PURE__ */ l("div", { style: je, children: /* @__PURE__ */ y("div", { style: { ...Ut, color: t("danger") }, children: [
+  return a ? /* @__PURE__ */ l("div", { style: Ve, children: /* @__PURE__ */ l("div", { style: qt, children: x("加载中...") }) }) : r ? /* @__PURE__ */ l("div", { style: Ve, children: /* @__PURE__ */ y("div", { style: { ...qt, color: t("danger") }, children: [
     x("加载失败: "),
     r
-  ] }) }) : /* @__PURE__ */ y("div", { style: je, children: [
-    s && /* @__PURE__ */ l("div", { style: vr, onClick: v, children: /* @__PURE__ */ l("div", { style: kr, onClick: (b) => b.stopPropagation(), children: s.status === "paid" ? /* @__PURE__ */ y(le, { children: [
+  ] }) }) : /* @__PURE__ */ y("div", { style: Ve, children: [
+    s && /* @__PURE__ */ l("div", { style: Cr, onClick: v, children: /* @__PURE__ */ l("div", { style: Tr, onClick: (b) => b.stopPropagation(), children: s.status === "paid" ? /* @__PURE__ */ y(le, { children: [
       /* @__PURE__ */ l("h3", { style: { margin: "0 0 12px", color: t("success") }, children: x("支付成功") }),
       /* @__PURE__ */ y("p", { style: { margin: 0, color: t("text"), fontSize: 14 }, children: [
         x("订单"),
         " ",
-        /* @__PURE__ */ l("code", { style: Ve, children: s.out_trade_no }),
+        /* @__PURE__ */ l("code", { style: Ke, children: s.out_trade_no }),
         " ",
         x("已支付"),
         " ",
         /* @__PURE__ */ l("strong", { children: N(s.amount) })
       ] }),
-      /* @__PURE__ */ l("button", { style: { ...qt, marginTop: 16 }, onClick: v, children: x("关闭") })
+      /* @__PURE__ */ l("button", { style: { ...Wt, marginTop: 16 }, onClick: v, children: x("关闭") })
     ] }) : s.status === "pending" ? /* @__PURE__ */ y(le, { children: [
       /* @__PURE__ */ l("h3", { style: { margin: "0 0 12px", color: t("text") }, children: x("扫码付款") }),
-      d ? /* @__PURE__ */ l("img", { src: d, alt: x("付款二维码"), style: { width: 240, height: 240, borderRadius: 8 } }) : /* @__PURE__ */ l("div", { style: { width: 240, height: 240, display: "flex", alignItems: "center", justifyContent: "center", color: t("textTertiary"), border: `1px solid ${t("glassBorder")}`, borderRadius: 8 }, children: x("生成二维码中...") }),
+      c ? /* @__PURE__ */ l("img", { src: c, alt: x("付款二维码"), style: { width: 240, height: 240, borderRadius: 8 } }) : /* @__PURE__ */ l("div", { style: { width: 240, height: 240, display: "flex", alignItems: "center", justifyContent: "center", color: t("textTertiary"), border: `1px solid ${t("glassBorder")}`, borderRadius: 8 }, children: x("生成二维码中...") }),
       /* @__PURE__ */ l("div", { style: { marginTop: 12, fontWeight: 600, fontSize: 20, color: t("text") }, children: N(s.amount) }),
       /* @__PURE__ */ y("div", { style: { color: t("textSecondary"), fontSize: 13, marginTop: 4 }, children: [
         x("请使用"),
         " ",
-        $t(s.method),
+        Dt(s.method),
         " ",
         x("扫码完成付款")
       ] }),
       /* @__PURE__ */ y("div", { style: { marginTop: 6, color: t("textTertiary"), fontSize: 12 }, children: [
         x("订单号："),
-        /* @__PURE__ */ l("code", { style: Ve, children: s.out_trade_no })
+        /* @__PURE__ */ l("code", { style: Ke, children: s.out_trade_no })
       ] }),
       /* @__PURE__ */ l("p", { style: { color: t("textTertiary"), fontSize: 12, marginTop: 12, marginBottom: 0 }, children: x("支付完成后将自动刷新（每 3 秒检查一次）") }),
       s.payment_url && /* @__PURE__ */ y("p", { style: { fontSize: 12, marginTop: 6, marginBottom: 0 }, children: [
@@ -2393,41 +2410,41 @@ function yr() {
         " ",
         /* @__PURE__ */ l("a", { href: s.payment_url, target: "_blank", rel: "noreferrer", style: { color: t("primary"), textDecoration: "none" }, children: x("点此在新窗口打开付款页 →") })
       ] }),
-      /* @__PURE__ */ l("button", { style: { ...Cr, marginTop: 16 }, onClick: v, children: x("取消") })
+      /* @__PURE__ */ l("button", { style: { ...Br, marginTop: 16 }, onClick: v, children: x("取消") })
     ] }) : /* @__PURE__ */ y(le, { children: [
       /* @__PURE__ */ y("h3", { style: { margin: "0 0 12px", color: t("textSecondary") }, children: [
         x("订单已"),
-        Dt(s.status)
+        Ft(s.status)
       ] }),
       /* @__PURE__ */ l("p", { style: { margin: 0, color: t("textSecondary"), fontSize: 14 }, children: x("该订单无法继续支付，请重新发起充值。") }),
-      /* @__PURE__ */ l("button", { style: { ...qt, marginTop: 16 }, onClick: v, children: x("关闭") })
+      /* @__PURE__ */ l("button", { style: { ...Wt, marginTop: 16 }, onClick: v, children: x("关闭") })
     ] }) }) }),
-    /* @__PURE__ */ l("div", { style: br, children: e.length === 0 ? /* @__PURE__ */ l("p", { style: Sr, children: x("暂无充值记录") }) : /* @__PURE__ */ l("div", { style: xr, children: /* @__PURE__ */ y("table", { style: wr, children: [
+    /* @__PURE__ */ l("div", { style: xr, children: e.length === 0 ? /* @__PURE__ */ l("p", { style: wr, children: x("暂无充值记录") }) : /* @__PURE__ */ l("div", { style: vr, children: /* @__PURE__ */ y("table", { style: kr, children: [
       /* @__PURE__ */ l("thead", { children: /* @__PURE__ */ y("tr", { children: [
-        /* @__PURE__ */ l("th", { style: Y, children: x("订单号") }),
-        /* @__PURE__ */ l("th", { style: Y, children: x("金额") }),
-        /* @__PURE__ */ l("th", { style: Y, children: x("支付方式") }),
-        /* @__PURE__ */ l("th", { style: Y, children: x("状态") }),
-        /* @__PURE__ */ l("th", { style: Y, children: x("创建时间") }),
-        /* @__PURE__ */ l("th", { style: Y, children: x("支付时间") }),
-        /* @__PURE__ */ l("th", { style: Y, children: x("操作") })
+        /* @__PURE__ */ l("th", { style: J, children: x("订单号") }),
+        /* @__PURE__ */ l("th", { style: J, children: x("金额") }),
+        /* @__PURE__ */ l("th", { style: J, children: x("支付方式") }),
+        /* @__PURE__ */ l("th", { style: J, children: x("状态") }),
+        /* @__PURE__ */ l("th", { style: J, children: x("创建时间") }),
+        /* @__PURE__ */ l("th", { style: J, children: x("支付时间") }),
+        /* @__PURE__ */ l("th", { style: J, children: x("操作") })
       ] }) }),
       /* @__PURE__ */ l("tbody", { children: e.map((b) => /* @__PURE__ */ y("tr", { children: [
-        /* @__PURE__ */ l("td", { style: J, children: /* @__PURE__ */ l("code", { style: Ve, children: b.out_trade_no }) }),
-        /* @__PURE__ */ l("td", { style: { ...J, fontWeight: 600 }, children: N(b.amount) }),
-        /* @__PURE__ */ l("td", { style: J, children: $t(b.method) }),
-        /* @__PURE__ */ l("td", { style: { ...J, color: mr(b.status), fontWeight: 600 }, children: Dt(b.status) }),
-        /* @__PURE__ */ l("td", { style: { ...J, color: t("textSecondary") }, children: Ft(b.created_at) }),
-        /* @__PURE__ */ l("td", { style: { ...J, color: t("textSecondary") }, children: b.paid_at ? Ft(b.paid_at) : "-" }),
-        /* @__PURE__ */ l("td", { style: J, children: b.status === "pending" && (b.qr_code_content || b.payment_url) ? /* @__PURE__ */ l("button", { style: Tr, onClick: () => S(b), children: x("继续支付") }) : null })
+        /* @__PURE__ */ l("td", { style: Y, children: /* @__PURE__ */ l("code", { style: Ke, children: b.out_trade_no }) }),
+        /* @__PURE__ */ l("td", { style: { ...Y, fontWeight: 600 }, children: N(b.amount) }),
+        /* @__PURE__ */ l("td", { style: Y, children: Dt(b.method) }),
+        /* @__PURE__ */ l("td", { style: { ...Y, color: Sr(b.status), fontWeight: 600 }, children: Ft(b.status) }),
+        /* @__PURE__ */ l("td", { style: { ...Y, color: t("textSecondary") }, children: Ut(b.created_at) }),
+        /* @__PURE__ */ l("td", { style: { ...Y, color: t("textSecondary") }, children: b.paid_at ? Ut(b.paid_at) : "-" }),
+        /* @__PURE__ */ l("td", { style: Y, children: b.status === "pending" && (b.qr_code_content || b.payment_url) ? /* @__PURE__ */ l("button", { style: Er, onClick: () => S(b), children: x("继续支付") }) : null })
       ] }, b.id)) })
     ] }) }) })
   ] });
 }
-function $t(e) {
+function Dt(e) {
   return { alipay: x("支付宝"), wxpay: x("微信支付") }[e] || e || "-";
 }
-function Dt(e) {
+function Ft(e) {
   return {
     pending: x("待支付"),
     paid: x("已支付"),
@@ -2437,7 +2454,7 @@ function Dt(e) {
     refunded: x("已退款")
   }[e] || e;
 }
-function mr(e) {
+function Sr(e) {
   return {
     pending: t("warning"),
     paid: t("success"),
@@ -2447,39 +2464,39 @@ function mr(e) {
     refunded: t("textTertiary")
   }[e] || "inherit";
 }
-function Ft(e) {
+function Ut(e) {
   try {
     return new Date(e).toLocaleString();
   } catch {
     return e;
   }
 }
-const je = {
+const Ve = {
   maxWidth: 960,
   margin: "0 auto",
   padding: "24px 24px 48px",
   color: t("text")
-}, Ut = {
+}, qt = {
   padding: "40px 0",
   textAlign: "center",
   color: t("textSecondary")
-}, br = {
+}, xr = {
   border: `1px solid ${t("glassBorder")}`,
   borderRadius: t("radiusLg"),
   background: t("bgElevated"),
   padding: "8px 0",
   overflow: "hidden"
-}, Sr = {
+}, wr = {
   color: t("textTertiary"),
   textAlign: "center",
   padding: "40px 0",
   fontSize: 14
-}, xr = {
+}, vr = {
   overflowX: "auto"
-}, wr = {
+}, kr = {
   width: "100%",
   borderCollapse: "collapse"
-}, Y = {
+}, J = {
   textAlign: "left",
   padding: "10px 16px",
   borderBottom: `1px solid ${t("glassBorder")}`,
@@ -2490,17 +2507,17 @@ const je = {
   textTransform: "uppercase",
   letterSpacing: "0.04em",
   whiteSpace: "nowrap"
-}, J = {
+}, Y = {
   padding: "12px 16px",
   borderBottom: `1px solid ${t("glassBorder")}`,
   fontSize: 13,
   color: t("text"),
   whiteSpace: "nowrap"
-}, Ve = {
+}, Ke = {
   fontSize: 12,
   fontFamily: t("fontMono"),
   color: t("textSecondary")
-}, vr = {
+}, Cr = {
   position: "fixed",
   top: 0,
   left: 0,
@@ -2511,7 +2528,7 @@ const je = {
   alignItems: "center",
   justifyContent: "center",
   zIndex: 1e3
-}, kr = {
+}, Tr = {
   background: t("bgElevated"),
   borderRadius: t("radiusLg"),
   padding: "32px",
@@ -2519,7 +2536,7 @@ const je = {
   minWidth: 320,
   maxWidth: 400,
   boxShadow: "0 8px 32px rgba(0,0,0,0.2)"
-}, qt = {
+}, Wt = {
   padding: "8px 24px",
   border: "none",
   borderRadius: t("radiusMd"),
@@ -2527,7 +2544,7 @@ const je = {
   color: "#fff",
   fontSize: 14,
   cursor: "pointer"
-}, Cr = {
+}, Br = {
   padding: "8px 24px",
   border: `1px solid ${t("glassBorder")}`,
   borderRadius: t("radiusMd"),
@@ -2535,7 +2552,7 @@ const je = {
   color: t("textSecondary"),
   fontSize: 14,
   cursor: "pointer"
-}, Tr = {
+}, Er = {
   padding: "4px 12px",
   border: `1px solid ${t("primary")}`,
   borderRadius: t("radiusMd"),
@@ -2544,7 +2561,7 @@ const je = {
   fontSize: 12,
   cursor: "pointer",
   whiteSpace: "nowrap"
-}, Wt = {
+}, Ot = {
   total: 0,
   paid: 0,
   pending: 0,
@@ -2554,7 +2571,7 @@ const je = {
   refunded: 0,
   total_amount_paid: 0,
   today_amount_paid: 0
-}, Br = [10, 20, 50, 100], Er = [
+}, Rr = [10, 20, 50, 100], Ir = [
   { value: "all", label: "全部状态" },
   { value: "pending", label: "待支付" },
   { value: "paid", label: "已支付" },
@@ -2563,11 +2580,11 @@ const je = {
   { value: "cancelled", label: "已取消" },
   { value: "refunded", label: "已退款" }
 ];
-function Rr() {
-  const [e, i] = z([]), [a, o] = z(0), [r, n] = z(Wt), [s, c] = z(!0), [d, u] = z(null), [f, h] = z("all"), [S, v] = z(""), [b, R] = z(1), [p, g] = z(20), I = ne(() => {
-    c(!0), u(null), $.adminListOrders({ page: b, pageSize: p, email: S, status: f }).then((k) => {
-      i(k.list || []), o(k.total || 0), n(k.stats || Wt);
-    }).catch((k) => u(String((k == null ? void 0 : k.message) || k))).finally(() => c(!1));
+function Pr() {
+  const [e, i] = z([]), [a, o] = z(0), [r, n] = z(Ot), [s, d] = z(!0), [c, u] = z(null), [f, h] = z("all"), [S, v] = z(""), [b, R] = z(1), [p, g] = z(20), I = ne(() => {
+    d(!0), u(null), $.adminListOrders({ page: b, pageSize: p, email: S, status: f }).then((k) => {
+      i(k.list || []), o(k.total || 0), n(k.stats || Ot);
+    }).catch((k) => u(String((k == null ? void 0 : k.message) || k))).finally(() => d(!1));
   }, [b, p, S, f]);
   F(() => {
     const L = setTimeout(I, S ? 300 : 0);
@@ -2576,8 +2593,8 @@ function Rr() {
     R(1);
   }, [f, S, p]);
   const w = Math.max(1, Math.ceil(a / p));
-  return /* @__PURE__ */ y("div", { style: Lr, children: [
-    /* @__PURE__ */ y("div", { style: Nr, children: [
+  return /* @__PURE__ */ y("div", { style: $r, children: [
+    /* @__PURE__ */ y("div", { style: Dr, children: [
       /* @__PURE__ */ l(te, { label: "总订单数", value: r.total }),
       /* @__PURE__ */ l(te, { label: "已支付", value: r.paid, accent: t("success") }),
       /* @__PURE__ */ l(te, { label: "待支付", value: r.pending, accent: t("warning") }),
@@ -2585,15 +2602,15 @@ function Rr() {
       /* @__PURE__ */ l(te, { label: "累计收款", value: N(r.total_amount_paid), accent: t("success") }),
       /* @__PURE__ */ l(te, { label: "今日收款", value: N(r.today_amount_paid), accent: t("success") })
     ] }),
-    /* @__PURE__ */ y("div", { style: Ur, children: [
-      /* @__PURE__ */ y("div", { style: qr, children: [
+    /* @__PURE__ */ y("div", { style: Wr, children: [
+      /* @__PURE__ */ y("div", { style: Or, children: [
         /* @__PURE__ */ l(
-          cn,
+          un,
           {
             value: f,
             onChange: h,
-            options: Er,
-            style: Wr
+            options: Ir,
+            style: jr
           }
         ),
         /* @__PURE__ */ l(
@@ -2603,41 +2620,41 @@ function Rr() {
             value: S,
             onChange: (k) => v(k.target.value),
             placeholder: "搜索用户邮箱",
-            style: { ...Qr, width: 240 }
+            style: { ...Zr, width: 240 }
           }
         ),
-        /* @__PURE__ */ l(Ar, { onClick: I, loading: s })
+        /* @__PURE__ */ l(zr, { onClick: I, loading: s })
       ] }),
-      d ? /* @__PURE__ */ y("p", { style: { ...Ke, color: t("danger") }, children: [
+      c ? /* @__PURE__ */ y("p", { style: { ...Ge, color: t("danger") }, children: [
         "加载失败: ",
-        d
-      ] }) : s && e.length === 0 ? /* @__PURE__ */ l("p", { style: Ke, children: "加载中..." }) : e.length === 0 ? /* @__PURE__ */ l("p", { style: Ke, children: "暂无订单" }) : /* @__PURE__ */ l("div", { style: Xr, children: /* @__PURE__ */ y("table", { style: Zr, children: [
+        c
+      ] }) : s && e.length === 0 ? /* @__PURE__ */ l("p", { style: Ge, children: "加载中..." }) : e.length === 0 ? /* @__PURE__ */ l("p", { style: Ge, children: "暂无订单" }) : /* @__PURE__ */ l("div", { style: eo, children: /* @__PURE__ */ y("table", { style: to, children: [
         /* @__PURE__ */ l("thead", { children: /* @__PURE__ */ y("tr", { children: [
-          /* @__PURE__ */ l("th", { style: j, children: "订单号" }),
-          /* @__PURE__ */ l("th", { style: j, children: "用户邮箱" }),
-          /* @__PURE__ */ l("th", { style: j, children: "金额" }),
-          /* @__PURE__ */ l("th", { style: j, children: "支付方式" }),
-          /* @__PURE__ */ l("th", { style: j, children: "服务商" }),
-          /* @__PURE__ */ l("th", { style: j, children: "状态" }),
-          /* @__PURE__ */ l("th", { style: j, children: "创建时间" }),
-          /* @__PURE__ */ l("th", { style: j, children: "支付时间" })
+          /* @__PURE__ */ l("th", { style: H, children: "订单号" }),
+          /* @__PURE__ */ l("th", { style: H, children: "用户邮箱" }),
+          /* @__PURE__ */ l("th", { style: H, children: "金额" }),
+          /* @__PURE__ */ l("th", { style: H, children: "支付方式" }),
+          /* @__PURE__ */ l("th", { style: H, children: "服务商" }),
+          /* @__PURE__ */ l("th", { style: H, children: "状态" }),
+          /* @__PURE__ */ l("th", { style: H, children: "创建时间" }),
+          /* @__PURE__ */ l("th", { style: H, children: "支付时间" })
         ] }) }),
         /* @__PURE__ */ l("tbody", { children: e.map((k) => /* @__PURE__ */ y("tr", { children: [
-          /* @__PURE__ */ l("td", { style: V, children: /* @__PURE__ */ l("code", { style: eo, children: k.out_trade_no }) }),
+          /* @__PURE__ */ l("td", { style: V, children: /* @__PURE__ */ l("code", { style: no, children: k.out_trade_no }) }),
           /* @__PURE__ */ l("td", { style: V, children: k.user_email ? /* @__PURE__ */ l("span", { style: { color: t("text") }, children: k.user_email }) : /* @__PURE__ */ y("span", { style: { color: t("textTertiary") }, children: [
             "#",
             k.user_id
           ] }) }),
           /* @__PURE__ */ l("td", { style: { ...V, fontWeight: 600 }, children: N(k.amount) }),
-          /* @__PURE__ */ l("td", { style: V, children: Ir(k.method) }),
+          /* @__PURE__ */ l("td", { style: V, children: _r(k.method) }),
           /* @__PURE__ */ l("td", { style: { ...V, color: t("textSecondary") }, children: k.provider_id || "-" }),
-          /* @__PURE__ */ l("td", { style: { ...V, color: Mr(k.status), fontWeight: 600 }, children: Pr(k.status) }),
-          /* @__PURE__ */ l("td", { style: { ...V, color: t("textSecondary") }, children: Ot(k.created_at) }),
-          /* @__PURE__ */ l("td", { style: { ...V, color: t("textSecondary") }, children: k.paid_at ? Ot(k.paid_at) : "-" })
+          /* @__PURE__ */ l("td", { style: { ...V, color: Ar(k.status), fontWeight: 600 }, children: Mr(k.status) }),
+          /* @__PURE__ */ l("td", { style: { ...V, color: t("textSecondary") }, children: jt(k.created_at) }),
+          /* @__PURE__ */ l("td", { style: { ...V, color: t("textSecondary") }, children: k.paid_at ? jt(k.paid_at) : "-" })
         ] }, k.id)) })
       ] }) }),
       /* @__PURE__ */ l(
-        _r,
+        Lr,
         {
           page: b,
           pageSize: p,
@@ -2651,15 +2668,15 @@ function Rr() {
   ] });
 }
 function te({ label: e, value: i, accent: a }) {
-  return /* @__PURE__ */ y("div", { style: $r, children: [
-    /* @__PURE__ */ l("div", { style: Dr, children: e }),
-    /* @__PURE__ */ l("div", { style: { ...Fr, color: a || t("text") }, children: i })
+  return /* @__PURE__ */ y("div", { style: Fr, children: [
+    /* @__PURE__ */ l("div", { style: Ur, children: e }),
+    /* @__PURE__ */ l("div", { style: { ...qr, color: a || t("text") }, children: i })
   ] });
 }
-function Ir(e) {
+function _r(e) {
   return { alipay: "支付宝", wxpay: "微信支付" }[e] || e || "-";
 }
-function Pr(e) {
+function Mr(e) {
   return {
     pending: "待支付",
     paid: "已支付",
@@ -2669,7 +2686,7 @@ function Pr(e) {
     refunded: "已退款"
   }[e] || e;
 }
-function Mr(e) {
+function Ar(e) {
   return {
     pending: t("warning"),
     paid: t("success"),
@@ -2679,14 +2696,14 @@ function Mr(e) {
     refunded: t("textTertiary")
   }[e] || "inherit";
 }
-function Ot(e) {
+function jt(e) {
   try {
     return new Date(e).toLocaleString();
   } catch {
     return e;
   }
 }
-function Ar({ onClick: e, loading: i }) {
+function zr({ onClick: e, loading: i }) {
   const [a, o] = z(!1);
   return /* @__PURE__ */ y(le, { children: [
     /* @__PURE__ */ l("style", { children: "@keyframes ag-epay-spin { to { transform: rotate(360deg); } }" }),
@@ -2741,58 +2758,58 @@ function Ar({ onClick: e, loading: i }) {
     )
   ] });
 }
-function cn({
+function un({
   value: e,
   options: i,
   onChange: a,
   style: o
 }) {
-  const [r, n] = z(!1), s = se(null), c = i.find((d) => d.value === e);
+  const [r, n] = z(!1), s = se(null), d = i.find((c) => c.value === e);
   return F(() => {
     if (!r) return;
-    const d = (u) => {
+    const c = (u) => {
       s.current && !s.current.contains(u.target) && n(!1);
     };
-    return document.addEventListener("mousedown", d), () => document.removeEventListener("mousedown", d);
-  }, [r]), /* @__PURE__ */ y("div", { ref: s, style: Or, children: [
+    return document.addEventListener("mousedown", c), () => document.removeEventListener("mousedown", c);
+  }, [r]), /* @__PURE__ */ y("div", { ref: s, style: Hr, children: [
     /* @__PURE__ */ y(
       "button",
       {
         type: "button",
-        style: { ...o, ...Hr, ...r ? jr : null },
+        style: { ...o, ...Vr, ...r ? Kr : null },
         "aria-haspopup": "listbox",
         "aria-expanded": r,
-        onClick: () => n((d) => !d),
+        onClick: () => n((c) => !c),
         children: [
-          /* @__PURE__ */ l("span", { style: Vr, children: (c == null ? void 0 : c.label) ?? "" }),
-          /* @__PURE__ */ l("span", { "aria-hidden": "true", style: Kr, children: "v" })
+          /* @__PURE__ */ l("span", { style: Gr, children: (d == null ? void 0 : d.label) ?? "" }),
+          /* @__PURE__ */ l("span", { "aria-hidden": "true", style: Jr, children: "v" })
         ]
       }
     ),
-    r && /* @__PURE__ */ l("div", { role: "listbox", style: Gr, children: i.map((d) => {
-      const u = d.value === e;
+    r && /* @__PURE__ */ l("div", { role: "listbox", style: Yr, children: i.map((c) => {
+      const u = c.value === e;
       return /* @__PURE__ */ l(
         "button",
         {
           type: "button",
           role: "option",
           "aria-selected": u,
-          style: { ...Yr, ...u ? Jr : null },
+          style: { ...Qr, ...u ? Xr : null },
           onClick: () => {
-            a(d.value), n(!1);
+            a(c.value), n(!1);
           },
-          children: d.label
+          children: c.label
         },
-        d.value
+        c.value
       );
     }) })
   ] });
 }
-function _r({ page: e, pageSize: i, total: a, totalPages: o, onPageChange: r, onPageSizeChange: n }) {
-  const s = zr(e, o);
-  return /* @__PURE__ */ y("div", { style: to, children: [
+function Lr({ page: e, pageSize: i, total: a, totalPages: o, onPageChange: r, onPageSizeChange: n }) {
+  const s = Nr(e, o);
+  return /* @__PURE__ */ y("div", { style: ro, children: [
     /* @__PURE__ */ y("div", { style: { display: "flex", alignItems: "center", gap: 10 }, children: [
-      /* @__PURE__ */ y("span", { style: no, children: [
+      /* @__PURE__ */ y("span", { style: oo, children: [
         "共 ",
         a,
         " 条 · 第 ",
@@ -2802,12 +2819,12 @@ function _r({ page: e, pageSize: i, total: a, totalPages: o, onPageChange: r, on
         " 页"
       ] }),
       /* @__PURE__ */ l(
-        cn,
+        un,
         {
           value: String(i),
-          onChange: (c) => n(Number(c)),
-          options: Br.map((c) => ({ value: String(c), label: `${c} 条/页` })),
-          style: ro
+          onChange: (d) => n(Number(d)),
+          options: Rr.map((d) => ({ value: String(d), label: `${d} 条/页` })),
+          style: io
         }
       )
     ] }),
@@ -2824,15 +2841,15 @@ function _r({ page: e, pageSize: i, total: a, totalPages: o, onPageChange: r, on
         }
       ),
       s.map(
-        (c, d) => c === "..." ? /* @__PURE__ */ l("span", { style: io, children: "···" }, `e-${d}`) : /* @__PURE__ */ l(
+        (d, c) => d === "..." ? /* @__PURE__ */ l("span", { style: lo, children: "···" }, `e-${c}`) : /* @__PURE__ */ l(
           "button",
           {
             type: "button",
-            style: c === e ? oo : un,
-            onClick: () => r(c),
-            children: c
+            style: d === e ? ao : gn,
+            onClick: () => r(d),
+            children: d
           },
-          c
+          d
         )
       ),
       /* @__PURE__ */ l(
@@ -2849,7 +2866,7 @@ function _r({ page: e, pageSize: i, total: a, totalPages: o, onPageChange: r, on
     ] })
   ] });
 }
-function zr(e, i) {
+function Nr(e, i) {
   if (i <= 7) return Array.from({ length: i }, (o, r) => r + 1);
   const a = [1];
   e > 3 && a.push("...");
@@ -2857,43 +2874,43 @@ function zr(e, i) {
     a.push(o);
   return e < i - 2 && a.push("..."), a.push(i), a;
 }
-const Lr = {
+const $r = {
   maxWidth: 1280,
   margin: "0 auto",
   padding: "24px 24px 48px",
   color: t("text")
-}, Nr = {
+}, Dr = {
   display: "grid",
   gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
   gap: 12,
   marginBottom: 20
-}, $r = {
+}, Fr = {
   padding: "18px 20px",
   border: `1px solid ${t("glassBorder")}`,
   borderRadius: t("radiusLg"),
   background: t("bgSurface")
-}, Dr = {
+}, Ur = {
   fontSize: 12,
   color: t("textSecondary"),
   fontWeight: 500,
   letterSpacing: "0.02em"
-}, Fr = {
+}, qr = {
   fontSize: 26,
   fontWeight: 700,
   marginTop: 8,
   letterSpacing: "-0.02em"
-}, Ur = {
+}, Wr = {
   border: `1px solid ${t("glassBorder")}`,
   borderRadius: t("radiusLg"),
   background: t("bgSurface"),
   padding: "20px 20px 8px"
-}, qr = {
+}, Or = {
   display: "flex",
   alignItems: "center",
   gap: 12,
   marginBottom: 16,
   flexWrap: "wrap"
-}, Wr = {
+}, jr = {
   padding: "8px 12px",
   minWidth: 140,
   border: `1px solid ${t("glassBorder")}`,
@@ -2901,10 +2918,10 @@ const Lr = {
   background: t("bgElevated"),
   color: t("text"),
   fontSize: 13
-}, Or = {
+}, Hr = {
   position: "relative",
   display: "inline-block"
-}, Hr = {
+}, Vr = {
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "space-between",
@@ -2913,20 +2930,20 @@ const Lr = {
   fontFamily: "inherit",
   cursor: "pointer",
   outline: "none"
-}, jr = {
+}, Kr = {
   borderColor: t("primary"),
   boxShadow: `0 0 0 3px ${t("primarySubtle")}`
-}, Vr = {
+}, Gr = {
   minWidth: 0,
   overflow: "hidden",
   textOverflow: "ellipsis",
   whiteSpace: "nowrap"
-}, Kr = {
+}, Jr = {
   flexShrink: 0,
   color: t("textTertiary"),
   fontSize: 10,
   lineHeight: 1
-}, Gr = {
+}, Yr = {
   position: "absolute",
   left: 0,
   top: "calc(100% + 6px)",
@@ -2942,7 +2959,7 @@ const Lr = {
   background: t("bgSurface"),
   boxShadow: "0 18px 48px rgba(0, 0, 0, 0.28)",
   overflowY: "auto"
-}, Yr = {
+}, Qr = {
   display: "block",
   width: "100%",
   padding: "8px 10px",
@@ -2956,11 +2973,11 @@ const Lr = {
   textAlign: "left",
   whiteSpace: "nowrap",
   cursor: "pointer"
-}, Jr = {
+}, Xr = {
   background: t("primarySubtle"),
   color: t("primary"),
   fontWeight: 600
-}, Qr = {
+}, Zr = {
   padding: "8px 12px",
   width: 200,
   border: `1px solid ${t("glassBorder")}`,
@@ -2969,18 +2986,18 @@ const Lr = {
   color: t("text"),
   fontSize: 13,
   outline: "none"
-}, Ke = {
+}, Ge = {
   color: t("textTertiary"),
   textAlign: "center",
   padding: "40px 0",
   fontSize: 14
-}, Xr = {
+}, eo = {
   overflowX: "auto",
   margin: "0 -20px"
-}, Zr = {
+}, to = {
   width: "100%",
   borderCollapse: "collapse"
-}, j = {
+}, H = {
   textAlign: "left",
   padding: "10px 16px",
   borderTop: `1px solid ${t("glassBorder")}`,
@@ -2998,22 +3015,22 @@ const Lr = {
   fontSize: 13,
   color: t("text"),
   whiteSpace: "nowrap"
-}, eo = {
+}, no = {
   fontSize: 12,
   fontFamily: t("fontMono"),
   color: t("textSecondary")
-}, to = {
+}, ro = {
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
   padding: "14px 4px 6px",
   flexWrap: "wrap",
   gap: 12
-}, no = {
+}, oo = {
   fontSize: 12,
   color: t("textTertiary"),
   fontFamily: t("fontMono")
-}, ro = {
+}, io = {
   fontSize: 12,
   color: t("textSecondary"),
   background: "transparent",
@@ -3022,7 +3039,7 @@ const Lr = {
   padding: "2px 8px",
   cursor: "pointer",
   outline: "none"
-}, un = {
+}, gn = {
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
@@ -3036,8 +3053,8 @@ const Lr = {
   fontWeight: 500,
   cursor: "pointer",
   transition: t("transition")
-}, oo = {
-  ...un,
+}, ao = {
+  ...gn,
   background: t("primary"),
   color: t("textInverse"),
   fontWeight: 600
@@ -3060,7 +3077,7 @@ function Ht(e) {
     transition: t("transition")
   };
 }
-const io = {
+const lo = {
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
@@ -3068,22 +3085,22 @@ const io = {
   color: t("textTertiary"),
   fontSize: 12
 };
-let ao = 0;
-function gn() {
+let so = 0;
+function hn() {
   const [e, i] = z([]), a = se(i);
   a.current = i;
-  const o = ne((c) => {
-    a.current((d) => d.filter((u) => u.id !== c));
-  }, []), r = ne((c, d) => {
-    const u = ao++;
-    a.current((f) => [...f, { id: u, type: c, text: d }]), setTimeout(() => o(u), 4e3);
-  }, [o]), n = ne((c) => r("success", c), [r]), s = ne((c) => r("error", c), [r]);
+  const o = ne((d) => {
+    a.current((c) => c.filter((u) => u.id !== d));
+  }, []), r = ne((d, c) => {
+    const u = so++;
+    a.current((f) => [...f, { id: u, type: d, text: c }]), setTimeout(() => o(u), 4e3);
+  }, [o]), n = ne((d) => r("success", d), [r]), s = ne((d) => r("error", d), [r]);
   return {
     toast: { success: n, error: s },
-    Toaster: /* @__PURE__ */ l(lo, { messages: e, onClose: o })
+    Toaster: /* @__PURE__ */ l(co, { messages: e, onClose: o })
   };
 }
-function lo({
+function co({
   messages: e,
   onClose: i
 }) {
@@ -3096,9 +3113,9 @@ function lo({
   from { opacity: 0; transform: translateY(-8px); }
   to   { opacity: 1; transform: translateY(0); }
 }`, document.head.appendChild(o);
-  }, []), e.length === 0 ? null : /* @__PURE__ */ l("div", { style: co, children: e.map((a) => /* @__PURE__ */ l(so, { message: a, onClose: () => i(a.id) }, a.id)) });
+  }, []), e.length === 0 ? null : /* @__PURE__ */ l("div", { style: go, children: e.map((a) => /* @__PURE__ */ l(uo, { message: a, onClose: () => i(a.id) }, a.id)) });
 }
-function so({
+function uo({
   message: e,
   onClose: i
 }) {
@@ -3107,18 +3124,18 @@ function so({
     "div",
     {
       style: {
-        ...uo,
+        ...ho,
         borderColor: r
       },
       children: [
-        /* @__PURE__ */ l("span", { style: { ...go, color: o }, children: a ? "✓" : "✕" }),
-        /* @__PURE__ */ l("span", { style: { ...ho, color: t("text") }, children: e.text }),
-        /* @__PURE__ */ l("button", { onClick: i, style: fo, "aria-label": x("关闭"), children: "×" })
+        /* @__PURE__ */ l("span", { style: { ...fo, color: o }, children: a ? "✓" : "✕" }),
+        /* @__PURE__ */ l("span", { style: { ...po, color: t("text") }, children: e.text }),
+        /* @__PURE__ */ l("button", { onClick: i, style: yo, "aria-label": x("关闭"), children: "×" })
       ]
     }
   );
 }
-const co = {
+const go = {
   position: "fixed",
   top: 20,
   right: 20,
@@ -3127,7 +3144,7 @@ const co = {
   flexDirection: "column",
   gap: 10,
   pointerEvents: "none"
-}, uo = {
+}, ho = {
   pointerEvents: "auto",
   display: "flex",
   alignItems: "center",
@@ -3140,17 +3157,17 @@ const co = {
   background: t("bgElevated"),
   boxShadow: "0 8px 24px rgba(0,0,0,0.18)",
   animation: "airgate-epay-toast-in 0.25s cubic-bezier(0.16, 1, 0.3, 1)"
-}, go = {
+}, fo = {
   fontSize: 16,
   fontWeight: 700,
   width: 18,
   textAlign: "center",
   flexShrink: 0
-}, ho = {
+}, po = {
   flex: 1,
   fontSize: 13,
   lineHeight: 1.4
-}, fo = {
+}, yo = {
   flexShrink: 0,
   background: "transparent",
   border: "none",
@@ -3162,16 +3179,16 @@ const co = {
   width: 18,
   height: 18
 };
-function hn(e, i) {
+function fn(e, i) {
   var o;
   const a = window;
   return (o = a.airgate) != null && o.confirm ? a.airgate.confirm(e, i) : Promise.resolve(window.confirm(e));
 }
-function po() {
-  const [e, i] = z([]), [a, o] = z([]), [r, n] = z(!0), [s, c] = z(null), [d, u] = z(null), { toast: f, Toaster: h } = gn(), S = ne(() => {
-    n(!0), c(null), $.adminListProviders().then((g) => {
+function mo() {
+  const [e, i] = z([]), [a, o] = z([]), [r, n] = z(!0), [s, d] = z(null), [c, u] = z(null), { toast: f, Toaster: h } = hn(), S = ne(() => {
+    n(!0), d(null), $.adminListProviders().then((g) => {
       i(g.providers || []), o(g.kinds || []);
-    }).catch((g) => c(String((g == null ? void 0 : g.message) || g))).finally(() => n(!1));
+    }).catch((g) => d(String((g == null ? void 0 : g.message) || g))).finally(() => n(!1));
   }, []);
   F(S, [S]);
   const v = (g) => {
@@ -3180,7 +3197,7 @@ function po() {
       id: "",
       kind: g.kind,
       enabled: !0,
-      config: bo(g)
+      config: xo(g)
     });
   }, b = (g) => {
     u({
@@ -3192,7 +3209,7 @@ function po() {
       config: { ...g.config }
     });
   }, R = async (g) => {
-    if (await hn(`确认删除服务商 ${g}？此操作无法撤销。`, { title: "删除服务商", danger: !0 }))
+    if (await fn(`确认删除服务商 ${g}？此操作无法撤销。`, { title: "删除服务商", danger: !0 }))
       try {
         await $.adminDeleteProvider(g), f.success(`已删除 ${g}`), S();
       } catch (I) {
@@ -3210,27 +3227,27 @@ function po() {
       f.error("操作失败: " + I.message);
     }
   };
-  return r ? /* @__PURE__ */ l("div", { style: Ye, children: /* @__PURE__ */ l("div", { style: jt, children: "加载中..." }) }) : s ? /* @__PURE__ */ l("div", { style: Ye, children: /* @__PURE__ */ y("div", { style: { ...jt, color: t("danger") }, children: [
+  return r ? /* @__PURE__ */ l("div", { style: Ye, children: /* @__PURE__ */ l("div", { style: Vt, children: "加载中..." }) }) : s ? /* @__PURE__ */ l("div", { style: Ye, children: /* @__PURE__ */ y("div", { style: { ...Vt, color: t("danger") }, children: [
     "加载失败: ",
     s
   ] }) }) : /* @__PURE__ */ y("div", { style: Ye, children: [
     h,
-    /* @__PURE__ */ y("div", { style: Kt, children: [
-      /* @__PURE__ */ l("h3", { style: Vt, children: "添加服务商" }),
-      /* @__PURE__ */ l("p", { style: So, children: "每种类型的服务商可以创建多个实例（例如 xunhu_main / xunhu_backup），便于多商户号或主备切换。" }),
-      /* @__PURE__ */ l("div", { style: xo, children: a.map((g) => /* @__PURE__ */ y("div", { style: wo, children: [
+    /* @__PURE__ */ y("div", { style: Gt, children: [
+      /* @__PURE__ */ l("h3", { style: Kt, children: "添加服务商" }),
+      /* @__PURE__ */ l("p", { style: wo, children: "每种类型的服务商可以创建多个实例（例如 xunhu_main / xunhu_backup），便于多商户号或主备切换。" }),
+      /* @__PURE__ */ l("div", { style: vo, children: a.map((g) => /* @__PURE__ */ y("div", { style: ko, children: [
         /* @__PURE__ */ l("div", { style: { fontWeight: 600, color: t("text"), fontSize: 15 }, children: g.name }),
         /* @__PURE__ */ l("div", { style: { fontSize: 12, color: t("textSecondary"), marginTop: 6 }, children: g.description }),
         /* @__PURE__ */ y("div", { style: { fontSize: 12, color: t("textTertiary"), marginTop: 8 }, children: [
           "支持: ",
-          g.supported_methods.map(Xe).join(" / ")
+          g.supported_methods.map(Ze).join(" / ")
         ] }),
-        /* @__PURE__ */ l("button", { style: { ...pn, marginTop: 12, width: "100%" }, onClick: () => v(g), children: "+ 添加" })
+        /* @__PURE__ */ l("button", { style: { ...yn, marginTop: 12, width: "100%" }, onClick: () => v(g), children: "+ 添加" })
       ] }, g.kind)) })
     ] }),
-    /* @__PURE__ */ y("div", { style: Kt, children: [
-      /* @__PURE__ */ l("h3", { style: Vt, children: "已配置的服务商实例" }),
-      e.length === 0 ? /* @__PURE__ */ l("p", { style: Co, children: "暂未配置任何服务商。请在上方点「+ 添加」选择类型。" }) : /* @__PURE__ */ l("div", { style: vo, children: e.map((g) => /* @__PURE__ */ y("div", { style: ko, children: [
+    /* @__PURE__ */ y("div", { style: Gt, children: [
+      /* @__PURE__ */ l("h3", { style: Kt, children: "已配置的服务商实例" }),
+      e.length === 0 ? /* @__PURE__ */ l("p", { style: Bo, children: "暂未配置任何服务商。请在上方点「+ 添加」选择类型。" }) : /* @__PURE__ */ l("div", { style: Co, children: e.map((g) => /* @__PURE__ */ y("div", { style: To, children: [
         /* @__PURE__ */ y("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-start" }, children: [
           /* @__PURE__ */ y("div", { children: [
             /* @__PURE__ */ l("div", { style: { fontWeight: 600, color: t("text"), fontSize: 15 }, children: g.name || g.id }),
@@ -3240,23 +3257,23 @@ function po() {
               g.kind
             ] })
           ] }),
-          /* @__PURE__ */ l("span", { style: g.is_running ? fn : To, children: g.is_running ? "运行中" : g.enabled ? "已启用未就绪" : "已禁用" })
+          /* @__PURE__ */ l("span", { style: g.is_running ? pn : Eo, children: g.is_running ? "运行中" : g.enabled ? "已启用未就绪" : "已禁用" })
         ] }),
         /* @__PURE__ */ y("div", { style: { fontSize: 12, color: t("textSecondary"), marginTop: 12 }, children: [
           "支持: ",
-          g.supported_methods.map(Xe).join(" / ")
+          g.supported_methods.map(Ze).join(" / ")
         ] }),
         /* @__PURE__ */ y("div", { style: { display: "flex", gap: 8, marginTop: 16 }, children: [
-          /* @__PURE__ */ l("button", { style: fe, onClick: () => b(g), children: "编辑" }),
-          /* @__PURE__ */ l("button", { style: fe, onClick: () => p(g), children: g.enabled ? "禁用" : "启用" }),
-          /* @__PURE__ */ l("button", { style: { ...fe, color: t("danger") }, onClick: () => R(g.id), children: "删除" })
+          /* @__PURE__ */ l("button", { style: pe, onClick: () => b(g), children: "编辑" }),
+          /* @__PURE__ */ l("button", { style: pe, onClick: () => p(g), children: g.enabled ? "禁用" : "启用" }),
+          /* @__PURE__ */ l("button", { style: { ...pe, color: t("danger") }, onClick: () => R(g.id), children: "删除" })
         ] })
       ] }, g.id)) })
     ] }),
-    d && /* @__PURE__ */ l(
-      yo,
+    c && /* @__PURE__ */ l(
+      bo,
       {
-        editing: d,
+        editing: c,
         kinds: a,
         onCancel: () => u(null),
         onSaved: (g) => {
@@ -3267,14 +3284,14 @@ function po() {
     )
   ] });
 }
-function yo({
+function bo({
   editing: e,
   kinds: i,
   onCancel: a,
   onSaved: o,
   onError: r
 }) {
-  const [n, s] = z(e), [c, d] = z(!1), u = Sn(() => i.find((h) => h.kind === n.kind), [i, n.kind]), f = async () => {
+  const [n, s] = z(e), [d, c] = z(!1), u = xn(() => i.find((h) => h.kind === n.kind), [i, n.kind]), f = async () => {
     if (!u) {
       r("未知的服务商类型");
       return;
@@ -3284,14 +3301,14 @@ function yo({
         r(`「${h.label}」必填`);
         return;
       }
-    if (!(n.mode === "edit" && n.originalId && n.id.trim() !== n.originalId && !await hn(
+    if (!(n.mode === "edit" && n.originalId && n.id.trim() !== n.originalId && !await fn(
       `确认将实例 ID 从「${n.originalId}」重命名为「${n.id.trim()}」？
 
 所有历史订单的 provider_id 引用会在事务里同步更新；如果该商户号在第三方支付平台已经下过单，
 已发出去的回调地址（含原 ID）会失效——平台未来回调请求会路由不到本服务。`,
       { title: "重命名服务商 ID", danger: !0 }
     ))) {
-      d(!0);
+      c(!0);
       try {
         const S = (await $.adminUpsertProvider({
           id: n.id.trim(),
@@ -3304,22 +3321,22 @@ function yo({
       } catch (h) {
         r("保存失败: " + h.message);
       } finally {
-        d(!1);
+        c(!1);
       }
     }
   };
-  return /* @__PURE__ */ l("div", { style: Ro, onClick: a, children: /* @__PURE__ */ y("div", { style: Io, onClick: (h) => h.stopPropagation(), children: [
-    /* @__PURE__ */ y("div", { style: Po, children: [
+  return /* @__PURE__ */ l("div", { style: Po, onClick: a, children: /* @__PURE__ */ y("div", { style: _o, onClick: (h) => h.stopPropagation(), children: [
+    /* @__PURE__ */ y("div", { style: Mo, children: [
       /* @__PURE__ */ y("h3", { style: { margin: 0, fontSize: 16, fontWeight: 600 }, children: [
         n.mode === "create" ? "添加" : "编辑",
         "服务商 - ",
         (u == null ? void 0 : u.name) || n.kind
       ] }),
-      /* @__PURE__ */ l("button", { style: Mo, onClick: a, children: "×" })
+      /* @__PURE__ */ l("button", { style: Ao, onClick: a, children: "×" })
     ] }),
-    /* @__PURE__ */ y("div", { style: Ao, children: [
+    /* @__PURE__ */ y("div", { style: zo, children: [
       /* @__PURE__ */ l(
-        Ge,
+        Je,
         {
           label: "实例 ID",
           description: n.mode === "edit" ? "可修改。改名时后端会在事务里同步更新所有历史订单的 provider_id 引用，回调路径也会立即指向新名字。" : "可选。留空则自动生成 epay_xunhu_1 之类的序号；也可以填一个有意义的名字如 xunhu_main / xunhu_backup 便于多商户号区分。",
@@ -3330,12 +3347,12 @@ function yo({
               value: n.id,
               onChange: (h) => s({ ...n, id: h.target.value }),
               placeholder: n.mode === "create" ? "留空自动生成" : "",
-              style: { ...Je, fontFamily: t("fontMono"), fontSize: 12 }
+              style: { ...Qe, fontFamily: t("fontMono"), fontSize: 12 }
             }
           )
         }
       ),
-      /* @__PURE__ */ l(Ge, { label: "启用", children: /* @__PURE__ */ y("label", { style: { display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }, children: [
+      /* @__PURE__ */ l(Je, { label: "启用", children: /* @__PURE__ */ y("label", { style: { display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }, children: [
         /* @__PURE__ */ l(
           "input",
           {
@@ -3346,13 +3363,13 @@ function yo({
         ),
         /* @__PURE__ */ l("span", { style: { fontSize: 13, color: t("textSecondary") }, children: "勾选后该服务商参与支付路由" })
       ] }) }),
-      u == null ? void 0 : u.field_descriptors.map((h) => /* @__PURE__ */ l(Ge, { label: h.label, description: h.description, required: h.required, children: h.type === "textarea" ? /* @__PURE__ */ l(
+      u == null ? void 0 : u.field_descriptors.map((h) => /* @__PURE__ */ l(Je, { label: h.label, description: h.description, required: h.required, children: h.type === "textarea" ? /* @__PURE__ */ l(
         "textarea",
         {
           value: n.config[h.key] || "",
           onChange: (S) => s({ ...n, config: { ...n.config, [h.key]: S.target.value } }),
           placeholder: h.placeholder,
-          style: { ...Je, minHeight: 120, fontFamily: t("fontMono"), fontSize: 12 }
+          style: { ...Qe, minHeight: 120, fontFamily: t("fontMono"), fontSize: 12 }
         }
       ) : h.type === "bool" ? /* @__PURE__ */ l("label", { style: { display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }, children: /* @__PURE__ */ l(
         "input",
@@ -3362,7 +3379,7 @@ function yo({
           onChange: (S) => s({ ...n, config: { ...n.config, [h.key]: S.target.checked ? "true" : "false" } })
         }
       ) }) : h.type === "method-multi" ? /* @__PURE__ */ l(
-        mo,
+        So,
         {
           candidates: u.supported_methods,
           value: n.config[h.key] || "",
@@ -3375,24 +3392,24 @@ function yo({
           value: n.config[h.key] || "",
           onChange: (S) => s({ ...n, config: { ...n.config, [h.key]: S.target.value } }),
           placeholder: h.placeholder,
-          style: Je
+          style: Qe
         }
       ) }, h.key))
     ] }),
-    /* @__PURE__ */ y("div", { style: _o, children: [
-      /* @__PURE__ */ l("button", { style: fe, onClick: a, disabled: c, children: "取消" }),
-      /* @__PURE__ */ l("button", { style: pn, onClick: f, disabled: c, children: c ? "保存中..." : "保存" })
+    /* @__PURE__ */ y("div", { style: Lo, children: [
+      /* @__PURE__ */ l("button", { style: pe, onClick: a, disabled: d, children: "取消" }),
+      /* @__PURE__ */ l("button", { style: yn, onClick: f, disabled: d, children: d ? "保存中..." : "保存" })
     ] })
   ] }) });
 }
-function mo({
+function So({
   candidates: e,
   value: i,
   onChange: a
 }) {
   const o = new Set(i.split(",").map((n) => n.trim()).filter(Boolean)), r = (n) => {
     o.has(n) ? o.delete(n) : o.add(n);
-    const s = e.filter((c) => o.has(c)).join(",");
+    const s = e.filter((d) => o.has(d)).join(",");
     a(s);
   };
   return /* @__PURE__ */ y("div", { style: { display: "flex", flexWrap: "wrap", gap: 12 }, children: [
@@ -3425,7 +3442,7 @@ function mo({
                 style: { margin: 0 }
               }
             ),
-            Xe(n)
+            Ze(n)
           ]
         },
         n
@@ -3434,25 +3451,25 @@ function mo({
     e.length === 0 && /* @__PURE__ */ l("span", { style: { fontSize: 12, color: t("textTertiary") }, children: "该协议没有可选的支付方式" })
   ] });
 }
-function Ge({
+function Je({
   label: e,
   description: i,
   required: a,
   children: o
 }) {
   return /* @__PURE__ */ y("div", { style: { marginBottom: 16 }, children: [
-    /* @__PURE__ */ y("label", { style: Bo, children: [
+    /* @__PURE__ */ y("label", { style: Ro, children: [
       e,
       a && /* @__PURE__ */ l("span", { style: { color: t("danger"), marginLeft: 4 }, children: "*" })
     ] }),
     o,
-    i && /* @__PURE__ */ l("div", { style: Eo, children: i })
+    i && /* @__PURE__ */ l("div", { style: Io, children: i })
   ] });
 }
-function Xe(e) {
+function Ze(e) {
   return { alipay: "支付宝", wxpay: "微信支付" }[e] || e;
 }
-function bo(e) {
+function xo(e) {
   const i = {};
   for (const a of e.field_descriptors)
     a.type === "bool" ? i[a.key] = "false" : i[a.key] = "";
@@ -3463,39 +3480,30 @@ const Ye = {
   margin: "0 auto",
   padding: "24px 24px 48px",
   color: t("text")
-}, jt = {
+}, Vt = {
   padding: "40px 0",
   textAlign: "center",
   color: t("textSecondary")
-}, So = {
+}, wo = {
   margin: "4px 0 16px",
   fontSize: 13,
   color: t("textSecondary")
-}, Vt = {
+}, Kt = {
   margin: "0 0 12px",
   fontSize: 14,
   fontWeight: 600,
   color: t("text"),
   textTransform: "uppercase",
   letterSpacing: "0.04em"
-}, Kt = {
+}, Gt = {
   border: `1px solid ${t("glassBorder")}`,
   borderRadius: t("radiusLg"),
   background: t("bgSurface"),
   padding: 20,
   marginBottom: 20
-}, xo = {
-  display: "grid",
-  gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
-  gap: 12
-}, wo = {
-  border: `1px solid ${t("glassBorder")}`,
-  borderRadius: t("radiusMd"),
-  padding: 16,
-  background: t("bgElevated")
 }, vo = {
   display: "grid",
-  gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+  gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
   gap: 12
 }, ko = {
   border: `1px solid ${t("glassBorder")}`,
@@ -3503,22 +3511,31 @@ const Ye = {
   padding: 16,
   background: t("bgElevated")
 }, Co = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+  gap: 12
+}, To = {
+  border: `1px solid ${t("glassBorder")}`,
+  borderRadius: t("radiusMd"),
+  padding: 16,
+  background: t("bgElevated")
+}, Bo = {
   color: t("textTertiary"),
   textAlign: "center",
   padding: "24px 0",
   fontSize: 14
-}, fn = {
+}, pn = {
   padding: "2px 8px",
   borderRadius: 4,
   background: t("successSubtle"),
   color: t("success"),
   fontSize: 11,
   fontWeight: 600
-}, To = {
-  ...fn,
+}, Eo = {
+  ...pn,
   background: t("warningSubtle"),
   color: t("warning")
-}, fe = {
+}, pe = {
   padding: "6px 14px",
   border: `1px solid ${t("glassBorder")}`,
   borderRadius: t("radiusMd"),
@@ -3527,7 +3544,7 @@ const Ye = {
   cursor: "pointer",
   fontSize: 13,
   fontWeight: 500
-}, pn = {
+}, yn = {
   padding: "8px 16px",
   border: "none",
   borderRadius: t("radiusMd"),
@@ -3536,7 +3553,7 @@ const Ye = {
   cursor: "pointer",
   fontSize: 13,
   fontWeight: 600
-}, Je = {
+}, Qe = {
   width: "100%",
   padding: "8px 12px",
   border: `1px solid ${t("glassBorder")}`,
@@ -3545,7 +3562,7 @@ const Ye = {
   color: t("text"),
   fontSize: 13,
   boxSizing: "border-box"
-}, Bo = {
+}, Ro = {
   display: "block",
   fontSize: 12,
   fontWeight: 600,
@@ -3553,11 +3570,11 @@ const Ye = {
   marginBottom: 6,
   textTransform: "uppercase",
   letterSpacing: "0.03em"
-}, Eo = {
+}, Io = {
   marginTop: 6,
   fontSize: 11,
   color: t("textTertiary")
-}, Ro = {
+}, Po = {
   position: "fixed",
   top: 0,
   left: 0,
@@ -3568,7 +3585,7 @@ const Ye = {
   alignItems: "center",
   justifyContent: "center",
   zIndex: 1e3
-}, Io = {
+}, _o = {
   width: 600,
   maxWidth: "92vw",
   maxHeight: "90vh",
@@ -3578,32 +3595,32 @@ const Ye = {
   border: `1px solid ${t("glassBorder")}`,
   borderRadius: t("radiusLg"),
   overflow: "hidden"
-}, Po = {
+}, Mo = {
   padding: "16px 20px",
   borderBottom: `1px solid ${t("glassBorder")}`,
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between"
-}, Mo = {
+}, Ao = {
   background: "transparent",
   border: "none",
   color: t("textSecondary"),
   fontSize: 24,
   cursor: "pointer",
   lineHeight: 1
-}, Ao = {
+}, zo = {
   padding: 20,
   overflowY: "auto",
   flex: 1
-}, _o = {
+}, Lo = {
   padding: "12px 20px",
   borderTop: `1px solid ${t("glassBorder")}`,
   display: "flex",
   justifyContent: "flex-end",
   gap: 8
 };
-function zo() {
-  const { toast: e, Toaster: i } = gn(), [a, o] = z([]), [r, n] = z(!0), [s, c] = z(!1), [d, u] = z(null), f = () => {
+function No() {
+  const { toast: e, Toaster: i } = hn(), [a, o] = z([]), [r, n] = z(!0), [s, d] = z(!1), [c, u] = z(null), f = () => {
     n(!0), $.adminListPackages().then((p) => o(p.list || [])).catch((p) => e.error(`加载套餐失败: ${String(p.message || p)}`)).finally(() => n(!1));
   };
   F(f, []);
@@ -3615,8 +3632,8 @@ function zo() {
     sort: String(p.sort_order),
     enabled: p.enabled
   }), v = async () => {
-    if (!d) return;
-    const p = Number(d.amount), g = Number(d.bonus);
+    if (!c) return;
+    const p = Number(c.amount), g = Number(c.bonus);
     if (!p || p <= 0) {
       e.error("套餐金额必须大于 0");
       return;
@@ -3625,20 +3642,20 @@ function zo() {
       e.error("赠送额度不能为负数");
       return;
     }
-    c(!0);
+    d(!0);
     try {
       await $.adminUpsertPackage({
-        id: d.id,
+        id: c.id,
         amount: p,
         bonus_amount: g,
-        title: d.title.trim(),
-        enabled: d.enabled,
-        sort_order: Number(d.sort) || 0
-      }), e.success(d.id ? "套餐已更新" : "套餐已创建"), u(null), f();
+        title: c.title.trim(),
+        enabled: c.enabled,
+        sort_order: Number(c.sort) || 0
+      }), e.success(c.id ? "套餐已更新" : "套餐已创建"), u(null), f();
     } catch (I) {
       e.error(String(I.message || I));
     } finally {
-      c(!1);
+      d(!1);
     }
   }, b = async (p) => {
     try {
@@ -3661,46 +3678,46 @@ function zo() {
         e.error(String(g.message || g));
       }
   };
-  return /* @__PURE__ */ y("div", { style: Lo, children: [
+  return /* @__PURE__ */ y("div", { style: $o, children: [
     i,
     /* @__PURE__ */ y("div", { style: { display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }, children: [
       /* @__PURE__ */ y("div", { children: [
-        /* @__PURE__ */ l("h2", { style: No, children: "充值套餐" }),
+        /* @__PURE__ */ l("h2", { style: Do, children: "充值套餐" }),
         /* @__PURE__ */ l("p", { style: { margin: "4px 0 0", color: t("textSecondary"), fontSize: 13 }, children: "用户点选套餐档才享赠送；自定义金额充值不参与。赠送在支付成功后以独立流水入账。" })
       ] }),
       /* @__PURE__ */ l("button", { style: Yt, onClick: h, children: "新增套餐" })
     ] }),
-    d && /* @__PURE__ */ y("div", { style: { ...Gt, marginBottom: 20 }, children: [
-      /* @__PURE__ */ l("h3", { style: $o, children: d.id ? `编辑套餐 #${d.id}` : "新增套餐" }),
+    c && /* @__PURE__ */ y("div", { style: { ...Jt, marginBottom: 20 }, children: [
+      /* @__PURE__ */ l("h3", { style: Fo, children: c.id ? `编辑套餐 #${c.id}` : "新增套餐" }),
       /* @__PURE__ */ y("div", { style: { display: "flex", flexWrap: "wrap", gap: 16, alignItems: "flex-end" }, children: [
         /* @__PURE__ */ y("label", { style: ie, children: [
           /* @__PURE__ */ l("span", { style: ae, children: "充值金额（$）" }),
-          /* @__PURE__ */ l("input", { type: "number", min: 1, value: d.amount, onChange: (p) => u({ ...d, amount: p.target.value }), style: he })
+          /* @__PURE__ */ l("input", { type: "number", min: 1, value: c.amount, onChange: (p) => u({ ...c, amount: p.target.value }), style: fe })
         ] }),
         /* @__PURE__ */ y("label", { style: ie, children: [
           /* @__PURE__ */ l("span", { style: ae, children: "赠送额度（$）" }),
-          /* @__PURE__ */ l("input", { type: "number", min: 0, value: d.bonus, onChange: (p) => u({ ...d, bonus: p.target.value }), style: he })
+          /* @__PURE__ */ l("input", { type: "number", min: 0, value: c.bonus, onChange: (p) => u({ ...c, bonus: p.target.value }), style: fe })
         ] }),
         /* @__PURE__ */ y("label", { style: ie, children: [
           /* @__PURE__ */ l("span", { style: ae, children: "标题（可选，按钮悬浮提示）" }),
-          /* @__PURE__ */ l("input", { type: "text", maxLength: 64, value: d.title, placeholder: "如：限时特惠", onChange: (p) => u({ ...d, title: p.target.value }), style: { ...he, width: 200 } })
+          /* @__PURE__ */ l("input", { type: "text", maxLength: 64, value: c.title, placeholder: "如：限时特惠", onChange: (p) => u({ ...c, title: p.target.value }), style: { ...fe, width: 200 } })
         ] }),
         /* @__PURE__ */ y("label", { style: ie, children: [
           /* @__PURE__ */ l("span", { style: ae, children: "排序（小在前）" }),
-          /* @__PURE__ */ l("input", { type: "number", value: d.sort, onChange: (p) => u({ ...d, sort: p.target.value }), style: { ...he, width: 90 } })
+          /* @__PURE__ */ l("input", { type: "number", value: c.sort, onChange: (p) => u({ ...c, sort: p.target.value }), style: { ...fe, width: 90 } })
         ] }),
         /* @__PURE__ */ y("label", { style: { ...ie, flexDirection: "row", alignItems: "center", gap: 8 }, children: [
-          /* @__PURE__ */ l("input", { type: "checkbox", checked: d.enabled, onChange: (p) => u({ ...d, enabled: p.target.checked }) }),
+          /* @__PURE__ */ l("input", { type: "checkbox", checked: c.enabled, onChange: (p) => u({ ...c, enabled: p.target.checked }) }),
           /* @__PURE__ */ l("span", { style: ae, children: "启用" })
         ] }),
         /* @__PURE__ */ y("div", { style: { display: "flex", gap: 8 }, children: [
           /* @__PURE__ */ l("button", { style: { ...Yt, opacity: s ? 0.6 : 1 }, disabled: s, onClick: v, children: s ? "保存中..." : "保存" }),
-          /* @__PURE__ */ l("button", { style: Do, onClick: () => u(null), children: "取消" })
+          /* @__PURE__ */ l("button", { style: Uo, onClick: () => u(null), children: "取消" })
         ] })
       ] })
     ] }),
-    /* @__PURE__ */ l("div", { style: Gt, children: r ? /* @__PURE__ */ l("p", { style: { margin: 0, color: t("textSecondary"), textAlign: "center", padding: "24px 0" }, children: "加载中..." }) : a.length === 0 ? /* @__PURE__ */ l("p", { style: { margin: 0, color: t("textSecondary"), textAlign: "center", padding: "24px 0" }, children: "暂无套餐。点击右上角「新增套餐」创建第一个优惠档（用户端在配置前显示默认金额档）。" }) : /* @__PURE__ */ y("table", { style: { width: "100%", borderCollapse: "collapse", fontSize: 13 }, children: [
-      /* @__PURE__ */ l("thead", { children: /* @__PURE__ */ l("tr", { children: ["ID", "充值金额", "赠送", "用户实得", "标题", "排序", "状态", "操作"].map((p) => /* @__PURE__ */ l("th", { style: Fo, children: p }, p)) }) }),
+    /* @__PURE__ */ l("div", { style: Jt, children: r ? /* @__PURE__ */ l("p", { style: { margin: 0, color: t("textSecondary"), textAlign: "center", padding: "24px 0" }, children: "加载中..." }) : a.length === 0 ? /* @__PURE__ */ l("p", { style: { margin: 0, color: t("textSecondary"), textAlign: "center", padding: "24px 0" }, children: "暂无套餐。点击右上角「新增套餐」创建第一个优惠档（用户端在配置前显示默认金额档）。" }) : /* @__PURE__ */ y("table", { style: { width: "100%", borderCollapse: "collapse", fontSize: 13 }, children: [
+      /* @__PURE__ */ l("thead", { children: /* @__PURE__ */ l("tr", { children: ["ID", "充值金额", "赠送", "用户实得", "标题", "排序", "状态", "操作"].map((p) => /* @__PURE__ */ l("th", { style: qo, children: p }, p)) }) }),
       /* @__PURE__ */ l("tbody", { children: a.map((p) => /* @__PURE__ */ y("tr", { children: [
         /* @__PURE__ */ l("td", { style: K, children: p.id }),
         /* @__PURE__ */ l("td", { style: { ...K, fontWeight: 600 }, children: N(p.amount) }),
@@ -3708,32 +3725,32 @@ function zo() {
         /* @__PURE__ */ l("td", { style: K, children: N(p.amount + p.bonus_amount) }),
         /* @__PURE__ */ l("td", { style: { ...K, color: t("textSecondary") }, children: p.title || "—" }),
         /* @__PURE__ */ l("td", { style: K, children: p.sort_order }),
-        /* @__PURE__ */ l("td", { style: K, children: /* @__PURE__ */ l("span", { style: p.enabled ? Uo : qo, children: p.enabled ? "启用中" : "已停用" }) }),
+        /* @__PURE__ */ l("td", { style: K, children: /* @__PURE__ */ l("span", { style: p.enabled ? Wo : Oo, children: p.enabled ? "启用中" : "已停用" }) }),
         /* @__PURE__ */ l("td", { style: K, children: /* @__PURE__ */ y("div", { style: { display: "flex", gap: 8 }, children: [
-          /* @__PURE__ */ l("button", { style: Qe, onClick: () => S(p), children: "编辑" }),
-          /* @__PURE__ */ l("button", { style: Qe, onClick: () => b(p), children: p.enabled ? "停用" : "启用" }),
-          /* @__PURE__ */ l("button", { style: { ...Qe, color: t("danger") }, onClick: () => R(p), children: "删除" })
+          /* @__PURE__ */ l("button", { style: Xe, onClick: () => S(p), children: "编辑" }),
+          /* @__PURE__ */ l("button", { style: Xe, onClick: () => b(p), children: p.enabled ? "停用" : "启用" }),
+          /* @__PURE__ */ l("button", { style: { ...Xe, color: t("danger") }, onClick: () => R(p), children: "删除" })
         ] }) })
       ] }, p.id)) })
     ] }) })
   ] });
 }
-const Lo = {
+const $o = {
   maxWidth: 960,
   margin: "0 auto",
   padding: "24px 24px 48px",
   color: t("text")
-}, No = {
+}, Do = {
   margin: 0,
   fontSize: 22,
   fontWeight: 600,
   letterSpacing: "-0.01em"
-}, Gt = {
+}, Jt = {
   border: `1px solid ${t("glassBorder")}`,
   borderRadius: t("radiusLg"),
   background: t("bgSurface"),
   padding: "20px 24px"
-}, $o = {
+}, Fo = {
   margin: "0 0 16px",
   fontSize: 13,
   fontWeight: 600,
@@ -3747,7 +3764,7 @@ const Lo = {
 }, ae = {
   fontSize: 12,
   color: t("textSecondary")
-}, he = {
+}, fe = {
   padding: "8px 12px",
   width: 130,
   border: `1px solid ${t("glassBorder")}`,
@@ -3766,7 +3783,7 @@ const Lo = {
   fontWeight: 600,
   cursor: "pointer",
   transition: t("transition")
-}, Do = {
+}, Uo = {
   padding: "10px 20px",
   border: `1px solid ${t("glassBorder")}`,
   borderRadius: t("radiusMd"),
@@ -3776,14 +3793,14 @@ const Lo = {
   fontWeight: 500,
   cursor: "pointer",
   transition: t("transition")
-}, Qe = {
+}, Xe = {
   padding: 0,
   border: "none",
   background: "none",
   color: t("primary"),
   fontSize: 13,
   cursor: "pointer"
-}, Fo = {
+}, qo = {
   textAlign: "left",
   padding: "8px 10px",
   color: t("textTertiary"),
@@ -3794,29 +3811,29 @@ const Lo = {
   padding: "10px",
   borderBottom: `1px solid ${t("glassBorder")}`,
   verticalAlign: "middle"
-}, Uo = {
+}, Wo = {
   fontSize: 12,
   fontWeight: 600,
   padding: "2px 10px",
   borderRadius: 999,
   background: t("primarySubtle"),
   color: t("primary")
-}, qo = {
+}, Oo = {
   fontSize: 12,
   fontWeight: 600,
   padding: "2px 10px",
   borderRadius: 999,
   background: t("bgElevated"),
   color: t("textTertiary")
-}, Ho = {
+}, Vo = {
   routes: [
-    { path: "/recharge", component: rr },
-    { path: "/orders", component: yr },
-    { path: "/admin/orders", component: Rr },
-    { path: "/admin/providers", component: po },
-    { path: "/admin/packages", component: zo }
+    { path: "/recharge", component: ir },
+    { path: "/orders", component: br },
+    { path: "/admin/orders", component: Pr },
+    { path: "/admin/providers", component: mo },
+    { path: "/admin/packages", component: No }
   ]
 };
 export {
-  Ho as default
+  Vo as default
 };

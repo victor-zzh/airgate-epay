@@ -147,7 +147,8 @@ func (p *Plugin) handleCreateOrder(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if body.Subject == "" {
-		body.Subject = "HopBase 余额充值"
+		// 兜底不带品牌名：站点名由前端经公开设置动态拼入，多实例部署禁止写死
+		body.Subject = "余额充值"
 	}
 	order, err := p.svc.CreateOrder(r.Context(), CreateOrderInput{
 		UserID:    uid,

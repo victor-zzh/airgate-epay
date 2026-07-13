@@ -36,17 +36,17 @@ config:
     description: 订单创建后多少分钟内未支付自动过期
 frontend_pages:
   - path: /recharge
-    title: 充值
+    title: nav.recharge
     icon: wallet
     description: 账户余额充值
     audience: user
   - path: /orders
-    title: 充值记录
+    title: nav.recharge_records
     icon: history
     description: 我的充值订单
     audience: user
   - path: /admin/orders
-    title: 支付订单
+    title: nav.payment_orders
     icon: receipt
     description: 全量订单监控
     audience: admin

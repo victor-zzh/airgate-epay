@@ -225,6 +225,41 @@ export const api = {
     request<{ ok: boolean }>('DELETE', `/admin/packages/${id}`, undefined, { admin: true }),
 };
 
+// ============ 站点品牌 ============
+//
+// 充值订单 subject 需要带站点名，多实例部署（ToB/ToC）不能写死品牌。
+// 复用 core 的公开设置端点 /api/v1/settings/public（无需鉴权），
+// 并镜像 core 前端 SiteSettingsProvider 的来源站覆盖规则：
+// localStorage('ag_origin_site') 命中设置项 sites_branding 时优先用来源站品牌名。
+
+let siteNamePromise: Promise<string> | null = null;
+
+/** 返回当前实例的站点名；获取失败返回空串（调用方自行兜底），失败不缓存。 */
+export function getSiteName(): Promise<string> {
+  if (!siteNamePromise) {
+    siteNamePromise = (async () => {
+      const resp = await fetch('/api/v1/settings/public');
+      const wrapper = (await resp.json()) as CoreApiResp<Record<string, string>>;
+      const data = wrapper?.data || {};
+      let brandName = '';
+      try {
+        const originSite = window.localStorage.getItem('ag_origin_site') || '';
+        if (originSite && data.sites_branding) {
+          const parsed = JSON.parse(data.sites_branding) as Record<string, { name?: string }>;
+          brandName = parsed?.[originSite]?.name || '';
+        }
+      } catch {
+        // sites_branding 非法 JSON / localStorage 不可用时回退全局站名
+      }
+      return brandName || data.site_name || '';
+    })().catch(() => {
+      siteNamePromise = null;
+      return '';
+    });
+  }
+  return siteNamePromise;
+}
+
 export interface OrderStats {
   total: number;
   paid: number;
