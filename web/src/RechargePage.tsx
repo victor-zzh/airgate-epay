@@ -5,6 +5,9 @@ import { api, getSiteName, type Order, type MethodInfo, type PackageItem } from 
 import { formatRechargeCredit } from './money';
 import { t } from './i18n';
 
+// 进行中订单的恢复锚点(localStorage):值为 out_trade_no
+const RESUME_ORDER_KEY = 'epay_last_order';
+
 /**
  * RechargePage 充值页面（用户级独立页面）
  *
@@ -36,6 +39,37 @@ export default function RechargePage() {
   const [order, setOrder] = useState<Order | null>(null);
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
   const pollRef = useRef<number | null>(null);
+
+  // 0) 恢复进行中的订单。订单态原本只在组件内存里:移动端跳支付宝再切回
+  // (页面被系统回收重载)或手滑刷新后,用户只能对着空表单猜结果、去订单页手查。
+  // 创建订单时把单号落 localStorage,挂载时捡回补拉状态:
+  //   pending → 恢复二维码+轮询;paid(24h 内) → 直接呈现成功卡;
+  //   其余终态或已超时 → 静默清除,不打扰。
+  useEffect(() => {
+    let saved: string | null = null;
+    try {
+      saved = localStorage.getItem(RESUME_ORDER_KEY);
+    } catch {
+      return;
+    }
+    if (!saved) return;
+    api.getOrder(saved)
+      .then((o) => {
+        if (o.status === 'pending') {
+          setOrder(o);
+          return;
+        }
+        if (o.status === 'paid') {
+          const paidAt = o.paid_at ? Date.parse(o.paid_at) : NaN;
+          if (!Number.isFinite(paidAt) || Date.now() - paidAt < 24 * 3600 * 1000) {
+            setOrder(o);
+            return;
+          }
+        }
+        try { localStorage.removeItem(RESUME_ORDER_KEY); } catch { /* ignore */ }
+      })
+      .catch(() => { /* 拉不到就保持初始表单,下次挂载再试 */ });
+  }, []);
 
   // 1) 拉可用支付方式 + 充值套餐（套餐失败静默回退到预设金额档）
   useEffect(() => {
@@ -130,6 +164,7 @@ export default function RechargePage() {
         ...(selectedPackageId !== null ? { package_id: selectedPackageId } : {}),
       });
       setOrder(o);
+      try { localStorage.setItem(RESUME_ORDER_KEY, o.out_trade_no); } catch { /* 隐私模式下放弃恢复能力 */ }
       // 不再 window.open 跳转新窗口；二维码会由上面的 useEffect 自动渲染到当前页
     } catch (e) {
       setError(String((e as Error).message || e));
@@ -141,6 +176,7 @@ export default function RechargePage() {
   const handleReset = () => {
     setOrder(null);
     setError(null);
+    try { localStorage.removeItem(RESUME_ORDER_KEY); } catch { /* ignore */ }
   };
 
   // ========== 渲染 ==========
@@ -208,6 +244,9 @@ export default function RechargePage() {
             </div>
             <p style={{ textAlign: 'center', color: cssVar('textTertiary'), fontSize: 13, marginTop: 20, marginBottom: 0 }}>
               {t('支付完成后本页将自动跳转到结果页（每 3 秒检查一次）')}
+            </p>
+            <p style={{ textAlign: 'center', color: cssVar('textTertiary'), fontSize: 12, marginTop: 6, marginBottom: 0 }}>
+              {t('离开或刷新本页也没关系，支付结果会在你回来时自动恢复。')}
             </p>
             {order.payment_url && (
               <p style={{ textAlign: 'center', fontSize: 12, marginTop: 8, marginBottom: 0 }}>
